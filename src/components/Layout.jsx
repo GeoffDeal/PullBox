@@ -5,30 +5,32 @@ function Layout () {
     return (
         <>
             <IconBar position="top" />
-            <Outlet />
+            <div id="displayWindow">
+                <Outlet />
+            </div>
 
             <nav>
                 <ul>
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link to="/"><span class="material-symbols-outlined">home</span></Link>
                     </li>
                     <li>
-                        <Link to="/account">Account</Link>
+                        <Link to="/account"><span class="material-symbols-outlined">account_circle</span></Link>
                     </li>
                     <li>
-                        <Link to="/settings">Settings</Link>
+                        <Link to="/settings"><span class="material-symbols-outlined">settings</span></Link>
                     </li>
                     <li>
-                        <Link to="/searchpage">Search</Link>
+                        <Link to="/searchpage"><span class="material-symbols-outlined">search</span></Link>
                     </li>
                     <li>
-                        <Link to="/pulls">Pulls</Link>
+                        <Link to="/pulls"><span class="material-symbols-outlined">inventory_2</span></Link>
                     </li>
                     <li>
-                        <Link to="/customerspage">Customers</Link>
+                        <Link to="/customerspage"><span class="material-symbols-outlined">groups</span></Link>
                     </li>
                     <li>
-                        <Link to="/notifications">Notifications</Link>
+                        <Link to="/notifications"><span class="material-symbols-outlined">notifications</span></Link>
                     </li>
                 </ul>
             </nav>

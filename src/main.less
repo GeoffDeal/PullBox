@@ -6,14 +6,24 @@
 body {
     background-color: @background-grey;
     color: whitesmoke;
+    margin: 0;
+    padding: 0;
+}
+a {
+    color: whitesmoke;
 }
 
-
+@barHeight: 80px;
 .iconBar {
     width: 100%;
-    height: 80px;
+    height: @barHeight;
     background-color: @heroes-black;
     color: whitesmoke;
     position: fixed;
-    z-index: 1;
+    z-index: 1;   
+}
+
+#displayWindow {
+    margin: 16px;
+    margin-top: @barHeight + 8px;
 }

@@ -1,15 +1,13 @@
 function IconBar (props) {
     const position = props.position;
 
-    // if (position === "top") {
-    //     barStyle.top = "0";
-    // }
-    // else if (position === "bottom") {
-    //     barStyle.bottom = "0";
-    // }
+    const dynamicPosition = {
+        top: position === 'top' ? '0' : 'auto',
+        bottom: position === 'bottom' ? '0' : 'auto',
+    }
 
     return (
-        <div className="iconBar">
+        <div className="iconBar" style={ dynamicPosition }>
 
         </div>
     )
