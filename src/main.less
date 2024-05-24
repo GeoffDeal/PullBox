@@ -21,9 +21,29 @@ a {
     color: whitesmoke;
     position: fixed;
     z-index: 1;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    nav {
+        display: inherit;
+        gap: 16px;
+    }
+}
+.material-symbols-outlined {
+    font-size: xxx-large;
+}
+#iconBarTop {
+    top: 0;
+    justify-content: end;
+    nav { 
+        margin-right:24px;
+    }
+}
+#iconBarBot {
+    bottom: 0;
 }
 
 #displayWindow {
     margin: 16px;
-    margin-top: @barHeight + 8px;
+    margin-top: @barHeight + 16px;
 }
