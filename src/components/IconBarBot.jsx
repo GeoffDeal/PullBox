@@ -1,15 +1,15 @@
-import { Outlet, Link, BrowserRouter } from "react-router-dom";
+import { Outlet, NavLink, BrowserRouter } from "react-router-dom";
 
 
 function IconBarBot (props) {
     return (
         <div className="iconBar" id="iconBarBot">
             <nav>
-                <Link to="/"><span class="material-symbols-outlined">home</span></Link>
-                <Link to="/searchpage"><span class="material-symbols-outlined">search</span></Link>
-                <Link to="/pulls"><span class="material-symbols-outlined">inventory_2</span></Link>
-                <Link to="/customerspage"><span class="material-symbols-outlined">groups</span></Link>
-                <Link to="/notifications"><span class="material-symbols-outlined">notifications</span></Link>
+                <NavLink to="/"><span className="material-symbols-outlined">home</span></NavLink>
+                <NavLink to="/searchpage"><span className="material-symbols-outlined">search</span></NavLink>
+                <NavLink to="/pulls"><span className="material-symbols-outlined">inventory_2</span></NavLink>
+                <NavLink to="/customerspage"><span className="material-symbols-outlined">groups</span></NavLink>
+                <NavLink to="/notifications"><span className="material-symbols-outlined">notifications</span></NavLink>
             </nav>
         </div>
     )

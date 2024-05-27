@@ -10,7 +10,6 @@ function Layout () {
             <div id="displayWindow">
                 <Outlet />
             </div>
-
             <IconBarBot position="bottom" />
         </>
     )

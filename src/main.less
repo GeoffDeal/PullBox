@@ -3,6 +3,10 @@
 @heroes-black: #010000;
 @background-grey: #242424;
 
+
+h1{
+    font-size: x-large;
+}
 body {
     background-color: @background-grey;
     color: whitesmoke;
@@ -22,7 +26,6 @@ a {
     position: fixed;
     z-index: 1;   
     display: flex;
-    justify-content: center;
     align-items: center;
     nav {
         display: inherit;
@@ -32,15 +35,25 @@ a {
 .material-symbols-outlined {
     font-size: xxx-large;
 }
+.active {
+    color: @heroes-purple;
+}
 #iconBarTop {
     top: 0;
-    justify-content: end;
     nav { 
         margin-right:24px;
+        margin-left: auto;
     }
 }
 #iconBarBot {
     bottom: 0;
+    justify-content: center;
+
+}
+#topLogo{
+    height: 80px;
+    width: 80px;
+    margin-left: 24px;
 }
 
 #displayWindow {
