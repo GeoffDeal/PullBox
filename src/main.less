@@ -34,6 +34,11 @@ a {
 }
 .material-symbols-outlined {
     font-size: xxx-large;
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 600,
+    'GRAD' 0,
+    'opsz' 48
 }
 .active {
     color: @heroes-purple;
@@ -60,3 +65,39 @@ a {
     margin: 16px;
     margin-top: @barHeight + 16px;
 }
+
+.imageContainer {
+    vertical-align: middle;
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    img {
+        height: 120px;
+        width: auto;
+        margin: 8px;
+        display: inline-block;
+        line-height: 120px;
+    }
+}
+.bookDisplay {
+    position: relative;
+}
+.scrollButton {
+    background-color: @heroes-gold;
+    color: @heroes-purple;
+    cursor: pointer;
+    border: 0;
+    border-radius: 32px;
+    .material-symbols-outlined {
+        font-size: small;
+    }
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: 0.6s ease;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
