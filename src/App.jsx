@@ -8,24 +8,35 @@ import SearchPage from "./components/SearchPage";
 import Pulls from "./components/Pulls";
 import CustomersPage from "./components/CustomersPage";
 import Notifications from "./components/Notifications";
+import { UserContext } from "./Contexts";
+import { useState } from "react";
 
 
 function App() {
+  const [user, setUser] = useState({
+    username: 'Super Hero',
+    email: null,
+    userID: 0,
+    userType: 'customer'
+});
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="account" element={<Account />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="searchpage" element={<SearchPage />} />
-          <Route path="pulls" element={<Pulls />} />
-          <Route path="customerspage" element={<CustomersPage />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <UserContext.Provider value={user}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="account" element={<Account />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="searchpage" element={<SearchPage />} />
+            <Route path="pulls" element={<Pulls />} />
+            <Route path="customerspage" element={<CustomersPage />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserContext.Provider>
   )
 }
 

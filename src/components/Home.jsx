@@ -1,12 +1,16 @@
+import { UserContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
+import { useContext, useState } from "react";
 
 function Home () {
+    const user = useContext(UserContext);
+
     return (
         <>
-            <h1>Welcome to your PullBox</h1>
-            <p>Your pulls for this week:</p>
+            <h1>Welcome {user.username}</h1>
+            <h3>Your pulls for this week:</h3>
             <ComicsDisplay />
-            <p>Your expected total:</p>
+            <h3>Upcoming FOCs. Last chance!</h3>
         </>
     )
 };

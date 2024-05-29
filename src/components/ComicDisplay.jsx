@@ -10,15 +10,6 @@ function ComicsDisplay (props) {
         const preTax = comicList.reduce((sum, current) => sum + current.cost, 0 );
         return Math.round(preTax * 115) / 100;
     }
-    // const imageSource = ['https://www.universaldist.com/api/v1/images/ea1b7da1-532b-49d0-84a8-403ad4e37978/raw?size=l', 'https://www.universaldist.com/api/v1/images/61e62be0-4fee-478e-84ef-88fc061a848a/raw?size=l', 'https://www.universaldist.com/api/v1/images/fb2e7c1c-be62-4545-8ffe-2fd848c28d28/raw?size=l', 'https://www.universaldist.com/api/v1/images/4580f1eb-db5c-4a07-b284-d5de90e1f4b4/raw?size=l', 'https://www.universaldist.com/api/v1/images/d2083b1b-30b6-4be1-b06d-56cfc9ef75c0/raw?size=l'];
-    // const comicPrices = [3.99, 4.99, 5.99, 5.99];
-    // const totalCost = (comicPrices) => {
-    //     const preTax = comicPrices.reduce((sum, current) => {
-    //         return sum + current;
-    //     }, 0)
-    //     return preTax * 1.15;
-    // }
-    
 
     return (
         <div className="bookDisplay">
