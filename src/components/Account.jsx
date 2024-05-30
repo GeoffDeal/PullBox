@@ -1,5 +1,10 @@
 function Account () {
-    return <h1>Account Details</h1>
+    return (
+        <>
+            <h1>Account Details</h1>
+            
+        </>
+    )
 
 };
 
