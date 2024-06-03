@@ -11,6 +11,9 @@ function Home () {
             <h3>Your pulls for this week:</h3>
             <ComicsDisplay />
             <h3>Upcoming FOCs. Last chance!</h3>
+            <ul>
+                {user.subList.map((series) => <li>{series}</li>)}
+            </ul>
         </>
     )
 };
