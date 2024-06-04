@@ -3,7 +3,8 @@ import { UserContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 
 function Pulls () {
-    const {subList} = useContext(UserContext);
+    const { user } = useContext(UserContext);
+    const subList = user.subList;
     const [subs, setSubs] = useState(subList);
 
     const removeButton = (series) => {

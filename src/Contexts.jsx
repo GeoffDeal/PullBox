@@ -1,15 +1,6 @@
 import { useState, createContext } from "react";
 
-export const UserContext = createContext({
-    username: 'Super Hero',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: null,
-    phone: "(709) 555-5555",
-    userID: 0,
-    userType: 'customer',
-    subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest'],
-});
+export const UserContext = createContext();
 
 export const ComicList = createContext([
     {
