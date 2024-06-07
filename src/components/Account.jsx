@@ -1,32 +1,21 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../Contexts";
+import AccountToggle from "./AccountToggle";
 
 function Account () {
-    const userData = useContext(UserContext);
-    const [user, setUser] = useState(userData.user);
-    const [nameToggle, setNameToggle] = useState(false);
+    const { user } = useContext(UserContext);
 
     return (
         <>
-            <h1>Account Details for {user.username}</h1>
+            <h1>Account Details for {user.name}</h1>
+            <p>Name: </p><AccountToggle label="name" value={ user.name } />
+            <p>Email: </p><AccountToggle label="email"  value={ user.email } />
+            <p>Phone: </p><AccountToggle label="phone" value={ user.phone } />
+            <p>Username: </p><AccountToggle label="username" value={ user.username } />
             <div className="accountEdit">
-                <p>Name: </p> 
-                    {nameToggle ? <input type="text"></input> : <p>{user.firstName + ' ' + user.lastName}</p>}
-                <button className="accountButton" onClick={() => setNameToggle(true)}><span class="material-symbols-outlined">edit_note</span></button>
+                <p>User ID: </p><p>{user.userID}</p><div> </div>
             </div>
-            <div className="accountEdit">
-                <p>Email: {user.email}</p>
-                <button className="accountButton"><span class="material-symbols-outlined">edit_note</span></button>
-            </div>
-            <div className="accountEdit">
-                <p>Phone: {user.phone}</p>
-                <button className="accountButton"><span class="material-symbols-outlined">edit_note</span></button>
-            </div>
-            <div className="accountEdit">
-                <p>Username: {user.username}</p>
-                <button className="accountButton"><span class="material-symbols-outlined">edit_note</span></button>
-            </div>
-            <p>User ID: {user.userID}</p>
+            <button onClick={() => console.log(user)}>User</button>
         </>
     )
 

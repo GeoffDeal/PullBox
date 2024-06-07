@@ -3,7 +3,7 @@ import ComicsDisplay from "./ComicDisplay";
 import { useContext, useState } from "react";
 
 function Home () {
-    const user = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     return (
         <>
