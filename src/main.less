@@ -2,6 +2,7 @@
 @heroes-gold: #CDB771;
 @heroes-black: #010000;
 @background-grey: #242424;
+@dark-background-grey: #141414;
 
 
 h1{
@@ -102,7 +103,7 @@ a {
 }
 
 .gridDisplay {
-    background-color: @heroes-black;
+    background-color: @dark-background-grey;
     display: flexbox;
     margin-top: 16px;
     img {
@@ -152,4 +153,24 @@ a {
         border: none;
         margin-right: 16px;
     }
+}
+
+.messageContainer {
+    background-color: @dark-background-grey;
+    color: whitesmoke;
+    margin-bottom: 8px;
+    padding: 4px;
+    border-radius: 24px;
+    h3{
+        text-align: center;
+    }
+    p {
+        padding: 4px;
+    }
+    .dateText {
+        font-size: small;
+        display: flex;
+        justify-content: end;
+    }
+
 }
