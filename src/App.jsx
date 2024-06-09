@@ -19,7 +19,7 @@ function App() {
     email: 'email@emailprovider.com',
     phone: "(709) 555-5555",
     userID: 0,
-    userType: 'customer',
+    customer: true,
     subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest'],
 });
 

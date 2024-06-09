@@ -10,12 +10,10 @@ function AccountToggle(props) {
 
     const userSubmit = (event) => {
         event.preventDefault();
-        console.log(inputValue);
         setUser((oldUser) => ({
             ...oldUser,
             [label]: inputValue,
         }));
-        console.log(user);
 
         setToggle(false);
     }
@@ -25,8 +23,7 @@ function AccountToggle(props) {
             {toggle ? 
                 <form onSubmit={ userSubmit }>
                     <input type="text" value={ inputValue } onChange={(e) => {
-                        setInputValue(e.target.value);
-                        console.log(inputValue)}}></input> 
+                        setInputValue(e.target.value)}}></input> 
                 </form>
                 : <p>{ userValue }</p>}
             <button className="accountButton" onClick={() => setToggle(true)}><span className="material-symbols-outlined">edit_note</span></button>

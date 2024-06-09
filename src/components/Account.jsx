@@ -3,7 +3,7 @@ import { UserContext } from "../Contexts";
 import AccountToggle from "./AccountToggle";
 
 function Account () {
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     return (
         <>
@@ -15,7 +15,14 @@ function Account () {
             <div className="accountEdit">
                 <p>User ID: </p><p>{user.userID}</p><div> </div>
             </div>
-            <button onClick={() => console.log(user)}>User</button>
+            <button onClick={() => {
+                setUser(oldUser => ({
+                    ...oldUser,
+                    customer: oldUser.customer ? false : true,
+                }));
+                console.log(user);
+            }}>
+            Switch user type. User is customer? { user.customer ? 'true' : 'false' }</button>
         </>
     )
 
