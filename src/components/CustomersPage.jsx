@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CustomerFlyway from "./CustomerFlyway";
 
 function CustomersPage() {
     const customerList = [
@@ -13,8 +14,8 @@ function CustomersPage() {
         { name: 'Hal', email: 'HalJ@yipee.com', phone: '(709) 555-2222', },
     ]
 
-const [customers, setCustomers] = useState(customerList);
-const [pendingCustomers, setPendingCustomer] = useState(pendingList);
+    const [customers, setCustomers] = useState(customerList);
+    const [pendingCustomers, setPendingCustomer] = useState(pendingList);
 
     return (
         <>
@@ -24,7 +25,7 @@ const [pendingCustomers, setPendingCustomer] = useState(pendingList);
                 { customers.map((customer) => 
                     <li key={ customer.userID }><div className="customerRow"><div className="customerInnerDiv">
                         <p>{customer.name}</p><p>{customer.boxnumber}</p></div>
-                        <button className="customerOptions"><span className="material-symbols-outlined">more_horiz</span></button>
+                        <CustomerFlyway customer={ customer.userID }/>
                     </div></li>)}
             </div>
             <h3>Pending Customers:</h3>

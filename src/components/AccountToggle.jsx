@@ -26,7 +26,7 @@ function AccountToggle(props) {
                         setInputValue(e.target.value)}}></input> 
                 </form>
                 : <p>{ userValue }</p>}
-            <button className="accountButton" onClick={() => setToggle(true)}><span className="material-symbols-outlined">edit_note</span></button>
+            <button className="accountButton" onClick={() => setToggle(!toggle)}><span className="material-symbols-outlined">edit_note</span></button>
         </div>
     )
 }

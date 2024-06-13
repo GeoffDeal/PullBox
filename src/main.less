@@ -17,6 +17,9 @@ body {
 a {
     color: whitesmoke;
 }
+button{
+    cursor: pointer;
+}
 
 @barHeight: 80px;
 .iconBar {
@@ -224,5 +227,24 @@ a {
         }
         border: none;
         margin-right: 16px;
+    }
+}
+
+.flyawayMenu {
+    display: flex;
+    .customerMenu {
+        position: absolute;
+        right: 100px;
+        background-color: @dark-background-grey;
+        z-index: 1;
+        width: 32px;
+        margin: 8px;
+        button {
+            background-color: @background-grey;
+            color: whitesmoke;
+            border-width: 0;
+            margin: 8px;
+            padding: 4px;
+        }
     }
 }
