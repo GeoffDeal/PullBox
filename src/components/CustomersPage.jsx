@@ -23,7 +23,7 @@ const [pendingCustomers, setPendingCustomer] = useState(pendingList);
             <div id="customerList" className="customerLists">
                 { customers.map((customer) => 
                     <li key={ customer.userID }><div className="customerRow">
-                        {customer.name} - {customer.username}
+                        <p>{customer.name}</p><p>{customer.username}</p>
                         <button className="customerOptions"><span className="material-symbols-outlined">more_horiz</span></button>
                     </div></li>)}
             </div>
@@ -31,7 +31,7 @@ const [pendingCustomers, setPendingCustomer] = useState(pendingList);
             <div id="wouldbeCustomers" className="customerLists">
                 { pendingCustomers.map((customer) => 
                         <li key={ customer.name + customer.username }><div className="customerRow">
-                            {customer.name} - {customer.username}
+                            <p>{customer.name}</p><p>{customer.username}</p>
                             <button className="customerOptions"><span className="material-symbols-outlined">more_horiz</span></button>
                         </div></li>)}
             </div>

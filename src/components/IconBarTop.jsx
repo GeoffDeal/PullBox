@@ -7,7 +7,7 @@ function IconBarTop () {
             <img src={darklogo} alt="Logo" id="topLogo" />
             <nav>
                 <NavLink to="/account"><span className="material-symbols-outlined">account_circle</span></NavLink>
-                <NavLink to="/settings"><span className="material-symbols-outlined">settings</span></NavLink>
+                {/* <NavLink to="/settings"><span className="material-symbols-outlined">settings</span></NavLink> */}
             </nav>
         </div>
     )

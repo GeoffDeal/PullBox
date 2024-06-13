@@ -2,6 +2,8 @@ import { useState, createContext } from "react";
 
 export const UserContext = createContext();
 
+export const NotificationContext = createContext();
+
 export const ComicList = createContext([
     {
     ProductName: "GREEN ARROW #14 LOPEZ",

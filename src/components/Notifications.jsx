@@ -1,5 +1,6 @@
 import Message from "./Message";
 import { UserContext } from "../Contexts";
+import { NotificationContext } from "../Contexts";
 import { useContext, useState } from "react";
 
 function Notifications () {
@@ -10,9 +11,9 @@ function Notifications () {
         {title: 'Test Post', date: 'April 20th, 2024', body: 'Testing, testing, 1, 2, 3'}
     ];
     const { user } = useContext(UserContext);
+    const { messages, setMessages} = useContext(NotificationContext);
 
     const [message, setMessage] = useState({title: '', date: '', body: '',});
-    const [messages, setMessages] = useState(messageArray)
 
     const handleChange = (event) => {
         const name = event.target.name;
