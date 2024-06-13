@@ -8,12 +8,12 @@ function Account () {
     return (
         <>
             <h1>Account Details for {user.name}</h1>
-            <p>Name: </p><AccountToggle label="name" value={ user.name } />
-            <p>Email: </p><AccountToggle label="email"  value={ user.email } />
-            <p>Phone: </p><AccountToggle label="phone" value={ user.phone } />
-            <p>Username: </p><AccountToggle label="username" value={ user.username } />
+            <h3 className="accountHeader">Name: </h3><AccountToggle label="name" value={ user.name } />
+            <h3 className="accountHeader">Email: </h3><AccountToggle label="email"  value={ user.email } />
+            <h3 className="accountHeader">Phone: </h3><AccountToggle label="phone" value={ user.phone } />
+            <h3 className="accountHeader">Username: </h3><AccountToggle label="username" value={ user.username } />
             <div className="accountEdit">
-                <p>User ID: </p><p>{user.userID}</p><div> </div>
+                <h3>User ID: </h3><p>{user.userID}</p><div> </div>
             </div>
             <button onClick={() => {
                 setUser(oldUser => ({
