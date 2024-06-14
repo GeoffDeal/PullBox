@@ -1,8 +1,12 @@
-import { useState, createContext } from "react";
+import { createContext } from "react";
 
 export const UserContext = createContext();
 
 export const NotificationContext = createContext();
+
+export const CustomersContext = createContext();
+
+export const PendingContext = createContext();
 
 export const ComicList = createContext([
     {
