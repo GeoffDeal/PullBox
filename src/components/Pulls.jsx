@@ -3,16 +3,17 @@ import { UserContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 
 function Pulls () {
-    const { user } = useContext(UserContext);
-    const subList = user.subList;
-    const [subs, setSubs] = useState(subList);
+    const { user, setUser } = useContext(UserContext);
 
     const removeButton = (series) => {
         const confirmBox = window.confirm("Are you sure you wish to remove this subscription?")
 
         if (confirmBox === true) {
-            const updatedSubs = subs.filter(subs => subs !== series);
-            setSubs(updatedSubs);
+            const updatedSubs = user.subList.filter(sub => sub !== series);
+            setUser((user) => ({
+                ...user,
+                subList: updatedSubs,
+            }));
         }
     }
 
@@ -23,7 +24,7 @@ function Pulls () {
             <ComicsDisplay />
             <h3>Your subscription list:</h3>
             <ul id="bookSubs">
-                {subs.map((series) => 
+                {user.subList.map((series) => 
                     <li key={series}>
                         <div className="subItem">
                             {series}
