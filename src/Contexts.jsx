@@ -8,6 +8,8 @@ export const CustomersContext = createContext();
 
 export const PendingContext = createContext();
 
+export const PullList = createContext();
+
 export const ComicList = createContext([
     {
     ProductName: "GREEN ARROW #14 LOPEZ",

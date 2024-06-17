@@ -8,7 +8,7 @@ import SearchPage from "./components/SearchPage";
 import Pulls from "./components/Pulls";
 import CustomersPage from "./components/CustomersPage";
 import Notifications from "./components/Notifications";
-import { CustomersContext, NotificationContext, PendingContext, UserContext } from "./Contexts";
+import { CustomersContext, NotificationContext, PendingContext, UserContext, PullList } from "./Contexts";
 import { useState } from "react";
 
 
@@ -39,30 +39,39 @@ const [pendingCustomers, setPendingCustomer] = useState([
   { name: 'Mark Smith', email: 'marks@yipee.com', phone: '(709) 555-1111', },
   { name: 'Hal', email: 'HalJ@yipee.com', phone: '(709) 555-2222', },
 ]);
+const [ pulls, setPulls ] = useState([
+  {id: 0, image: 'https://www.universaldist.com/api/v1/images/d2083b1b-30b6-4be1-b06d-56cfc9ef75c0/raw?size=l', cost: 3.99, release: '2024-06-18'},
+  {id: 1, image: 'https://www.universaldist.com/api/v1/images/85534557-bd7b-434b-8810-c44ea775a9d9/raw?size=l', cost: 4.99, release: '2024-06-18'},
+  {id: 2, image: 'https://www.universaldist.com/api/v1/images/36bc27ba-e3f5-458e-b48d-48f22665fcf9/raw?size=l', cost: 4.99, release: '2024-06-18'},
+  {id: 3, image: 'https://www.universaldist.com/api/v1/images/fc12be6e-f4e1-4d1e-ba9f-0305b2e741de/raw?size=l', cost: 3.99, release: '2024-06-25'},
+  {id: 4, image: 'https://www.universaldist.com/api/v1/images/185bfe8c-26b3-4198-969d-74d62822ac03/raw?size=l', cost: 5.99, release: '2024-06-25'}
+])
 
   return (
-    <CustomersContext.Provider value={{ customers, setCustomers }}>
-      <PendingContext.Provider value={{ pendingCustomers, setPendingCustomer }}>
-        <NotificationContext.Provider value={{ messages, setMessages }}>
-          <UserContext.Provider value={{ user, setUser }}>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path="account" element={<Account />} />
-                  <Route path="settings" element={<Settings />} />
-                  <Route path="searchpage" element={<SearchPage />} />
-                  <Route path="pulls" element={<Pulls />} />
-                  <Route path="customerspage" element={<CustomersPage />} />
-                  <Route path="notifications" element={<Notifications />} />
-                  <Route path="*" element={<NoPage />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </UserContext.Provider>
-        </NotificationContext.Provider>
-      </PendingContext.Provider>
-    </CustomersContext.Provider>
+    <PullList.Provider value={{ pulls, setPulls }}>
+      <CustomersContext.Provider value={{ customers, setCustomers }}>
+        <PendingContext.Provider value={{ pendingCustomers, setPendingCustomer }}>
+          <NotificationContext.Provider value={{ messages, setMessages }}>
+            <UserContext.Provider value={{ user, setUser }}>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="account" element={<Account />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="searchpage" element={<SearchPage />} />
+                    <Route path="pulls" element={<Pulls />} />
+                    <Route path="customerspage" element={<CustomersPage />} />
+                    <Route path="notifications" element={<Notifications />} />
+                    <Route path="*" element={<NoPage />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </UserContext.Provider>
+          </NotificationContext.Provider>
+        </PendingContext.Provider>
+      </CustomersContext.Provider>
+    </PullList.Provider>
   )
 }
 
