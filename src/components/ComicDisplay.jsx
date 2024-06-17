@@ -1,18 +1,20 @@
 import { useState, useContext } from "react";
 import { PullList } from "../Contexts";
 
+export function calcWeek (date) {
+    const dateObject = new Date(date);
+    dateObject.setDate(dateObject.getDate() - dateObject.getDay())
+    dateObject.setHours(0, 0, 0, 0);
+    const dateTimestamp = dateObject.getTime();
+    console.log(dateTimestamp);
+    return dateTimestamp;
+    }
+
 function ComicsDisplay (props) {
     const { pulls, setPulls } = useContext(PullList);
     const targetWeek = props.date;
-    function calcReleaseWeek (date) {
-        const dateObject = new Date(date);
-        dateObject.setDate(dateObject.getDate() - dateObject.getDay())
-        dateObject.setHours(0, 0, 0, 0);
-        const dateTimestamp = dateObject.getTime();
-        console.log(dateTimestamp);
-        return dateTimestamp;
-        }
-    const weeksPulls = pulls.filter(pull => calcReleaseWeek(pull.release) === targetWeek);
+
+    const weeksPulls = pulls.filter(pull => calcWeek(pull.release) === targetWeek);
     console.log(weeksPulls);
 
     const totalCost = () => {

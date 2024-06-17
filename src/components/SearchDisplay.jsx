@@ -2,9 +2,9 @@ import { useContext, useState } from "react"
 import { ComicList } from "../Contexts";
 
 function SearchDisplay (props) {
-    const allBooks = useContext(ComicList);
+    const { comics, setComics } = useContext(ComicList);
     const [query, setQuery] = useState("");
-    const searchedBooks = allBooks.filter(book => book.ProductName.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+    const searchedBooks = comics.filter(book => book.ProductName.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
     console.log(query);
     return (
        
