@@ -20,7 +20,6 @@ function Account () {
                     ...oldUser,
                     customer: oldUser.customer ? false : true,
                 }));
-                console.log(user);
             }}>
             Switch user type. User is customer? { user.customer ? 'true' : 'false' }</button>
         </>

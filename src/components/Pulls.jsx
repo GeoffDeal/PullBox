@@ -45,7 +45,7 @@ function Pulls () {
             </div>
             <ComicsDisplay date={ sunday.getTime() }/>
             <h3>Your subscription list:</h3>
-            <ul id="bookSubs">
+            <ul className="bookSubs">
                 {user.subList.map((series) => 
                     <li key={series}>
                         <div className="subItem">

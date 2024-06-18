@@ -11,17 +11,18 @@ import Notifications from "./components/Notifications";
 import { CustomersContext, NotificationContext, PendingContext, UserContext, PullList, ComicList } from "./Contexts";
 import { useState } from "react";
 import BookPage from "./components/BookPage";
+import CustomerDetails from "./components/CustomerDetails";
 
 
 function App() {
   const [user, setUser] = useState({
-    username: 'Super Hero',
+    boxNumber: 1,
     name: 'John Doe',
     email: 'email@emailprovider.com',
     phone: "(709) 555-5555",
-    userID: 0,
     customer: true,
     subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest'],
+    userID: 0,
 });
 const [messages, setMessages] = useState([
   {title: 'Flash Sale', date: 'June 8th, 2024', body: 'All back issues are 50% for the weekend!'},
@@ -30,11 +31,11 @@ const [messages, setMessages] = useState([
   {title: 'Test Post', date: 'April 20th, 2024', body: 'Testing, testing, 1, 2, 3'}
 ]);
 const [customers, setCustomers] = useState([
-  { boxnumber: 1, name: 'John Doe', email: 'email@emailprovider.com', phone: "(709) 555-5555", userID: 0, customer: true, subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest',],},
-  { boxnumber: 2, name: 'Geoff Deal', email: 'test@email.com', phone: '(709) 555-6666', userID: 2, customer: true, subList: ['Radiant Black', 'Rogue Sun', 'Dead Lucky', 'No/One',],},
-  { boxnumber: 3, name: 'James', email: 'james@yipee.com', phone: '(709) 555-7777', userID: 3, customer: true, subList: ['Hulk', 'Wolverine', 'X-Men'],},
-  { boxnumber: 4, name: 'Mike Singer', email: 'singer@test.ca', phone: '(709) 555-8888', userID: 4, customer: true, subList: ['W0rldtr33', 'Conan'],},
-  { boxnumber: 5, name: 'Clayton Smith', email: 'clay@email.com', phone: '(709) 555-9999', userID: 5, customer: true, subList: ['Looney Tunes', 'Scooby Doo'],},
+  { boxNumber: 1, name: 'John Doe', email: 'email@emailprovider.com', phone: "(709) 555-5555", userID: 0, customer: true, subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest',], userID: 0,},
+  { boxNumber: 2, name: 'Geoff Deal', email: 'test@email.com', phone: '(709) 555-6666', userID: 2, customer: true, subList: ['Radiant Black', 'Rogue Sun', 'Dead Lucky', 'No/One',], userID: 1,},
+  { boxNumber: 3, name: 'James', email: 'james@yipee.com', phone: '(709) 555-7777', userID: 3, customer: true, subList: ['Hulk', 'Wolverine', 'X-Men'], userID: 2,},
+  { boxNumber: 4, name: 'Mike Singer', email: 'singer@test.ca', phone: '(709) 555-8888', userID: 4, customer: true, subList: ['W0rldtr33', 'Conan'], userID: 3,},
+  { boxNumber: 5, name: 'Clayton Smith', email: 'clay@email.com', phone: '(709) 555-9999', userID: 5, customer: true, subList: ['Looney Tunes', 'Scooby Doo'], userID: 4,},
 ]);
 const [pendingCustomers, setPendingCustomer] = useState([
   { name: 'Mark Smith', email: 'marks@yipee.com', phone: '(709) 555-1111', },
@@ -173,6 +174,7 @@ const [ comics, setComics ] = useState([
                     <Route path="customerspage" element={<CustomersPage />} />
                     <Route path="notifications" element={<Notifications />} />
                     <Route path="bookpage" element={<BookPage />} />
+                    <Route path="customerdetails" element={<CustomerDetails />} />
                     <Route path="*" element={<NoPage />} />
                   </Route>
                 </Routes>
