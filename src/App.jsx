@@ -10,6 +10,7 @@ import CustomersPage from "./components/CustomersPage";
 import Notifications from "./components/Notifications";
 import { CustomersContext, NotificationContext, PendingContext, UserContext, PullList, ComicList } from "./Contexts";
 import { useState } from "react";
+import BookPage from "./components/BookPage";
 
 
 function App() {
@@ -40,11 +41,36 @@ const [pendingCustomers, setPendingCustomer] = useState([
   { name: 'Hal', email: 'HalJ@yipee.com', phone: '(709) 555-2222', },
 ]);
 const [ pulls, setPulls ] = useState([
-  {id: 0, image: 'https://www.universaldist.com/api/v1/images/d2083b1b-30b6-4be1-b06d-56cfc9ef75c0/raw?size=l', cost: 3.99, release: '2024-06-18'},
-  {id: 1, image: 'https://www.universaldist.com/api/v1/images/85534557-bd7b-434b-8810-c44ea775a9d9/raw?size=l', cost: 4.99, release: '2024-06-18'},
-  {id: 2, image: 'https://www.universaldist.com/api/v1/images/36bc27ba-e3f5-458e-b48d-48f22665fcf9/raw?size=l', cost: 4.99, release: '2024-06-18'},
-  {id: 3, image: 'https://www.universaldist.com/api/v1/images/fc12be6e-f4e1-4d1e-ba9f-0305b2e741de/raw?size=l', cost: 3.99, release: '2024-06-25'},
-  {id: 4, image: 'https://www.universaldist.com/api/v1/images/185bfe8c-26b3-4198-969d-74d62822ac03/raw?size=l', cost: 5.99, release: '2024-06-25'}
+  {
+    ProductName: "GREEN ARROW #14 LOPEZ",
+    Category: "COMICS",
+    ItemCode: "DC04240096",
+    Sku: "76194138013101441",
+    MSRP: "$4.99",
+    Release: "2024-06-23",
+    FOCDueDate: "2024-06-30",
+    ImageURL: "https://www.universaldist.com/api/v1/images/0456573b-e32d-41ea-ad5c-83e3d91113e7/raw?size=l"
+    },
+    {
+    ProductName: "ZATANNA: BRING DOWN THE HOUSE #2 DIAZ",
+    Category: "COMICS",
+    ItemCode: "DC04240175",
+    Sku: "76194138125100231",
+    MSRP: "$5.99",
+    Release: "2024-06-30",
+    FOCDueDate: "2024-06-18",
+    ImageURL: "https://www.universaldist.com/api/v1/images/083244e7-ba42-400d-a818-855df6c8f7e5/raw?size=l"
+    },
+    {
+    ProductName: "BATMAN: GARGOYLE OF GOTHAM #3 1:50\n1:50 Qualifying Variant",
+    Category: "1:50",
+    ItemCode: "DC02240030",
+    Sku: "76194137147400361",
+    MSRP: "$6.99",
+    Release: "2024-06-23",
+    FOCDueDate: "2024-06-23",
+    ImageURL: "https://www.universaldist.com/api/v1/images/9b174744-024c-4c7d-9645-0a1b9ad67d05/raw?size=l"
+    }
 ])
 const [ comics, setComics ] = useState([
   {
@@ -146,6 +172,7 @@ const [ comics, setComics ] = useState([
                     <Route path="pulls" element={<Pulls />} />
                     <Route path="customerspage" element={<CustomersPage />} />
                     <Route path="notifications" element={<Notifications />} />
+                    <Route path="bookpage" element={<BookPage />} />
                     <Route path="*" element={<NoPage />} />
                   </Route>
                 </Routes>
