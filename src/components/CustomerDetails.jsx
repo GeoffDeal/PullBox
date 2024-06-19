@@ -14,15 +14,17 @@ function CustomerDetails() {
             <p>Email: { customer.email }</p>
             <p>Phone: { customer.phone }</p>
             <p>{ customer.name }'s Subscriptions:</p>
-            <ul className="bookSubs">
-                {customer.subList.map((series) => 
-                    <li key={series}>
-                        <div className="subItem">
-                            {series}
-                            {/* <button className="removeSeries" onClick={() => removeButton(series)}><span className="material-symbols-outlined">remove</span></button> */}
-                        </div>
-                    </li>)}
-            </ul>
+            {customer.subList ? 
+                <ul className="bookSubs">
+                    {customer.subList.map((series) => 
+                        <li key={series}>
+                            <div className="subItem">
+                                {series}
+                                {/* <button className="removeSeries" onClick={() => removeButton(series)}><span className="material-symbols-outlined">remove</span></button> */}
+                            </div>
+                        </li>)}
+                </ul>
+            : <p>None yet</p>}
         </div>
     )
 }

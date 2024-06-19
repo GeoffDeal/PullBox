@@ -1,6 +1,7 @@
 import { ComicList, UserContext } from "../Contexts";
 import ComicsDisplay, { calcWeek } from "./ComicDisplay";
 import { useContext, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function Home () {
     const { user } = useContext(UserContext);
@@ -20,7 +21,7 @@ function Home () {
             <h3>Upcoming FOCs. Last chance!</h3>
             <div className="bookDisplay" id="focDisplay">
                 <div className="imageContainer">
-                    {focComics.map((book) => <img src={book.ImageURL} key={book.ItemCode} alt="Comic Cover" />)}
+                    {focComics.map((book) => <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode}><img src={book.ImageURL} alt="Comic Cover" /></NavLink>)}
                 </div>
             </div>
         </>
