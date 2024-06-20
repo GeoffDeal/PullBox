@@ -7,17 +7,54 @@ function CustomersPage() {
     const { pendingCustomers, setPendingCustomer } = useContext(PendingContext);
     const { inactiveCustomers, setInactiveCustomers } = useContext(InactiveContext);
 
+    const generateID = () => {
+        const allCustomers = [...customers, ...inactiveCustomers];
+        const newId = allCustomers.reduce((largest, obj) => { return obj.userID > largest ? obj.userID : largest}, customers[0].userID);
+        return newId += 1;
+    }
     const addCustomer = (key) => {
         const customerEmail = key;
         const newCustomer = pendingCustomers.find((customer) => customer.email === customerEmail);
-        const newId = customers.reduce((largest, obj) => { return obj.userID > largest ? obj.userID : largest}, customers[0].userID);
-        newCustomer.userID = newId + 1;
+        newCustomer.userID = generateID();
         setCustomers(prev => [
             ...prev,
             newCustomer,
         ]);
+        const updatedPending = pendingCustomers.filter(customer => customer.email !== customerEmail);
+        setPendingCustomer(updatedPending);
     }
-
+    const rejectCustomer = (key) => {
+        const customerEmail = key;
+        const rejectedCustomer = pendingCustomers.find(customer => customer.email === customerEmail);
+        setInactiveCustomers(prev => [
+            ...prev,
+            rejectedCustomer,
+        ]);
+        const updatedPending = pendingCustomers.filter(customer => customer.email !== customerEmail);
+        setPendingCustomer(updatedPending);
+    }
+    const restoreCustomer = (key) => {
+        const customerEmail = key;
+        const restoredCustomer = inactiveCustomers.find(customer => customer.email === customerEmail);
+        restoredCustomer.userID = restoredCustomer.userID || generateID();
+        setCustomers(prev => [
+            ...prev,
+            restoredCustomer,
+        ])
+        const updatedInactive = inactiveCustomers.filter(customer => customer.email !== customerEmail);
+        setInactiveCustomers(updatedInactive);
+    }
+    // const deactivateCustomer = (user) => {
+    //     const userId = user;
+    //     const outgoingCustomer = customers.find((customer) => customer.userID === userId);
+    //     delete outgoingCustomer.boxNumber;
+    //     setInactiveCustomers(prev => [
+    //         ...prev,
+    //         outgoingCustomer
+    //     ]);
+    //     const updatedCustomers = customers.filter(customer => customer.userID !== userId);
+    //     setCustomers(updatedCustomers);
+    // }
 
     return (
         <>
@@ -37,16 +74,16 @@ function CustomersPage() {
                             <p>{customer.name}</p>
                             <div className="pendingButtons">
                                 <button onClick={() => {addCustomer(customer.email)}} className="customerOptions"><span className="material-symbols-outlined">add</span></button>
-                                <button className="customerOptions"><span className="material-symbols-outlined">block</span></button>
+                                <button onClick={() => {rejectCustomer(customer.email)}}  className="customerOptions"><span className="material-symbols-outlined">block</span></button>
                             </div>
                         </div></li>)}
             </div>
             <h3>Inactive Customers:</h3>
             <div className="customerLists">
                 { inactiveCustomers.map((customer) => 
-                    <li key={ customer.userID }><div className="customerRow">
+                    <li key={ customer.email }><div className="customerRow">
                         <p>{customer.name}</p>
-                        <button className="customerOptions"><span className="material-symbols-outlined">add</span></button>
+                        <button onClick={() => restoreCustomer(customer.email)} className="customerOptions"><span className="material-symbols-outlined">add</span></button>
                     </div></li>)}
             </div>
         </>
