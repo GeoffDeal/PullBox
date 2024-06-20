@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
 import CustomerFlyway from "./CustomerFlyway";
-import { CustomersContext, PendingContext } from "../Contexts";
+import { CustomersContext, PendingContext, InactiveContext } from "../Contexts";
 
 function CustomersPage() {
     const { customers, setCustomers } = useContext(CustomersContext);
     const { pendingCustomers, setPendingCustomer } = useContext(PendingContext);
+    const { inactiveCustomers, setInactiveCustomers } = useContext(InactiveContext);
 
     const addCustomer = (key) => {
         const customerEmail = key;
-        console.log(key, typeof(key))
         const newCustomer = pendingCustomers.find((customer) => customer.email === customerEmail);
         const newId = customers.reduce((largest, obj) => { return obj.userID > largest ? obj.userID : largest}, customers[0].userID);
         newCustomer.userID = newId + 1;
@@ -17,6 +17,7 @@ function CustomersPage() {
             newCustomer,
         ]);
     }
+
 
     return (
         <>
@@ -39,6 +40,14 @@ function CustomersPage() {
                                 <button className="customerOptions"><span className="material-symbols-outlined">block</span></button>
                             </div>
                         </div></li>)}
+            </div>
+            <h3>Inactive Customers:</h3>
+            <div className="customerLists">
+                { inactiveCustomers.map((customer) => 
+                    <li key={ customer.userID }><div className="customerRow">
+                        <p>{customer.name}</p>
+                        <button className="customerOptions"><span className="material-symbols-outlined">add</span></button>
+                    </div></li>)}
             </div>
         </>
     )

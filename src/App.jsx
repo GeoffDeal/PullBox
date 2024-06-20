@@ -8,7 +8,7 @@ import SearchPage from "./components/SearchPage";
 import Pulls from "./components/Pulls";
 import CustomersPage from "./components/CustomersPage";
 import Notifications from "./components/Notifications";
-import { CustomersContext, NotificationContext, PendingContext, UserContext, PullList, ComicList } from "./Contexts";
+import { CustomersContext, NotificationContext, PendingContext, UserContext, PullList, ComicList, InactiveContext } from "./Contexts";
 import { useState } from "react";
 import BookPage from "./components/BookPage";
 import CustomerDetails from "./components/CustomerDetails";
@@ -41,6 +41,10 @@ const [pendingCustomers, setPendingCustomer] = useState([
   { name: 'Mark Smith', email: 'marks@yipee.com', phone: '(709) 555-1111', },
   { name: 'Hal', email: 'HalJ@yipee.com', phone: '(709) 555-2222', },
 ]);
+const [inactiveCustomers, setInactiveCustomers] = useState([
+  {name: 'Clark Kent', email: 'supes@yipee.com', phone: '(709) 555-5544', userID: 1, customer: true, subList: ['X-Men', 'Avengers',],},
+  {name: 'Jordan Banner', email: 'greyhulk@emailprovider.com', phone: '(709) 555-5566', userID: 6, customer: true, subList: ['Scarlet Witch'] }
+])
 const [ pulls, setPulls ] = useState([
   {
     ProductName: "GREEN ARROW #14 LOPEZ",
@@ -156,35 +160,38 @@ const [ comics, setComics ] = useState([
   }
 ]);
 
+
   return (
-  <ComicList.Provider value={{ comics, setComics }}>
-    <PullList.Provider value={{ pulls, setPulls }}>
-      <CustomersContext.Provider value={{ customers, setCustomers }}>
-        <PendingContext.Provider value={{ pendingCustomers, setPendingCustomer }}>
-          <NotificationContext.Provider value={{ messages, setMessages }}>
-            <UserContext.Provider value={{ user, setUser }}>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
-                    <Route path="account" element={<Account />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="searchpage" element={<SearchPage />} />
-                    <Route path="pulls" element={<Pulls />} />
-                    <Route path="customerspage" element={<CustomersPage />} />
-                    <Route path="notifications" element={<Notifications />} />
-                    <Route path="bookpage" element={<BookPage />} />
-                    <Route path="customerdetails" element={<CustomerDetails />} />
-                    <Route path="*" element={<NoPage />} />
-                  </Route>
-                </Routes>
-              </BrowserRouter>
-            </UserContext.Provider>
-          </NotificationContext.Provider>
-        </PendingContext.Provider>
-      </CustomersContext.Provider>
-    </PullList.Provider>
-  </ComicList.Provider>
+  <InactiveContext.Provider value={{ inactiveCustomers, setInactiveCustomers}}>
+    <ComicList.Provider value={{ comics, setComics }}>
+      <PullList.Provider value={{ pulls, setPulls }}>
+        <CustomersContext.Provider value={{ customers, setCustomers }}>
+          <PendingContext.Provider value={{ pendingCustomers, setPendingCustomer }}>
+            <NotificationContext.Provider value={{ messages, setMessages }}>
+              <UserContext.Provider value={{ user, setUser }}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Layout />}>
+                      <Route index element={<Home />} />
+                      <Route path="account" element={<Account />} />
+                      <Route path="settings" element={<Settings />} />
+                      <Route path="searchpage" element={<SearchPage />} />
+                      <Route path="pulls" element={<Pulls />} />
+                      <Route path="customerspage" element={<CustomersPage />} />
+                      <Route path="notifications" element={<Notifications />} />
+                      <Route path="bookpage" element={<BookPage />} />
+                      <Route path="customerdetails" element={<CustomerDetails />} />
+                      <Route path="*" element={<NoPage />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+              </UserContext.Provider>
+            </NotificationContext.Provider>
+          </PendingContext.Provider>
+        </CustomersContext.Provider>
+      </PullList.Provider>
+    </ComicList.Provider>
+  </InactiveContext.Provider>
   )
 }
 
