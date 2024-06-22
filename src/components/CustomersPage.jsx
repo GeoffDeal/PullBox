@@ -9,8 +9,9 @@ function CustomersPage() {
 
     const generateID = () => {
         const allCustomers = [...customers, ...inactiveCustomers];
-        const newId = allCustomers.reduce((largest, obj) => { return obj.userID > largest ? obj.userID : largest}, customers[0].userID);
-        return newId += 1;
+        let newId = allCustomers.reduce((largest, obj) => { return obj.userID > largest ? obj.userID : largest}, customers[0].userID);
+        newId += 1;
+        return newId
     }
     const addCustomer = (key) => {
         const customerEmail = key;
