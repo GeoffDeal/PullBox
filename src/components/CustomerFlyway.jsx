@@ -23,16 +23,10 @@ function CustomerFlyway(props) {
         }
     }, []);
 
-    const deactivateCustomer = (user) => {
-        const userId = user;
-        const outgoingCustomer = customers.find((customer) => customer.userID === userId);
-        delete outgoingCustomer.boxNumber;
-        setInactiveCustomers(prev => [
-            ...prev,
-            outgoingCustomer
-        ]);
-        const updatedCustomers = customers.filter(customer => customer.userID !== userId);
-        setCustomers(updatedCustomers);
+    const deactivateCustomer = (id) => {
+        setCustomers(prev => 
+            prev.map(user => user.userID === id ? {...user, customerType: 'inactive'} : user)
+        )
     }
 
     return(
