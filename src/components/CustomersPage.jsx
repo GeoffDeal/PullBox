@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import CustomerFlyway from "./CustomerFlyway";
-import { CustomersContext, PendingContext, InactiveContext } from "../Contexts";
+import { CustomersContext } from "../Contexts";
 
 function CustomersPage() {
     const { customers, setCustomers } = useContext(CustomersContext);

@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { CustomersContext, InactiveContext } from "../Contexts";
+import { CustomersContext } from "../Contexts";
 
 function CustomerFlyway(props) {
     const { customers, setCustomers } = useContext(CustomersContext);
-    const { inactiveCustomers, setInactiveCustomers } = useContext(InactiveContext);
     const [isOpen, setIsOpen] = useState(false);
     const flywayRef = useRef(null);
     const customerId = props.customer;

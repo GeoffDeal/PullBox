@@ -8,7 +8,7 @@ import SearchPage from "./components/SearchPage";
 import Pulls from "./components/Pulls";
 import CustomersPage from "./components/CustomersPage";
 import Notifications from "./components/Notifications";
-import { CustomersContext, NotificationContext, PendingContext, UserContext, PullList, ComicList, InactiveContext } from "./Contexts";
+import { CustomersContext, NotificationContext, UserContext, PullList, ComicList } from "./Contexts";
 import { useState } from "react";
 import BookPage from "./components/BookPage";
 import CustomerDetails from "./components/CustomerDetails";
@@ -41,7 +41,6 @@ const [customers, setCustomers] = useState([
   { boxNumber: '', name: 'Mark Smith', email: 'marks@yipee.com', phone: '(709) 555-1111', userID: 7, customer: true, customerType: 'pending', subList: [],},
   { boxNumber: '', name: 'Hal', email: 'HalJ@yipee.com', phone: '(709) 555-2222', userID: 9, customer: true, customerType: 'pending', subList: [],},
 ]);
-
 const [ pulls, setPulls ] = useState([
   {
     ProductName: "GREEN ARROW #14 LOPEZ",
@@ -159,11 +158,9 @@ const [ comics, setComics ] = useState([
 
 
   return (
-  <InactiveContext.Provider value={{ inactiveCustomers, setInactiveCustomers}}>
     <ComicList.Provider value={{ comics, setComics }}>
       <PullList.Provider value={{ pulls, setPulls }}>
         <CustomersContext.Provider value={{ customers, setCustomers }}>
-          <PendingContext.Provider value={{ pendingCustomers, setPendingCustomer }}>
             <NotificationContext.Provider value={{ messages, setMessages }}>
               <UserContext.Provider value={{ user, setUser }}>
                 <BrowserRouter>
@@ -184,11 +181,9 @@ const [ comics, setComics ] = useState([
                 </BrowserRouter>
               </UserContext.Provider>
             </NotificationContext.Provider>
-          </PendingContext.Provider>
         </CustomersContext.Provider>
       </PullList.Provider>
     </ComicList.Provider>
-  </InactiveContext.Provider>
   )
 }
 
