@@ -25,7 +25,7 @@ const Contexts = ({children}) => {
     ]);
     
     const [customers, setCustomers] = useState([
-      { boxNumber: 1, name: 'John Doe', email: 'email@emailprovider.com', phone: "(709) 555-5555", userID: 0, customer: true, customerType: 'active', subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest',],},
+      { boxNumber: 1, name: 'John Doe', email: 'email@emailprovider.com', phone: "(709) 555-5555", userID: 0, customer: true, customerType: 'active', subList: ['Batman', 'Poison Ivy', 'Shazam', 'Worlds Finest',],},
       { boxNumber: 2, name: 'Geoff Deal', email: 'test@email.com', phone: '(709) 555-6666', userID: 2, customer: true, customerType: 'active', subList: ['Radiant Black', 'Rogue Sun', 'Dead Lucky', 'No/One',],},
       { boxNumber: 3, name: 'James', email: 'james@yipee.com', phone: '(709) 555-7777', userID: 3, customer: true, customerType: 'active', subList: ['Hulk', 'Wolverine', 'X-Men'],},
       { boxNumber: 4, name: 'Mike Singer', email: 'singer@test.ca', phone: '(709) 555-8888', userID: 4, customer: true, customerType: 'active', subList: ['W0rldtr33', 'Conan'],},

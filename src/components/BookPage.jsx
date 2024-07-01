@@ -16,7 +16,11 @@ function BookPage() {
             <p>Price: { book.MSRP }</p>
             <p>Release Date: { book.Release }</p>
             <p>Final order cutoff: { book.FOCDueDate }</p>
-            <button>Pull</button>
+            <div className="pullDiv">
+                <button className="pullButton">Pull</button>
+                <label>Number of copies:</label>
+                <input type="number" />
+            </div>
         </div>
     )
 }

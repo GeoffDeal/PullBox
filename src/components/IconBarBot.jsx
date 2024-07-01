@@ -10,8 +10,9 @@ function IconBarBot (props) {
         <div className="iconBar" id="iconBarBot">
             <nav>
                 <NavLink to="/"><span className="material-symbols-outlined">home</span></NavLink>
+                <NavLink to="/browse"><span className="material-symbols-outlined">auto_stories</span></NavLink>
                 <NavLink to="/searchpage"><span className="material-symbols-outlined">search</span></NavLink>
-                <NavLink to="/pulls"><span className="material-symbols-outlined">inventory_2</span></NavLink>
+                { user.customer ? <NavLink to="/pulls"><span className="material-symbols-outlined">inventory_2</span></NavLink> : <NavLink to="/shoppulls"><span className="material-symbols-outlined">inventory_2</span></NavLink>}
                 { !user.customer && <NavLink to="/customerspage"><span className="material-symbols-outlined">groups</span></NavLink>}                
                 <NavLink to="/notifications"><span className="material-symbols-outlined">notifications</span></NavLink>
             </nav>

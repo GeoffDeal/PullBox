@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Contexts from "./Contexts";
 import Account from "./components/Account";
 import Settings from "./components/Settings";
 import Layout from "./components/Layout";
@@ -10,7 +11,8 @@ import CustomersPage from "./components/CustomersPage";
 import Notifications from "./components/Notifications";
 import BookPage from "./components/BookPage";
 import CustomerDetails from "./components/CustomerDetails";
-import Contexts from "./Contexts";
+import ShopPulls from "./components/ShopPulls";
+import BrowsePage from "./components/BrowsePage";
 
 function App() {
 
@@ -22,8 +24,10 @@ function App() {
             <Route index element={<Home />} />
             <Route path="account" element={<Account />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="browse" element={<BrowsePage />} />
             <Route path="searchpage" element={<SearchPage />} />
             <Route path="pulls" element={<Pulls />} />
+            <Route path="shoppulls" element={<ShopPulls />} />
             <Route path="customerspage" element={<CustomersPage />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="bookpage" element={<BookPage />} />
