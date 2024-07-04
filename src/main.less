@@ -4,7 +4,9 @@
 @background-grey: #242424;
 @dark-background-grey: #141414;
 
-
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
 h1{
     font-size: x-large;
 }
@@ -33,7 +35,8 @@ button{
     align-items: center;
     nav {
         display: inherit;
-        gap: 16px;
+        gap: 12px;
+        // justify-content: space-between;
     }
 }
 .material-symbols-outlined {
@@ -57,6 +60,7 @@ button{
 #iconBarBot {
     bottom: 0;
     justify-content: center;
+    
 
 }
 #topLogo{
@@ -110,11 +114,17 @@ button{
     background-color: @dark-background-grey;
     display: flexbox;
     margin-top: 16px;
+    border-radius: 16px;
     img {
         width: 28%;
         margin: 8px;
         display: flexbox;
         line-height: 120px;
+    }
+    p{
+        text-align: center;
+        padding: 16px;
+        font-size: larger;
     }
 }
 .searchBar {
@@ -180,6 +190,13 @@ button{
         justify-content: end;
     }
 
+}
+.submitButton{
+    color: whitesmoke;
+    background-color: @heroes-purple;
+    border-width: 0;
+    border-radius: 16px;
+    padding: 8px;
 }
 
 .messageInput {

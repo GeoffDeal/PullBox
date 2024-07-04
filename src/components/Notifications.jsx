@@ -45,7 +45,7 @@ function Notifications () {
                         id="bodyInput"
                         name="body"
                         onChange={handleChange}></textarea>
-                    <input type="submit" />
+                    <input type="submit" value="Post Message" className="submitButton" />
                 </form>
             </div> }
             <div className="messageBox">
