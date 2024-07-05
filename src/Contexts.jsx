@@ -5,6 +5,7 @@ export const NotificationContext = createContext();
 export const CustomersContext = createContext();
 export const PullList = createContext();
 export const ComicList = createContext();
+export const StoreInformation = createContext();
 
 const Contexts = ({children}) => {
     const [user, setUser] = useState({
@@ -151,19 +152,41 @@ const Contexts = ({children}) => {
       ImageURL: "https://www.universaldist.com/api/v1/images/730af668-11e8-4abe-b30d-938fa80eb006/raw?size=l"
       }
     ]);
+    const [ storeInfo, setStoreInfo] = useState({
+      address: '123 Topsail Rd, Mt. Pearl',
+      hours: {
+        sundayopen:'12',
+        sundayclose:'4',
+        mondayopen:'',
+        mondayclose:'',
+        tuesdayopen:'',
+        tuesdayclose:'',
+        wednesdayopen:'',
+        wednesdayclose:'',
+        thursdayopen:'',
+        thursdayclose:'',
+        fridayopen:'',
+        fridayclose:'',
+        saturdayopen:'',
+        saturdayclose:'',
+      },
+      phone: '(709) 555-5542',
+    })
     
     return (
+      <StoreInformation.Provider value={{ storeInfo, setStoreInfo }}>
         <ComicList.Provider value={{ comics, setComics }}>
-        <PullList.Provider value={{ pulls, setPulls }}>
-          <CustomersContext.Provider value={{ customers, setCustomers }}>
-              <NotificationContext.Provider value={{ messages, setMessages }}>
-                <UserContext.Provider value={{ user, setUser }}>
-                    { children }
-                </UserContext.Provider>
-              </NotificationContext.Provider>
-          </CustomersContext.Provider>
-        </PullList.Provider>
-      </ComicList.Provider>
+          <PullList.Provider value={{ pulls, setPulls }}>
+            <CustomersContext.Provider value={{ customers, setCustomers }}>
+                <NotificationContext.Provider value={{ messages, setMessages }}>
+                  <UserContext.Provider value={{ user, setUser }}>
+                      { children }
+                  </UserContext.Provider>
+                </NotificationContext.Provider>
+            </CustomersContext.Provider>
+          </PullList.Provider>
+        </ComicList.Provider>
+      </StoreInformation.Provider>
     )
 }
 

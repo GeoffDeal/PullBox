@@ -14,6 +14,7 @@ import CustomerDetails from "./components/CustomerDetails";
 import ShopPulls from "./components/ShopPulls";
 import BrowsePage from "./components/BrowsePage";
 import AdminPage from "./components/AdminPage";
+import StoreInfo from "./components/StoreInfo";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="admin" element={<AdminPage />} />
+            <Route path="storeinfo" element={<StoreInfo />} />
             <Route path="account" element={<Account />} />
             <Route path="settings" element={<Settings />} />
             <Route path="browse" element={<BrowsePage />} />
