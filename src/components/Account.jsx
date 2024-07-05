@@ -6,12 +6,12 @@ function Account () {
     const { user, setUser } = useContext(UserContext);
 
     return (
-        <>
+        <div className="accountPage">
             <h1>Account Details for {user.name}</h1>
             <h3 className="accountHeader">Name: </h3><AccountToggle label="name" value={ user.name } />
             <h3 className="accountHeader">Email: </h3><AccountToggle label="email"  value={ user.email } />
             <h3 className="accountHeader">Phone: </h3><AccountToggle label="phone" value={ user.phone } />
-            <h3 className="accountHeader">Username: </h3><AccountToggle label="username" value={ user.username } />
+            <h3 className="accountHeader">Boxnumber: </h3><p>{ user.boxNumber }</p>
             <div className="accountEdit">
                 <h3>User ID: </h3><p>{user.userID}</p><div> </div>
             </div>
@@ -22,7 +22,7 @@ function Account () {
                 }));
             }}>
             Switch user type. User is customer? { user.customer ? 'true' : 'false' }</button>
-        </>
+        </div>
     )
 
 };
