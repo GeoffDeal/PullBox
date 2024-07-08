@@ -1,9 +1,24 @@
+import { useContext } from "react";
+import { StoreInformation } from "../Contexts";
 
 
 const AdminPage = () => {
+    const { storeInfo, setStoreInfo } = useContext(StoreInformation);
+
+    const hourChange = (event) => {
+        const { id, value } = event.target;
+        setStoreInfo(prev => ({
+            ...prev,
+            hours: {
+                ...prev.hours,
+                [id]: value,
+            }
+        }));
+    }
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',];
 
     return (
-        <div>
+        <div className="adminPage">
             <h1>Store Admin</h1>
             <h3>Import Files</h3>
             <form>
@@ -11,28 +26,28 @@ const AdminPage = () => {
                 <input type="submit" value="Upload" />
             </form>
             <h3>Change Store Hours</h3>
-            <form>
-
-                <label for="sundayopen">Sunday Open: </label><input id="sundayopen" type="time" /><br/>
-                <label for="sundayclose">Sunday Close: </label><input id="sundayclose" type="time" /><br/>
-
-                <label for="mondayopen">Monday Open: </label><input id='mondayopen' type="time" /><br/>
-                <label for="mondayclose">Monday Close: </label><input id='mondayclose' type="time" /><br/>
-
-                <label for="tuesdayopen">Tuesday Open: </label><input id="tuesdayopen" type="time" /><br/>
-                <label for="tuesdayclose">Tuesday Close: </label><input id="tuesdayclose" type="time" /><br/>
-
-                <label for="wednesdayopen">Wednesday Open: </label><input id="wednesdayopen" type="time" /><br/>
-                <label for="wednesdayclose">Wednesday Close: </label><input id="wednesdayclose" type="time" /><br/>
-
-                <label for="thursdayopen">Thursday Open: </label><input id="thursdayopen" type="time" /><br/>
-                <label for="thursdayclose">Thursday Close: </label><input id="thursdayclose" type="time" /><br/>
-
-                <label for="fridayopen">Friday Open: </label><input id='fridayopen' type="time" /><br/>
-                <label for="fridayclose">Friday Close: </label><input id='fridayclose' type="time" /><br/>
-
-                <label for="saturdayopen">Saturday Open: </label><input id='saturdayopen' type="time" /><br/>
-                <label for="saturdayclose">Saturday Close: </label><input id='saturdayclose' type="time" /><br/>
+            <form className="timeForm">
+                {weekdays.map(day => {
+                    const openKey = day.toLowerCase() + 'open';
+                    const closeKey = day.toLowerCase() + 'close';
+                    return(
+                        <div className="dayTimes">
+                            <p className="dayName">{day}</p>
+                            <label htmlFor={openKey}>Open: </label>
+                            <input 
+                                id={openKey} 
+                                value={storeInfo.hours[openKey]} 
+                                type="time"
+                                onChange={hourChange} />
+                            <label htmlFor={closeKey}>Close: </label>
+                            <input 
+                                id={closeKey}
+                                value={storeInfo.hours[closeKey]} 
+                                type="time"
+                                onChange={hourChange} />
+                        </div>
+                    )
+                })}
             </form>
             <h3>Set Tax Rate</h3>
             <form>
