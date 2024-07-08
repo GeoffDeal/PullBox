@@ -31,7 +31,7 @@ const AdminPage = () => {
                     const openKey = day.toLowerCase() + 'open';
                     const closeKey = day.toLowerCase() + 'close';
                     return(
-                        <div className="dayTimes">
+                        <div key={day} className="dayTimes">
                             <p className="dayName">{day}</p>
                             <label htmlFor={openKey}>Open: </label>
                             <input 

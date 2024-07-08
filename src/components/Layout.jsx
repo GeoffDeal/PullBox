@@ -6,11 +6,11 @@ function Layout () {
 
     return (
         <>
-            <IconBarTop position="top" />
+            <IconBarTop />
             <div id="displayWindow">
                 <Outlet />
             </div>
-            <IconBarBot position="bottom" />
+            <IconBarBot />
         </>
     )
 };

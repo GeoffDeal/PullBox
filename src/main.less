@@ -30,13 +30,12 @@ button{
     background-color: @heroes-black;
     color: whitesmoke;
     position: fixed;
-    z-index: 1;   
+    z-index: 2;   
     display: flex;
     align-items: center;
     nav {
         display: inherit;
         gap: 12px;
-        // justify-content: space-between;
     }
 }
 .material-symbols-outlined {
@@ -371,6 +370,52 @@ button{
         }
         #hoursSubmit{
             margin-top: 8px;
+        }
+    }
+}
+
+
+.desktopDisplay{
+    display: none;
+}
+@media screen and (min-width: 480px ) {
+    #displayWindow {
+        position: absolute;
+        margin-left: 170px + 16;
+        z-index: 0;
+    }
+    .desktopDisplay{
+        display: block;
+    }
+    #iconBarBot {
+        a {
+            text-decoration: none;
+        }
+        left: 0;
+        bottom: auto;
+        height: 100%;
+        width: 170px;
+        z-index: 1;
+        nav {
+            // margin-top: @barHeight + 16;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 16px;
+            .botLinks {
+                display: flex;
+                p {margin-left: 4px;}
+            }
+        }
+    }
+    #iconBarTop {
+        nav{
+            margin-top: 12px;
+        }
+        a{
+            text-decoration: none;
+        }
+        p {
+            margin-top: 0;
         }
     }
 }
