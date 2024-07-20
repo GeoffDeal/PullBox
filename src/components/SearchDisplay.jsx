@@ -1,16 +1,17 @@
 import { NavLink } from "react-router-dom";
 
+export function handleTitle(name) {
+    const cutIndex = name.indexOf(" ", name.indexOf("#"));
+    const trimmedName = cutIndex === -1 ? name : name.slice(0, cutIndex);
+    const words = trimmedName.toLowerCase().split(" ");
+    return words.map(word => {
+        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+    }).join(" ");
+}
+
 function SearchDisplay (props) {
     const bookList = props.query;
 
-    const handleTitle = (name) => {
-        const cutIndex = name.indexOf(" ", name.indexOf("#"));
-        const trimmedName = cutIndex === -1 ? name : name.slice(0, cutIndex);
-        const words = trimmedName.toLowerCase().split(" ");
-        return words.map(word => {
-            return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
-        }).join(" ");
-    }
 
     return (
         <div className="searchDisplay">
