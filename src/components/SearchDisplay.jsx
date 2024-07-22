@@ -11,7 +11,7 @@ export function handleTitle(name) {
     const newStr = words.map(word => {
         return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
     }).join(" ");
-    return newStr.replace(/\bDm\b/g, 'DM');
+    return newStr.replace(/\bDm\b/g, 'DM').replace(/\bHc\b/g, 'HC').replace(/\bTp\b/g, 'TP');
 }
 
 function SearchDisplay (props) {
