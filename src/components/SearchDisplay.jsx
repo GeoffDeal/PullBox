@@ -1,12 +1,17 @@
 import { NavLink } from "react-router-dom";
 
 export function handleTitle(name) {
-    const cutIndex = name.indexOf(" ", name.indexOf("#"));
+    const hastagIndex = name.indexOf('#');
+    let cutIndex = -1 ;
+    if (hastagIndex !== -1) {
+        cutIndex = name.indexOf(" ", hastagIndex);
+    }
     const trimmedName = cutIndex === -1 ? name : name.slice(0, cutIndex);
     const words = trimmedName.toLowerCase().split(" ");
-    return words.map(word => {
+    const newStr = words.map(word => {
         return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
     }).join(" ");
+    return newStr.replace(/\bDm\b/g, 'DM');
 }
 
 function SearchDisplay (props) {

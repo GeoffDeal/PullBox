@@ -50,12 +50,14 @@ export function xlsxToObjects (workbook) {
             })
             const book = {};
             header.forEach((key, index) => {
-                book[key] = rowList[index];
+                const spacelessKey = key.replace(/\s+/g, '');
+                book[spacelessKey] = rowList[index];
             })
             books.push(book);
         }
     })
     console.log(books);
+    return books;
 }
 
 
