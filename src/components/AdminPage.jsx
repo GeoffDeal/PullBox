@@ -24,20 +24,16 @@ const AdminPage = () => {
                 const arrayBuffer = e.target.result;
                 const workbook = new ExcelJS.Workbook();
                 await workbook.xlsx.load(arrayBuffer);
-                setWorkbook(workbook);
-                cleanSheet(workbook);
+                workbook.removeWorksheet(2); //Clear useless sheets and rows
+                workbook.worksheets[0].spliceRows(1, 1);
+                const newBooks = xlsxToObjects(workbook);
+                setComics((prev) => [
+                    ...prev,
+                    ...newBooks
+                ]);
             }
             reader.readAsArrayBuffer(file);
-
         }
-        const cleanSheet = (workbook) => {
-            workbook.removeWorksheet(2);
-            workbook.worksheets[0].spliceRows(1, 1);
-            setWorkbook(workbook);
-            setComics(xlsxToObjects(workbook));
-    
-        }
-    
         getWorkbook();
     }
 
