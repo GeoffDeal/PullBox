@@ -16,7 +16,7 @@ function BookPage() {
     const foc = new Date(book.FOCDueDate);
     const formattedRelease = release.toLocaleDateString('en-GB', dateOptions);
     const formattedFoc = foc.toLocaleDateString('en-GB', dateOptions);
-    const afterFoc  = calcWeek(book.FOCDueDate) < calcWeek(currentDate) ? true : false;
+    const afterFoc  = calcWeek(book.FOCDueDate) <= calcWeek(currentDate) ? true : false;
 
     return (
         <div className="bookPage">

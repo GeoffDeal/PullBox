@@ -10,8 +10,10 @@ function Home () {
     const now = new Date();
     const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+    // const day = new Date (sunday);
+    lastSunday.setDate(lastSunday.getDate() + 7);
 
-    const focComics = comics.filter(book => calcWeek(book.FOCDueDate) === lastSunday.getTime());
+    const focComics = comics.filter(book => calcWeek(book.FOCDueDate) === calcWeek(lastSunday));
 
     return (
         <>
