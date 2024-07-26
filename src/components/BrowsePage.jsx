@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SearchDisplay from "./SearchDisplay";
 import WeekSelect from "./WeekSelect";
 import { ComicList } from "../Contexts";
@@ -31,6 +31,13 @@ const BrowsePage = () => {
         }
     }
     const searchedBooks = searchBooks();
+    useEffect(() => {
+        const now = new Date();
+        const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+        const timestamp = calcWeek(lastSunday);
+        setQuery(timestamp);
+    }, []);
 
     return(
         <div>
