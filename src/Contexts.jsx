@@ -16,14 +16,9 @@ const Contexts = ({children}) => {
         customer: true,
         subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest'],
         userID: 0,
+        customerType: 'active',
+        pulls: [],
     });
-    
-    const [messages, setMessages] = useState([
-      {title: 'Flash Sale', date: 'June 8th, 2024', body: 'All back issues are 50% for the weekend!'},
-      {title: 'Free Comic Book Day', date: 'May 2nd, 2024', body: 'Free Comic Book Day is this Saturday! Great sales storewide!'},
-      {title: 'Another Test', date: 'April 21st, 2024', body: 'This is going to be a really long text to test what it looks like when a longer message is posted. Lorem etc etc, should really use a lorem generator but I am invested now'},
-      {title: 'Test Post', date: 'April 20th, 2024', body: 'Testing, testing, 1, 2, 3'}
-    ]);
     
     const [customers, setCustomers] = useState([
       { boxNumber: 1, name: 'John Doe', email: 'email@emailprovider.com', phone: "(709) 555-5555", userID: 0, customer: true, customerType: 'active', subList: ['Batman', 'Poison Ivy', 'Shazam', 'Worlds Finest',],},
@@ -35,6 +30,13 @@ const Contexts = ({children}) => {
       { boxNumber: '', name: 'Jordan Banner', email: 'greyhulk@emailprovider.com', phone: '(709) 555-5566', userID: 6, customer: true, customerType: 'inactive', subList: ['Scarlet Witch'], },
       { boxNumber: '', name: 'Mark Smith', email: 'marks@yipee.com', phone: '(709) 555-1111', userID: 7, customer: true, customerType: 'pending', subList: [],},
       { boxNumber: '', name: 'Hal', email: 'HalJ@yipee.com', phone: '(709) 555-2222', userID: 9, customer: true, customerType: 'pending', subList: [],},
+    ]);
+    
+    const [messages, setMessages] = useState([
+      {title: 'Flash Sale', date: 'June 8th, 2024', body: 'All back issues are 50% for the weekend!', id: 10001},
+      {title: 'Free Comic Book Day', date: 'May 2nd, 2024', body: 'Free Comic Book Day is this Saturday! Great sales storewide!', id: 10002},
+      {title: 'Another Test', date: 'April 21st, 2024', body: 'This is going to be a really long text to test what it looks like when a longer message is posted. Lorem etc etc, should really use a lorem generator but I am invested now', id: 10003},
+      {title: 'Test Post', date: 'April 20th, 2024', body: 'Testing, testing, 1, 2, 3', id: 10004}
     ]);
     
     const [ pulls, setPulls ] = useState([

@@ -16,6 +16,7 @@ const AdminPage = () => {
     const handleImport = (event) => {
         event.preventDefault();
     
+    
         const getWorkbook = () => {
             const reader = new FileReader();
         
@@ -34,8 +35,7 @@ const AdminPage = () => {
             workbook.worksheets[0].spliceRows(1, 1);
             setWorkbook(workbook);
             setComics(xlsxToObjects(workbook));
-            
-
+    
         }
     
         getWorkbook();
