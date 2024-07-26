@@ -1,5 +1,6 @@
 import ExcelJS from 'exceljs';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { ComicList } from '../Contexts';
 
 
 const handleImport = (event) => {
@@ -56,8 +57,13 @@ export function xlsxToObjects (workbook) {
             books.push(book);
         }
     })
-    console.log(books);
     return books;
 }
 
+export function doublesCheck (newBooks, oldBooks) {
+
+    const newSkus = new Set(newBooks.map(book => book.Sku))
+    const updatedList = oldBooks.filter(book => !newSkus.has(book.Sku))
+    return updatedList;
+}
 

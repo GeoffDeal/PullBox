@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
 import { StoreInformation, ComicList} from "../Contexts";
 import ExcelJS from 'exceljs';
-import { xlsxToObjects } from "./BackendFunctions";
+import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
 
 
 const AdminPage = () => {
     const { storeInfo, setStoreInfo } = useContext(StoreInformation);
     const [file, setFile] = useState();
     const [workbook, setWorkbook] = useState();
-    const { setComics } = useContext(ComicList);
+    const { comics, setComics } = useContext(ComicList);
 
     const fileChange = (event) => {
         setFile(event.target.files[0])
@@ -27,8 +27,9 @@ const AdminPage = () => {
                 workbook.removeWorksheet(2); //Clear useless sheets and rows
                 workbook.worksheets[0].spliceRows(1, 1);
                 const newBooks = xlsxToObjects(workbook);
-                setComics((prev) => [
-                    ...prev,
+                const updatedList = doublesCheck(newBooks, comics);
+                setComics([
+                    ...updatedList,
                     ...newBooks
                 ]);
             }
