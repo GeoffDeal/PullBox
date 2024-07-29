@@ -1,5 +1,5 @@
 import { ComicList, UserContext } from "../Contexts";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { handleTitle } from "./SearchDisplay";
 import { calcWeek } from "./ComicDisplay";
@@ -8,6 +8,8 @@ import { calcWeek } from "./ComicDisplay";
 function BookPage() {
     const { user, setUser } = useContext(UserContext);
     const { comics } = useContext(ComicList);
+    const [ quantity, setQuantity ] = useState();
+
     const location = useLocation();
     const itemCode = location.state.itemCode;
     const book = comics.find(comic => comic.ItemCode === itemCode);
@@ -20,10 +22,16 @@ function BookPage() {
     const formattedFoc = foc.toLocaleDateString('en-GB', dateOptions);
     const afterFoc  = calcWeek(book.FOCDueDate) <= calcWeek(currentDate) ? true : false;
 
+    useEffect(() => {
+        if (book) {
+            setQuantity(book.Quantity || 1);
+        }
+    }, [book]);
+
     const pullBook = () => {
         setUser(prev => ({
             ...prev,
-            pulls: [...prev.pulls, book]
+            pulls: [...prev.pulls, {...book, Quantity: quantity}]
         }));
     }
     const removePull = () => {
@@ -31,6 +39,19 @@ function BookPage() {
         setUser(prev => ({
             ...prev,
             pulls: revisedPulls
+        }))
+    }
+    const pullQuantity = (e) => {
+        const newQuantity = Number(e.target.value)
+        setQuantity(newQuantity);
+
+        const updatedPulls = user.pulls.map(item => {
+            return item.Sku === book.Sku ? 
+                {...item, Quantity: newQuantity } 
+                : item})
+        setUser(prev => ({
+            ...prev,
+            pulls: updatedPulls 
         }))
     }
 
@@ -46,14 +67,14 @@ function BookPage() {
                     {calcWeek(book.Release) > calcWeek(currentDate) && 
                         <div>
                             <div className="pullDiv">
-                                {!user.pulls.includes(book) && <button className={ `pullButton ${afterFoc ? 'afterFoc' : 'beforeFoc' }`} onClick={pullBook}>Pull</button>}
-                                {user.pulls.includes(book) && <button className="pullButton beforeFoc" onClick={removePull}>Remove</button>}
-                                {user.pulls.includes(book) && 
-                                    <div>
+                                {!user.pulls.some(comic => comic.Sku === book.Sku) && <button className={ `pullButton ${afterFoc ? 'afterFoc' : 'beforeFoc' }`} onClick={pullBook}>Pull</button>}
+                                {user.pulls.some(comic => comic.Sku === book.Sku) && 
+                                    <div><p>Pulled!</p>
                                         <label>Number of copies:</label>
-                                        <input type="number" />
+                                        <input type="number" onChange={pullQuantity} value={quantity}/>
                                     </div>}
                             </div>
+                            {user.pulls.some(comic => comic.Sku === book.Sku) && <button className="pullButton beforeFoc" onClick={removePull}>Remove</button>}
                             {afterFoc && <p>It is after the final order cutoff, you will receive this book based on availablity</p>}
                         </div>
                     }
