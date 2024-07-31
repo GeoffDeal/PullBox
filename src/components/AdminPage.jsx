@@ -24,9 +24,17 @@ const AdminPage = () => {
                 const arrayBuffer = e.target.result;
                 const workbook = new ExcelJS.Workbook();
                 await workbook.xlsx.load(arrayBuffer);
+
                 workbook.removeWorksheet(2); //Clear useless sheets and rows
                 workbook.worksheets[0].spliceRows(1, 1);
-                const newBooks = xlsxToObjects(workbook);
+
+                const worksheetName = workbook.worksheets[0].name;
+                const firstCut = worksheetName.indexOf('(') + 1;
+                const secondCut = worksheetName.indexOf(' ', firstCut);
+                const publisherName = worksheetName.slice(firstCut, secondCut).toLocaleLowerCase();
+                const capitalName = publisherName.charAt(0).toLocaleUpperCase() + publisherName.slice(1);
+
+                const newBooks = xlsxToObjects(workbook, capitalName);
                 const updatedList = doublesCheck(newBooks, comics);
                 setComics([
                     ...updatedList,

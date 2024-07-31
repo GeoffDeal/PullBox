@@ -30,7 +30,7 @@ const handleImport = (event) => {
     console.log(workbook);
 }
 
-export function xlsxToObjects (workbook) {
+export function xlsxToObjects (workbook, publisher) {
     const books = [];
     const header = [];
 
@@ -54,6 +54,7 @@ export function xlsxToObjects (workbook) {
                 const spacelessKey = key.replace(/\s+/g, '');
                 book[spacelessKey] = rowList[index];
             })
+            book.Publisher = publisher;
             books.push(book);
         }
     })
