@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { PullList } from "../Contexts";
+import { useContext } from "react";
+import { UserContext } from "../Contexts";
 import { NavLink } from "react-router-dom";
 
 
@@ -12,10 +12,10 @@ export function calcWeek (date) {
     }
 
 function ComicsDisplay (props) {
-    const { pulls, setPulls } = useContext(PullList);
+    const { user } = useContext(UserContext);
     const targetWeek = props.date;
 
-    const weeksPulls = pulls.filter(pull => calcWeek(pull.Release) === targetWeek);
+    const weeksPulls = user.pulls.filter(pull => calcWeek(pull.Release) === targetWeek);
 
     const totalCost = () => {
         const preTax = weeksPulls.reduce((sum, current) => sum + parseFloat(current.MSRP.replace('$', '')), 0 );
@@ -24,11 +24,9 @@ function ComicsDisplay (props) {
 
     return (
         <div className="bookDisplay">
-            {/* <button className="scrollButton scrollLeft"><span className="material-symbols-outlined">chevron_left</span></button> */}
             <div className="imageContainer">
                 {weeksPulls.map((book) => <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode}><img src={book.ImageURL} alt="Comic Cover" /></NavLink>)}
             </div>
-            {/* <button className="scrollButton scrollRight"><span className="material-symbols-outlined">chevron_right</span></button> */}
             <p>Your expected total this week: ${totalCost()}</p>
         </div>
     )

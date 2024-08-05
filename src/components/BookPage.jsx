@@ -65,7 +65,7 @@ function BookPage() {
                     <p>Price: { book.MSRP }</p>
                     <p>Release Date: { formattedRelease }</p>
                     <p>Final order cutoff: { formattedFoc }</p>
-                    {/* {calcWeek(book.Release) > calcWeek(currentDate) &&  */}
+                    {calcWeek(book.Release) > calcWeek(currentDate) && 
                         <div>
                             <div className="pullDiv">
                                 {!user.pulls.some(comic => comic.Sku === book.Sku) && <button className={ `pullButton ${afterFoc ? 'afterFoc' : 'beforeFoc' }`} onClick={pullBook}>Pull</button>}
@@ -78,7 +78,8 @@ function BookPage() {
                             {user.pulls.some(comic => comic.Sku === book.Sku) && <button className="pullButton beforeFoc" onClick={removePull}>Remove</button>}
                             {afterFoc && <p>It is after the final order cutoff, you will receive this book based on availablity</p>}
                         </div>
-                    
+                    }
+                    <button onClick={() => console.log(book)}>Push me</button>
                 </div>
             </div>
         </div>
