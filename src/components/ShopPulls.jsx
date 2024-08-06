@@ -20,7 +20,7 @@ const ShopPulls = () => {
         customers.forEach(customer => {
             const customerPulls = customer.pulls;
             customerPulls.forEach(book => {
-                book.Customer = customer.name;
+                book.Customer = [customer.name];
             }
             )
             totalPulls = totalPulls.concat(customerPulls);
@@ -36,7 +36,7 @@ const ShopPulls = () => {
             const weeksBooks = pulls.filter(book => calcWeek(book.FOCDueDate) === date )
             setWeeksPulls(weeksBooks);
         }
-    
+
     }
     useEffect(() => {
         const now = new Date();
@@ -44,13 +44,25 @@ const ShopPulls = () => {
         lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
         const timestamp = calcWeek(lastSunday);
         weekChange(timestamp);
-    }, []);
+    }, [pulls]);
 
     useEffect(() => {
 
         if (weeksPulls && weeksPulls.length > 0) {
-            const sorted = [...weeksPulls];
-            sorted.sort((a, b) => {
+            const bookList = [...weeksPulls];
+            const combinedBooks = [];
+            bookList.forEach(book => { //Combine multiples
+                if (!combinedBooks.some(comic => comic.Sku === book.Sku)) {
+                    combinedBooks.push(book);
+                } else {
+                    const comic = combinedBooks.find(comic => comic.Sku === book.Sku);
+                    comic["Qty.Ord.OnTime"] = comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
+
+                    const customers = [...book.Customer, ...comic.Customer];
+                    book.Customer = customers;
+                }
+            })
+            combinedBooks.sort((a, b) => {
                 if (a[sortBy] < b[sortBy]) {
                     return sortConditions.sort === 'ascending' ? -1 : 1;
                 }
@@ -59,7 +71,7 @@ const ShopPulls = () => {
                 }
                 return 0;
             })
-            setSortedPulls(sorted);
+            setSortedPulls(combinedBooks);
         }
         else {setSortedPulls([])};
     }, [weeksPulls])
@@ -90,7 +102,7 @@ const ShopPulls = () => {
                     })}
                 </tbody>
             </table>
-            <button onClick={() => {console.log(sortedPulls, weeksPulls)}}>Push Me</button>
+            <button onClick={() => {console.log(sortedPulls)}}>Push Me</button>
         </div>
     )
 }
