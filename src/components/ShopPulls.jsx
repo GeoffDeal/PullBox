@@ -49,7 +49,9 @@ const ShopPulls = () => {
     useEffect(() => {
 
         if (weeksPulls && weeksPulls.length > 0) {
-            const bookList = [...weeksPulls];
+            // const bookList = [...weeksPulls];
+            const bookList = JSON.parse(JSON.stringify(weeksPulls));
+
             const combinedBooks = [];
             bookList.forEach(book => { //Combine multiples
                 if (!combinedBooks.some(comic => comic.Sku === book.Sku)) {
