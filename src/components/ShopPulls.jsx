@@ -29,7 +29,7 @@ const ShopPulls = () => {
     }, [customers])
     
     const weekChange = (date) => {
-        if (sortConditions.date === 'release') {
+        if (sortConditions.date === 'release') {  //ternary conditional to clean up
             const weeksBooks = pulls.filter(book => calcWeek(book.Release) === date )
             setWeeksPulls(weeksBooks);
         } else {
@@ -49,7 +49,6 @@ const ShopPulls = () => {
     useEffect(() => {
 
         if (weeksPulls && weeksPulls.length > 0) {
-            // const bookList = [...weeksPulls];
             const bookList = JSON.parse(JSON.stringify(weeksPulls));
 
             const combinedBooks = [];
@@ -60,8 +59,8 @@ const ShopPulls = () => {
                     const comic = combinedBooks.find(comic => comic.Sku === book.Sku);
                     comic["Qty.Ord.OnTime"] = comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
 
-                    const customers = [...book.Customer, ...comic.Customer];
-                    book.Customer = customers;
+                    const customers = [...book.Customer, ...comic.Customer]; //Combines customer lists
+                    comic.Customer = customers;
                 }
             })
             combinedBooks.sort((a, b) => {
@@ -94,10 +93,15 @@ const ShopPulls = () => {
                 </thead>
                 <tbody>
                     {sortedPulls && sortedPulls.map((book) => {
-                        return <tr key={ book.Customer + book.Sku }>
+                        return <tr key={ book.Sku }>
                             <td>{ book.Publisher }</td>
                             <td>{ handleTitle(book.ProductName) }</td>
-                            <td>{ book.Customer }</td>
+                            <td>{ book.Customer.map((customer, index) => (
+                                <span key={index}>
+                                    {customer} 
+                                    <br />
+                                </span>))}
+                            </td>
                             <td>{ book["Qty.Ord.OnTime"] }</td>
 
                         </tr>
