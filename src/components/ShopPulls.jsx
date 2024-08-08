@@ -75,7 +75,21 @@ const ShopPulls = () => {
             setSortedPulls(combinedBooks);
         }
         else {setSortedPulls([])};
-    }, [weeksPulls])
+    }, [weeksPulls, sortBy, sortConditions])
+
+    const toggleAscending = () => {
+        setSortConditions(prev => ({
+            ...prev,
+            sort: prev.sort === 'ascending' ? 'descending' : 'ascending'
+        }))
+    }
+
+    const sortPublisher = () => {
+        sortBy !== 'Publisher' ? setSortBy('Publisher') : toggleAscending();
+    }
+    const sortTitle = () => {
+        sortBy !== 'ProductName' ? setSortBy('ProductName') : toggleAscending();
+    }
 
     return(
         <div>
@@ -85,8 +99,8 @@ const ShopPulls = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Publisher</th>
-                        <th>Title</th>
+                        <th><button onClick={sortPublisher}>Publisher</button></th>
+                        <th><button onClick={sortTitle}>Title</button></th>
                         <th>Customers</th>
                         <th>Total Quantity</th>
                     </tr>
