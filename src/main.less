@@ -415,7 +415,36 @@ button{
         }
     }
 }
+.pullsTable {
+    border: 1px solid;
+    border-collapse: collapse;
+    tr {
+        &:nth-child(even){
+            background-color: @dark-background-grey;
+        }
+    }
+    th {
+        border: 2px solid;
+        padding: 4px;
+        background-color: @dark-background-grey;
+        button {
+            background: none;
+            border: none;
+            color: whitesmoke;
+            font-size: large;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+    }
+    td {
+        padding: 4px;
+        &.centeredCell{
+            text-align: center;
+        }
+    }
+}
 
+// Fullscreen
 
 .desktopDisplay{
     display: none;

@@ -92,11 +92,11 @@ const ShopPulls = () => {
     }
 
     return(
-        <div>
+        <div className="shopPulls">
             <h1>Customer Pulls</h1>
 
             <WeekSelect onDataPass={weekChange} />
-            <table>
+            <table className="pullsTable">
                 <thead>
                     <tr>
                         <th><button onClick={sortPublisher}>Publisher</button></th>
@@ -108,7 +108,7 @@ const ShopPulls = () => {
                 <tbody>
                     {sortedPulls && sortedPulls.map((book) => {
                         return <tr key={ book.Sku }>
-                            <td>{ book.Publisher }</td>
+                            <td className="centeredCell">{ book.Publisher }</td>
                             <td>{ handleTitle(book.ProductName) }</td>
                             <td>{ book.Customer.map((customer, index) => (
                                 <span key={index}>
@@ -116,7 +116,7 @@ const ShopPulls = () => {
                                     <br />
                                 </span>))}
                             </td>
-                            <td>{ book["Qty.Ord.OnTime"] }</td>
+                            <td className="centeredCell">{ book["Qty.Ord.OnTime"] }</td>
 
                         </tr>
                     })}
