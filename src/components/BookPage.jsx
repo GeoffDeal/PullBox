@@ -62,6 +62,7 @@ function BookPage() {
                 <img className="bookImage" src={ book.ImageURL } alt="Comic cover" />
                 <div className="bookTextBlock">
                     <p>Publisher: { book.Publisher }</p>
+                    <p>{ book.ProductType }</p>
                     <p>Price: { book.MSRP }</p>
                     <p>Release Date: { formattedRelease }</p>
                     <p>Final order cutoff: { formattedFoc }</p>
