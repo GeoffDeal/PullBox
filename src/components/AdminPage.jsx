@@ -8,6 +8,8 @@ const AdminPage = () => {
     const { storeInfo, setStoreInfo } = useContext(StoreInformation);
     const [file, setFile] = useState();
     const [workbook, setWorkbook] = useState();
+    const [ phone, setPhone ] = useState('');
+    const [ address, setAddress ] = useState('');
     const { comics, setComics } = useContext(ComicList);
 
     const fileChange = (event) => {
@@ -46,6 +48,23 @@ const AdminPage = () => {
         getWorkbook();
     }
 
+    const phoneChange = (e) => {
+        setPhone(e.target.value);
+    }
+    const addressChange = (e) => {
+        setAddress(e.target.value);
+    }
+    const storeUpdate = (e) => {
+        e.preventDefault();
+        setStoreInfo((prev) => {
+            return {
+                ...prev,
+                ...(phone && { phone }),
+                ...(address && { address }),
+            }
+        })
+    }
+
     const hourChange = (event) => {
         const { id, value } = event.target;
         setStoreInfo(prev => ({
@@ -66,6 +85,22 @@ const AdminPage = () => {
                 <input type="file" onChange={fileChange}/>
                 <input type="submit" value="Upload" />
             </form>
+            <h3>Chnage Store Info</h3>
+                <form onSubmit={storeUpdate}>
+                    <label>Phone:</label>
+                    <input 
+                        id="phoneInput"
+                        type="tel"
+                        onChange={phoneChange}
+                    /> <br />
+                    <label>Address:</label>
+                    <input 
+                        id="addressInput"
+                        type="text"
+                        onChange={addressChange}
+                    /> <br />
+                    <button type="submit">Update</button>
+                </form>
             <h3>Change Store Hours</h3>
             <form className="timeForm">
                 {weekdays.map(day => {
