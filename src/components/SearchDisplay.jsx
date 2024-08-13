@@ -43,7 +43,7 @@ function SearchDisplay (props) {
                 {pages.length !== 0 && pages.map((page) => {
                     return <button className={`pageButton ${page === currentPage ? 'current' : '' }`} key={ page } onClick={() => {setCurrentPage(page)}}>{ page }</button>
                 })}
-                {currentPage !== pages[pages.length - 1] && <button className="pageButton" onClick={() => {setCurrentPage(currentPage + 1)}}><span className="material-symbols-outlined">chevron_right</span></button>}
+                {currentPage !== pages[pages.length - 1] && pages.length !== 0 && <button className="pageButton" onClick={() => {setCurrentPage(currentPage + 1)}}><span className="material-symbols-outlined">chevron_right</span></button>}
             </div>
         </div>
     )
