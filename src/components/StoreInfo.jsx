@@ -8,8 +8,9 @@ const StoreInfo = () => {
     return (
         <div className="storeInfoPage">
             <h1>Store Information</h1>
-            <p>Phone number: { storeInfo.phone }</p>
-            <p>Address: { storeInfo.address }</p>
+            {storeInfo.phone && <p>Phone number: { storeInfo.phone }</p>}
+            {storeInfo.address && <p>Address: { storeInfo.address }</p>}
+            {storeInfo.email && <p>Email: { storeInfo.email }</p>}
             <h3>Store Hours</h3>
             <p>Sunday: {storeInfo.hours.sundayopen ? `${storeInfo.hours.sundayopen} - ${storeInfo.hours.sundayclose}` : 'Closed'}</p>
             <p>Monday: {storeInfo.hours.mondayopen ? `${storeInfo.hours.mondayopen} - ${storeInfo.hours.mondayclose}` : 'Closed'}</p>

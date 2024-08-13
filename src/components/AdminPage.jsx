@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useSyncExternalStore } from "react";
 import { StoreInformation, ComicList} from "../Contexts";
 import ExcelJS from 'exceljs';
 import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
@@ -10,6 +10,7 @@ const AdminPage = () => {
     const [workbook, setWorkbook] = useState();
     const [ phone, setPhone ] = useState('');
     const [ address, setAddress ] = useState('');
+    const [ email, setEmail ] = useState('');
     const { comics, setComics } = useContext(ComicList);
     const [ uploaded, setUploaded] = useState(false);
     const inputRef = useRef();
@@ -61,6 +62,9 @@ const AdminPage = () => {
     const addressChange = (e) => {
         setAddress(e.target.value);
     }
+    const emailChange = (e) => {
+        setEmail(e.target.value);
+    }
     const storeUpdate = (e) => {
         e.preventDefault();
         setStoreInfo((prev) => {
@@ -68,6 +72,7 @@ const AdminPage = () => {
                 ...prev,
                 ...(phone && { phone }),
                 ...(address && { address }),
+                ...(email && { email }),
             }
         })
     }
@@ -95,17 +100,23 @@ const AdminPage = () => {
             {uploaded && <p>Uploaded!</p>}
             <h3>Change Store Info</h3>
                 <form onSubmit={storeUpdate}>
-                    <label>Phone: </label>
+                    <label htmlFor="phoneInput">Phone: </label>
                     <input 
                         id="phoneInput"
                         type="tel"
                         onChange={phoneChange}
                     /> <br />
-                    <label>Address: </label>
+                    <label htmlFor="addressInput">Address: </label>
                     <input 
                         id="addressInput"
                         type="text"
                         onChange={addressChange}
+                    /> <br />
+                    <label htmlFor="emailInput">Email: </label>
+                    <input 
+                        id="emailInput"
+                        type="text"
+                        onChange={emailChange}
                     /> <br />
                     <button type="submit">Update</button>
                 </form>
