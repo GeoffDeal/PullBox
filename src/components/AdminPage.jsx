@@ -1,5 +1,5 @@
 import { useContext, useState, useRef, useSyncExternalStore } from "react";
-import { StoreInformation, ComicList} from "../Contexts";
+import { StoreInformation, ComicList, TaxRates} from "../Contexts";
 import ExcelJS from 'exceljs';
 import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
 
@@ -7,7 +7,6 @@ import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
 const AdminPage = () => {
     const { storeInfo, setStoreInfo } = useContext(StoreInformation);
     const [ file, setFile ] = useState('');
-    const [workbook, setWorkbook] = useState();
     const [ phone, setPhone ] = useState('');
     const [ address, setAddress ] = useState('');
     const [ email, setEmail ] = useState('');
@@ -53,7 +52,7 @@ const AdminPage = () => {
         setUploaded(true);
         setTimeout(() => {
             setUploaded(false)
-        }, 3000);
+        }, 2000);
     }
 
     const phoneChange = (e) => {
@@ -89,6 +88,22 @@ const AdminPage = () => {
     }
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',];
 
+    // Tax rate functions
+    const productTypes = ['Hardcover', 'Omnibus', 'Trade Paperback', 'Comic', 'Box Set', 'Graphic Novel', 'Poster', 'Incentive'];
+    const [ product, setProduct ] = useState('Hardcover');
+    const [ rate, setRate ] = useState('');
+    const { taxRates, setTaxRates } = useContext(TaxRates);
+
+
+    const updateRates = (e) => {
+        e.preventDefault();
+        setTaxRates(prev => ({
+            ...prev,
+            [product]: rate,
+        }));
+        setRate('');
+    }
+
     return (
         <div className="adminPage">
             <h1>Store Admin</h1>
@@ -97,7 +112,7 @@ const AdminPage = () => {
                 <input type="file" onChange={fileChange} ref={inputRef}/>
                 <input type="submit" value="Upload" />
             </form>
-            {uploaded && <p>Uploaded!</p>}
+                {uploaded && <p>Uploaded!</p>}
             <h3>Change Store Info</h3>
                 <form onSubmit={storeUpdate}>
                     <label htmlFor="phoneInput">Phone: </label>
@@ -145,10 +160,22 @@ const AdminPage = () => {
                 })}
             </form>
             <h3>Set Tax Rate</h3>
-            <form>
-                <input type="number" />
+            <ul>
+                {taxRates && Object.keys(taxRates).map((key, index) => {
+                    return <li key={index}>{ key }: { taxRates[key] }%</li>
+                })}
+            </ul>
+            <form onSubmit={(e) => {updateRates(e)}}>
+                <select onChange={(e) => {setProduct(e.target.value)}}>
+                    {productTypes.map((type, index) => {
+                        return <option key={index} value={ type }>{ type }</option>
+                    })}
+                </select>
+                <div className="taxRateDiv">
+                    <input type="number" onChange={(e) => {setRate(e.target.value)}} value={rate}/><p>%</p>
+                </div>
+                <button type="submit">Update</button>
             </form>
-
         </div>
     )
 }

@@ -6,6 +6,7 @@ export const CustomersContext = createContext();
 export const PullList = createContext();
 export const ComicList = createContext();
 export const StoreInformation = createContext();
+export const TaxRates = createContext();
 
 const Contexts = ({children}) => {
     const [user, setUser] = useState({
@@ -131,19 +132,22 @@ const Contexts = ({children}) => {
       },
       phone: '(709) 555-5542',
     })
+    const [ taxRates, setTaxRates ] = useState({});
     
     return (
-      <StoreInformation.Provider value={{ storeInfo, setStoreInfo }}>
-        <ComicList.Provider value={{ comics, setComics }}>
-          <CustomersContext.Provider value={{ customers, setCustomers }}>
-              <NotificationContext.Provider value={{ messages, setMessages }}>
-                <UserContext.Provider value={{ user, setUser }}>
-                    { children }
-                </UserContext.Provider>
-              </NotificationContext.Provider>
-          </CustomersContext.Provider>
-        </ComicList.Provider>
-      </StoreInformation.Provider>
+      <TaxRates.Provider value={{ taxRates, setTaxRates }}>
+        <StoreInformation.Provider value={{ storeInfo, setStoreInfo }}>
+          <ComicList.Provider value={{ comics, setComics }}>
+            <CustomersContext.Provider value={{ customers, setCustomers }}>
+                <NotificationContext.Provider value={{ messages, setMessages }}>
+                  <UserContext.Provider value={{ user, setUser }}>
+                      { children }
+                  </UserContext.Provider>
+                </NotificationContext.Provider>
+            </CustomersContext.Provider>
+          </ComicList.Provider>
+        </StoreInformation.Provider>
+      </TaxRates.Provider>
     )
 }
 
