@@ -19,10 +19,6 @@ const ShopPulls = () => {
         let totalPulls = [];
         customers.forEach(customer => {
             const customerPulls = customer.pulls;
-            customerPulls.forEach(book => {
-                book.Customer = [customer.name];
-            }
-            )
             totalPulls = totalPulls.concat(customerPulls);
             })
         setPulls(totalPulls);
@@ -54,13 +50,13 @@ const ShopPulls = () => {
             const combinedBooks = [];
             bookList.forEach(book => { //Combine multiples
                 if (!combinedBooks.some(comic => comic.Sku === book.Sku)) {
+                    book.customersList = [book.Customer];
                     combinedBooks.push(book);
                 } else {
                     const comic = combinedBooks.find(comic => comic.Sku === book.Sku);
                     comic["Qty.Ord.OnTime"] = comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
+                    comic.customersList.push(book.Customer);
 
-                    const customers = [...book.Customer, ...comic.Customer]; //Combines customer lists
-                    comic.Customer = customers;
                 }
             })
             combinedBooks.sort((a, b) => {
@@ -110,9 +106,9 @@ const ShopPulls = () => {
                         return <tr key={ book.Sku }>
                             <td className="centeredCell">{ book.Publisher }</td>
                             <td>{ handleTitle(book.ProductName) }</td>
-                            <td>{ book.Customer.map((customer, index) => (
+                            <td>{ book.customersList.map((customer, index) => (
                                 <span key={index}>
-                                    {customer} 
+                                    {customer.name + ' ' + customer.pullDate} 
                                     <br />
                                 </span>))}
                             </td>

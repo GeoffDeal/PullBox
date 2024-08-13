@@ -29,9 +29,14 @@ function BookPage() {
     }, [book]);
 
     const pullBook = () => {
+        const pullDate = new Date();
+        const customerInfo = {
+            name: user.name,
+            pullDate: pullDate,
+        }
         setUser(prev => ({
             ...prev,
-            pulls: [...prev.pulls, {...book, Quantity: quantity}]
+            pulls: [...prev.pulls, {...book, "Qty.Ord.OnTime": quantity, Customer: customerInfo}]
         }));
     }
     const removePull = () => {

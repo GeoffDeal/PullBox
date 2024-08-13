@@ -32,7 +32,8 @@ const Contexts = ({children}) => {
         "Qty.Ord.OnTime": 1,
         "Qty.Ord.Late": "",
         "ImageURL": "https://www.universaldist.com/api/v1/images/a6b46917-3be3-46a7-8c7d-37803d763494/raw?size=l",
-        "Publisher": "Image"
+        "Publisher": "Image",
+        "Customer": { name: "John Doe", pullDate: '15/05/2024'}
       }],},
       { boxNumber: 2, name: 'Geoff Deal', email: 'test@email.com', phone: '(709) 555-6666', userID: 2, customer: true, customerType: 'active', subList: ['Radiant Black', 'Rogue Sun', 'Dead Lucky', 'No/One',], pulls: [{
         "ProductName": "KAYA #20 CVR B MAHMUD ASRAR VAR",
@@ -45,7 +46,9 @@ const Contexts = ({children}) => {
         "Qty.Ord.OnTime": 1,
         "Qty.Ord.Late": "",
         "ImageURL": "https://www.universaldist.com/api/v1/images/a6b46917-3be3-46a7-8c7d-37803d763494/raw?size=l",
-        "Publisher": "Image"
+        "Publisher": "Image",
+        "Customer": { name: "Geoff Deal", pullDate: '14/05/2024'}
+
       },
       {
         "ProductName": "NAPALM LULLABY #6 CVR A BENGAL",
@@ -58,7 +61,9 @@ const Contexts = ({children}) => {
         "Qty.Ord.OnTime": 1,
         "Qty.Ord.Late": "",
         "ImageURL": "https://www.universaldist.com/api/v1/images/6b18a9cb-7b6d-453d-91b6-78a1568ead2a/raw?size=l",
-        "Publisher": "Image"
+        "Publisher": "Image",
+        "Customer": { name: "Geoff Deal", pullDate: '17/05/2024'}
+
       }],},
       { boxNumber: 3, name: 'James', email: 'james@yipee.com', phone: '(709) 555-7777', userID: 3, customer: true, customerType: 'active', subList: ['Hulk', 'Wolverine', 'X-Men'], pulls: [{
         "ProductName": "GEIGER #5 (2024) CVR A GARY FRANK & BRAD ANDERSON",
@@ -71,7 +76,9 @@ const Contexts = ({children}) => {
         "Qty.Ord.OnTime": 2,
         "Qty.Ord.Late": "",
         "ImageURL": "https://www.universaldist.com/api/v1/images/27b94edf-b472-44f8-9bb3-c0475b3a002b/raw?size=l",
-        "Publisher": "Image"
+        "Publisher": "Image",
+        "Customer": { name: "James", pullDate: '16/05/2024'}
+
       }],},
       { boxNumber: 4, name: 'Mike Singer', email: 'singer@test.ca', phone: '(709) 555-8888', userID: 4, customer: true, customerType: 'active', subList: ['W0rldtr33', 'Conan'], pulls: [{
         "ProductName": "FALLING IN LOVE ON THE PATH TO HELL #3 CVR B 1:15 MIKE HAWTHORNE VAR\n1:15 Qualifying Variant",
@@ -84,7 +91,9 @@ const Contexts = ({children}) => {
         "Qty.Ord.OnTime": 1,
         "Qty.Ord.Late": "",
         "ImageURL": "https://www.universaldist.com/api/v1/images/297585dd-d83f-4edf-af80-4ce1e526d793/raw?size=l",
-        "Publisher": "Image"
+        "Publisher": "Image",
+        "Customer": { name: "Mike Singer", pullDate: '15/05/2024'}
+
       }],},
       { boxNumber: 5, name: 'Clayton Smith', email: 'clay@email.com', phone: '(709) 555-9999', userID: 5, customer: true, customerType: 'active', subList: ['Looney Tunes', 'Scooby Doo'], pulls: [],},
       { boxNumber: '', name: 'Clark Kent', email: 'supes@yipee.com', phone: '(709) 555-5544', userID: 1, customer: true, customerType: 'inactive', subList: ['X-Men', 'Avengers',], pulls: [],},
