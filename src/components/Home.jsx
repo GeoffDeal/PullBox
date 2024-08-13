@@ -2,6 +2,7 @@ import { ComicList, UserContext } from "../Contexts";
 import ComicsDisplay, { calcWeek } from "./ComicDisplay";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
+import SearchDisplay from "./SearchDisplay";
 
 function Home () {
     const { user } = useContext(UserContext);
@@ -21,11 +22,8 @@ function Home () {
             <h3>Your pulls for this week:</h3>
             <ComicsDisplay date={ lastSunday.getTime()} />
             <h3>Upcoming FOCs. Last chance!</h3>
-            <div className="bookDisplay" id="focDisplay">
-                <div className="imageContainer">
-                    {focComics.map((book) => <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode}><img src={book.ImageURL} alt="Comic Cover" /></NavLink>)}
-                </div>
-            </div>
+            <SearchDisplay query={ focComics }/>
+
         </>
     )
 };

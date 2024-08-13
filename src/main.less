@@ -135,7 +135,21 @@ button{
         margin-top: 0;
         
     }
-
+}
+.pageButton {
+    color: whitesmoke;
+    font-size: x-large;
+    background-color: @heroes-black;
+    border-width: 0;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 4px;
+    .material-symbols-outlined {
+        font-size: x-large;
+    }
+    &.current {
+        background-color: @heroes-purple;
+    }
 }
 .searchBar {
     display: block;
