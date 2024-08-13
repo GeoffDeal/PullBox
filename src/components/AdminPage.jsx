@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { StoreInformation, ComicList} from "../Contexts";
 import ExcelJS from 'exceljs';
 import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
@@ -6,11 +6,13 @@ import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
 
 const AdminPage = () => {
     const { storeInfo, setStoreInfo } = useContext(StoreInformation);
-    const [file, setFile] = useState();
+    const [ file, setFile ] = useState('');
     const [workbook, setWorkbook] = useState();
     const [ phone, setPhone ] = useState('');
     const [ address, setAddress ] = useState('');
     const { comics, setComics } = useContext(ComicList);
+    const [ uploaded, setUploaded] = useState(false);
+    const inputRef = useRef();
 
     const fileChange = (event) => {
         setFile(event.target.files[0])
@@ -46,6 +48,11 @@ const AdminPage = () => {
             reader.readAsArrayBuffer(file);
         }
         getWorkbook();
+        inputRef.current.value = '';
+        setUploaded(true);
+        setTimeout(() => {
+            setUploaded(false)
+        }, 3000);
     }
 
     const phoneChange = (e) => {
@@ -82,18 +89,19 @@ const AdminPage = () => {
             <h1>Store Admin</h1>
             <h3>Import Universal Files</h3>
             <form onSubmit={handleImport}>
-                <input type="file" onChange={fileChange}/>
+                <input type="file" onChange={fileChange} ref={inputRef}/>
                 <input type="submit" value="Upload" />
             </form>
-            <h3>Chnage Store Info</h3>
+            {uploaded && <p>Uploaded!</p>}
+            <h3>Change Store Info</h3>
                 <form onSubmit={storeUpdate}>
-                    <label>Phone:</label>
+                    <label>Phone: </label>
                     <input 
                         id="phoneInput"
                         type="tel"
                         onChange={phoneChange}
                     /> <br />
-                    <label>Address:</label>
+                    <label>Address: </label>
                     <input 
                         id="addressInput"
                         type="text"
