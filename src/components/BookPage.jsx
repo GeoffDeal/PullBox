@@ -1,4 +1,4 @@
-import { ComicList, UserContext } from "../Contexts";
+import { ComicList, UserContext, ConversionRate } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { handleTitle } from "./SearchDisplay";
@@ -9,10 +9,14 @@ function BookPage() {
     const { user, setUser } = useContext(UserContext);
     const { comics } = useContext(ComicList);
     const [ quantity, setQuantity ] = useState();
+    const { conversion } = useContext(ConversionRate);
 
     const location = useLocation();
     const itemCode = location.state.itemCode;
     const book = comics.find(comic => comic.ItemCode === itemCode);
+
+    const cadPrice = parseFloat(book.MSRP.replace('$', '')) * conversion;
+    const cadRounded = cadPrice.toFixed(2);
 
     const currentDate = new Date();
     const dateOptions = {day: '2-digit', month: 'short', year: 'numeric'};
@@ -68,10 +72,10 @@ function BookPage() {
                 <div className="bookTextBlock">
                     <p>Publisher: { book.Publisher }</p>
                     <p>{ book.ProductType }</p>
-                    <p>Price: { book.MSRP }</p>
+                    <p>Price: { book.MSRP }USD / ${ cadRounded }CAD</p>
                     <p>Release Date: { formattedRelease }</p>
                     <p>Final order cutoff: { formattedFoc }</p>
-                    {calcWeek(book.Release) > calcWeek(currentDate) && 
+                    {/* {calcWeek(book.Release) > calcWeek(currentDate) &&  */}
                         <div>
                             <div className="pullDiv">
                                 {!user.pulls.some(comic => comic.Sku === book.Sku) && <button className={ `pullButton ${afterFoc ? 'afterFoc' : 'beforeFoc' }`} onClick={pullBook}>Pull</button>}
@@ -84,7 +88,7 @@ function BookPage() {
                             {user.pulls.some(comic => comic.Sku === book.Sku) && <button className="pullButton beforeFoc" onClick={removePull}>Remove</button>}
                             {afterFoc && <p>It is after the final order cutoff, you will receive this book based on availablity</p>}
                         </div>
-                    }
+                    // 
                     <button onClick={() => console.log(book)}>Push me</button>
                 </div>
             </div>

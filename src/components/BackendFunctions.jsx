@@ -18,7 +18,7 @@ export const categoryObj = { // Translate from category/sort column of excel
     BXTR: 'Box Set',
     GN: 'Graphic Novel',
     PS: 'Poster',
-    'Q.VARIANT': 'Incentive',
+    'Q.VARIANTS': 'Incentive',
     GC: 'Remove',
     CT: 'Remove',
     'OMNIBUS RE': 'Remove',

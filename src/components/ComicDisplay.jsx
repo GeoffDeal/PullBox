@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../Contexts";
+import { UserContext, TaxRates, ConversionRate } from "../Contexts";
 import { NavLink } from "react-router-dom";
 
 
@@ -14,12 +14,36 @@ export function calcWeek (date) {
 function ComicsDisplay (props) {
     const { user } = useContext(UserContext);
     const targetWeek = props.date;
+    const { taxRates } = useContext(TaxRates);
+    const { conversion } = useContext(ConversionRate);
 
     const weeksPulls = user.pulls.filter(pull => calcWeek(pull.Release) === targetWeek);
 
     const totalCost = () => {
-        const preTax = weeksPulls.reduce((sum, current) => sum + parseFloat(current.MSRP.replace('$', '')), 0 );
-        return Math.round(preTax * 115) / 100;
+        const productSorted = weeksPulls.reduce((acc, product) => {
+            const productType = product.ProductType;
+            if (!acc[productType]) {
+                acc[productType] = [];
+            }
+            acc[productType].push(product)
+            return acc;
+        }, {});
+
+        let total = 0;
+
+        Object.keys(productSorted).forEach((type) => {
+            let taxRate = 1;
+            if (taxRates[type]) {
+                taxRate = (taxRates[type] * 0.01) + 1;
+            }
+            console.log('Tax rate: ', taxRate);
+            productSorted[type].forEach((book) => {
+                total += parseFloat(book.MSRP.replace('$', '')) * conversion * taxRate;
+            })
+        })
+        console.log(productSorted, total);
+        return total.toFixed(2);
+
     }
 
     return (
