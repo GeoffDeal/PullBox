@@ -26,6 +26,9 @@ function SearchDisplay (props) {
     for (let i = 1; i <= Math.ceil(bookList.length/12); i++) {
         pages.push(i);
     }
+    const limitedPages = pages.filter(i => {
+        return i > currentPage - 4 && i < currentPage + 4;
+    })
 
     return (
         <div className="searchDisplay">
@@ -39,11 +42,13 @@ function SearchDisplay (props) {
                     : <p className="noComics">No Comics Found</p>}
             </div>
             <div>
-                {currentPage !== 1 && <button className="pageButton" onClick={() => {setCurrentPage(currentPage - 1)}}><span className="material-symbols-outlined">chevron_left</span></button>}
-                {pages.length !== 0 && pages.map((page) => {
+                {pages.length !== 0 && <button className="pageButton" onClick={()=> {setCurrentPage(1)}}><span className="material-symbols-outlined">first_page</span></button>}
+                {currentPage !== 1 && pages.length !== 0 && <button className="pageButton" onClick={() => {setCurrentPage(currentPage - 1)}}><span className="material-symbols-outlined">chevron_left</span></button>}
+                {pages.length !== 0 && limitedPages.map((page) => {
                     return <button className={`pageButton ${page === currentPage ? 'current' : '' }`} key={ page } onClick={() => {setCurrentPage(page)}}>{ page }</button>
                 })}
                 {currentPage !== pages[pages.length - 1] && pages.length !== 0 && <button className="pageButton" onClick={() => {setCurrentPage(currentPage + 1)}}><span className="material-symbols-outlined">chevron_right</span></button>}
+                {pages.length !== 0 && <button className="pageButton" onClick={()=> {setCurrentPage(pages[pages.length - 1])}}><span className="material-symbols-outlined">last_page</span></button>}
             </div>
         </div>
     )
