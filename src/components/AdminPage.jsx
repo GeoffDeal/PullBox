@@ -1,5 +1,5 @@
-import { useContext, useState, useRef, useSyncExternalStore } from "react";
-import { StoreInformation, ComicList, TaxRates} from "../Contexts";
+import { useContext, useState, useRef } from "react";
+import { StoreInformation, ComicList, TaxRates, ConversionRate} from "../Contexts";
 import ExcelJS from 'exceljs';
 import { xlsxToObjects, doublesCheck } from "./BackendFunctions";
 
@@ -14,12 +14,12 @@ const AdminPage = () => {
     const [ uploaded, setUploaded] = useState(false);
     const inputRef = useRef();
 
+    //Hand importing excel sheets
     const fileChange = (event) => {
         setFile(event.target.files[0])
     }
     const handleImport = (event) => {
         event.preventDefault();
-    
     
         const getWorkbook = () => {
             const reader = new FileReader();
@@ -27,7 +27,7 @@ const AdminPage = () => {
             reader.onload = async (e) => {
                 const arrayBuffer = e.target.result;
                 const workbook = new ExcelJS.Workbook();
-                await workbook.xlsx.load(arrayBuffer);
+                await workbook.xlsx.load(arrayBuffer); // check for potential errors here
 
                 workbook.removeWorksheet(2); //Clear useless sheets and rows
                 workbook.worksheets[0].spliceRows(1, 1);
@@ -45,7 +45,7 @@ const AdminPage = () => {
                     ...newBooks
                 ]);
             }
-            reader.readAsArrayBuffer(file);
+            reader.readAsArrayBuffer(file); // check for potential errors here
         }
         getWorkbook();
         inputRef.current.value = '';
@@ -55,6 +55,7 @@ const AdminPage = () => {
         }, 2000);
     }
 
+    // Store info change
     const phoneChange = (e) => {
         setPhone(e.target.value);
     }
@@ -69,7 +70,7 @@ const AdminPage = () => {
         setStoreInfo((prev) => {
             return {
                 ...prev,
-                ...(phone && { phone }),
+                ...(phone && { phone }), 
                 ...(address && { address }),
                 ...(email && { email }),
             }
@@ -94,7 +95,6 @@ const AdminPage = () => {
     const [ rate, setRate ] = useState('');
     const { taxRates, setTaxRates } = useContext(TaxRates);
 
-
     const updateRates = (e) => {
         e.preventDefault();
         setTaxRates(prev => ({
@@ -102,6 +102,13 @@ const AdminPage = () => {
             [product]: rate,
         }));
         setRate('');
+    }
+
+    // Conversion rate
+    const { conversion, setConversion } = useContext(ConversionRate);
+    
+    const changeConversion = (e) => {
+        setConversion(e.target.value);
     }
 
     return (
@@ -112,7 +119,7 @@ const AdminPage = () => {
                 <input type="file" onChange={fileChange} ref={inputRef}/>
                 <input type="submit" value="Upload" />
             </form>
-                {uploaded && <p>Uploaded!</p>}
+                {uploaded && <p>Uploaded!</p>} 
             <h3>Change Store Info</h3>
                 <form onSubmit={storeUpdate}>
                     <label htmlFor="phoneInput">Phone: </label>
@@ -176,6 +183,10 @@ const AdminPage = () => {
                 </div>
                 <button type="submit">Update</button>
             </form>
+            <h3>Set Coversion Rate</h3>
+            <label htmlFor="conversionInput">Conversion rate from USD: </label>
+            <input type="number" id="conversionInput" onChange={(e) => changeConversion(e)}/>
+            <p>Current conversion: { conversion }</p> 
         </div>
     )
 }
