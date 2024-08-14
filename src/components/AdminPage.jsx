@@ -11,7 +11,7 @@ const AdminPage = () => {
     const [ address, setAddress ] = useState('');
     const [ email, setEmail ] = useState('');
     const { comics, setComics } = useContext(ComicList);
-    const [ uploaded, setUploaded] = useState(false);
+    const [ uploadMessage, setUploadMessage] = useState('');
     const inputRef = useRef();
 
     //Hand importing excel sheets
@@ -21,37 +21,55 @@ const AdminPage = () => {
     const handleImport = (event) => {
         event.preventDefault();
     
-        const getWorkbook = () => {
-            const reader = new FileReader();
-        
-            reader.onload = async (e) => {
-                const arrayBuffer = e.target.result;
-                const workbook = new ExcelJS.Workbook();
-                await workbook.xlsx.load(arrayBuffer); // check for potential errors here
+        const reader = new FileReader();
+    
+        reader.onload = async (e) => {
+            const arrayBuffer = e.target.result;
+            const workbook = new ExcelJS.Workbook();
+            try {
 
-                workbook.removeWorksheet(2); //Clear useless sheets and rows
-                workbook.worksheets[0].spliceRows(1, 1);
+            await workbook.xlsx.load(arrayBuffer); // check for potential errors here
 
-                const worksheetName = workbook.worksheets[0].name;
-                const firstCut = worksheetName.indexOf('(') + 1;
-                const secondCut = worksheetName.indexOf(' ', firstCut);
-                const publisherName = worksheetName.slice(firstCut, secondCut).toLocaleLowerCase();
-                const capitalName = publisherName.charAt(0).toLocaleUpperCase() + publisherName.slice(1);
+            workbook.removeWorksheet(2); //Clear useless sheets and rows
+            workbook.worksheets[0].spliceRows(1, 1);
 
-                const newBooks = xlsxToObjects(workbook, capitalName);
-                const updatedList = doublesCheck(newBooks, comics);
-                setComics([
-                    ...updatedList,
-                    ...newBooks
-                ]);
+            const worksheetName = workbook.worksheets[0].name;
+            const firstCut = worksheetName.indexOf('(') + 1;
+            const secondCut = worksheetName.indexOf(' ', firstCut);
+            const publisherName = worksheetName.slice(firstCut, secondCut).toLocaleLowerCase();
+            const capitalName = publisherName.charAt(0).toLocaleUpperCase() + publisherName.slice(1);
+
+            const newBooks = xlsxToObjects(workbook, capitalName);
+            const updatedList = doublesCheck(newBooks, comics);
+            setComics([
+                ...updatedList,
+                ...newBooks
+            ]);}
+            catch (error){
+                console.log(error);
+                setUploadMessage(`There was a problem with the upload: ${error.message}`);
+                setTimeout(() => {
+                    setUploadMessage('')
+                }, 20000);
+                return;
             }
+        }
+        try {
             reader.readAsArrayBuffer(file); // check for potential errors here
         }
-        getWorkbook();
+        catch(error) {
+            console.log(error);
+            setUploadMessage(`There was a problem with the upload: ${error.message}`);
+            setTimeout(() => {
+                setUploadMessage('')
+            }, 20000);
+            return;
+        }
+        
         inputRef.current.value = '';
-        setUploaded(true);
+        setUploadMessage('Uploaded!');
         setTimeout(() => {
-            setUploaded(false)
+            setUploadMessage('')
         }, 2000);
     }
 
@@ -119,7 +137,7 @@ const AdminPage = () => {
                 <input type="file" onChange={fileChange} ref={inputRef}/>
                 <input type="submit" value="Upload" />
             </form>
-                {uploaded && <p>Uploaded!</p>} 
+                {uploadMessage && <p>{ uploadMessage }</p>} 
             <h3>Change Store Info</h3>
                 <form onSubmit={storeUpdate}>
                     <label htmlFor="phoneInput">Phone: </label>
