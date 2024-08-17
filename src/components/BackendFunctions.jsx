@@ -86,6 +86,8 @@ export function xlsxToObjects (workbook, publisher) {
                 book[spacelessKey] = rowList[index];
             })
 
+            book.Issue = findNumber(book.ProductName);
+
             book.Publisher = publisher;
 
             const productType = book.Category || book.Sort;
@@ -95,7 +97,6 @@ export function xlsxToObjects (workbook, publisher) {
             } else{
                 book.ProductType = categoryObj[productType];
             }
-            // book.ProductType = book.Category ? categoryObj[book.Category] : categoryObj[book.Sort];
         
             book.ProductType !== 'Remove' && books.push(book);
         }
@@ -110,3 +111,17 @@ export function doublesCheck (newBooks, oldBooks) {
     return updatedList;
 }
 
+export const findNumber = (title) => {
+    let firstCut = title.indexOf('#');
+    let cutTitle;
+    if (firstCut === -1) {
+        firstCut = title.indexOf('VOL.')
+    }
+    if (firstCut !== -1) { 
+        cutTitle = title.slice(firstCut)
+    }
+    const number = cutTitle ? cutTitle.match(/\d+/) : null;
+    const issueNumber = number ? number[0] : 'None';
+
+    return issueNumber;
+}
