@@ -3,6 +3,7 @@ import { CustomersContext } from "../Contexts";
 import WeekSelect from "./WeekSelect";
 import { calcWeek } from "./ComicDisplay";
 import { handleTitle } from "./SearchDisplay";
+import ShopSubTable from "./ShopSubTable";
 
 const ShopPulls = () => {
     const { customers } = useContext(CustomersContext);
@@ -50,11 +51,13 @@ const ShopPulls = () => {
             const combinedBooks = [];
             bookList.forEach(book => { //Combine multiples
                 if (!combinedBooks.some(comic => comic.Sku === book.Sku)) {
+                    book.Customer.Quantity = book["Qty.Ord.OnTime"];
                     book.customersList = [book.Customer];
                     combinedBooks.push(book);
                 } else {
                     const comic = combinedBooks.find(comic => comic.Sku === book.Sku);
                     comic["Qty.Ord.OnTime"] = comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
+                    book.Customer.Quantity = book["Qty.Ord.OnTime"];
                     comic.customersList.push(book.Customer);
 
                 }
@@ -102,16 +105,11 @@ const ShopPulls = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {sortedPulls && sortedPulls.map((book) => {
-                        return <tr key={ book.Sku }>
+                    {sortedPulls && sortedPulls.map((book, index) => {
+                        return <tr key={ index }>
                             <td className="centeredCell">{ book.Publisher }</td>
                             <td>{ handleTitle(book.ProductName) }</td>
-                            <td>{ book.customersList.map((customer, index) => (
-                                <span key={index}>
-                                    {customer.name + ' ' + customer.pullDate} 
-                                    <br />
-                                </span>))}
-                            </td>
+                            <td><ShopSubTable customers={ book.customersList } /></td>
                             <td className="centeredCell">{ book["Qty.Ord.OnTime"] }</td>
 
                         </tr>
