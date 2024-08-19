@@ -101,7 +101,13 @@ export function xlsxToObjects (workbook, publisher) {
             book.ProductType !== 'Remove' && books.push(book);
         }
     })
-    return books;
+    
+    console.log(books);
+    const sorted = bookSort(books); //Temporary placement for sort until it can be done on backend
+    console.log(sorted);
+
+
+    return sorted;
 }
 
 export function doublesCheck (newBooks, oldBooks) {
@@ -121,7 +127,51 @@ export const findNumber = (title) => {
         cutTitle = title.slice(firstCut)
     }
     const number = cutTitle ? cutTitle.match(/\d+/) : null;
-    const issueNumber = number ? number[0] : 'None';
+    const issueNumber = number ? number[0] : -1; // -1 for books without an issue or vol number, reserving 0 for the few books which use it
 
     return issueNumber;
+}
+
+export const bookSort = (bookArray) => {
+
+    const currentDate = new Date();
+
+    const newBooks = [];
+    const oldBooks = [];
+    bookArray.forEach((book) => {
+        const releaseDate = new Date(book.Release)
+        if (releaseDate > currentDate) {
+            newBooks.push(book);
+        } else {
+            oldBooks.push(book);
+        }
+    })
+    
+    const beforeFoc =[];
+    const afterFoc = [];
+    newBooks.forEach((book) => {
+        const focDate = new Date(book.FOCDueDate);
+        if (focDate > currentDate) {
+            afterFoc.push(book);
+        }else {
+            beforeFoc.push(book);
+        }
+    })
+    
+    afterFoc.sort((a, b) => {
+        const dateComp = new Date(a.FOCDueDate) - new Date(b.FOCDueDate);
+        if (dateComp === 0) {
+            return a.Issue - b.Issue;
+        }
+        return dateComp;
+    })
+    beforeFoc.sort((a, b) => {
+        const dateComp = new Date(b.FOCDueDate) - new Date(a.FOCDueDate);
+        if (dateComp === 0) {
+            return a.Issue - b.Issue;
+        }
+        return dateComp;
+    })
+    const sortedBooks = afterFoc.concat(beforeFoc).concat(oldBooks);
+    return sortedBooks;
 }
