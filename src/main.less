@@ -4,65 +4,77 @@
 @background-grey: #242424;
 @dark-background-grey: #141414;
 
-body{
+body {
     font-family: Arial, Helvetica, sans-serif;
 }
-h1{
+
+h1 {
     font-size: x-large;
 }
+
 body {
     background-color: @background-grey;
     color: whitesmoke;
     margin: 0;
     padding: 0;
 }
+
 a {
     color: whitesmoke;
 }
-button{
+
+button {
     cursor: pointer;
 }
 
 @barHeight: 80px;
+
 .iconBar {
     width: 100%;
     height: @barHeight;
     background-color: @heroes-black;
     color: whitesmoke;
     position: fixed;
-    z-index: 2;   
+    z-index: 2;
     display: flex;
     align-items: center;
+
     nav {
         display: inherit;
         gap: 12px;
     }
 }
+
 .material-symbols-outlined {
     font-size: xxx-large;
     font-variation-settings:
-    'FILL' 0,
-    'wght' 600,
-    'GRAD' 0,
-    'opsz' 48
+        'FILL' 0,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 48
 }
+
 .active {
     color: @heroes-purple;
 }
+
 #iconBarTop {
     top: 0;
-    nav { 
-        margin-right:24px;
+
+    nav {
+        margin-right: 24px;
         margin-left: auto;
     }
 }
+
 #iconBarBot {
     bottom: 0;
     justify-content: center;
-    
+
 
 }
-#topLogo{
+
+#topLogo {
     height: 80px;
     width: 80px;
     margin-left: 24px;
@@ -71,7 +83,7 @@ button{
 #displayWindow {
     margin: 16px;
     margin-top: @barHeight + 16px;
-    margin-bottom:  @barHeight + 16px;
+    margin-bottom: @barHeight + 16px;
 }
 
 .imageContainer {
@@ -80,6 +92,7 @@ button{
     width: 90vw;
     white-space: nowrap;
     overflow-x: scroll;
+
     img {
         height: 120px;
         width: auto;
@@ -88,18 +101,22 @@ button{
         line-height: 120px;
     }
 }
+
 .bookDisplay {
     position: relative;
 }
+
 .scrollButton {
     background-color: @heroes-gold;
     color: @heroes-purple;
     cursor: pointer;
     border: 0;
     border-radius: 32px;
+
     .material-symbols-outlined {
         font-size: small;
     }
+
     padding-top: 10px;
     padding-bottom: 10px;
     transition: 0.6s ease;
@@ -119,23 +136,27 @@ button{
     grid-template-columns: auto auto auto;
     gap: 8px;
     padding: 8px;
+
     img {
         width: 90%;
         // margin: 8px;
         // display: flexbox;
         line-height: 120px;
     }
+
     .noComics {
         text-align: center;
         padding: 16px;
         font-size: larger;
     }
-    .bookTitle{
+
+    .bookTitle {
 
         margin-top: 0;
-        
+
     }
 }
+
 .pageButton {
     color: whitesmoke;
     font-size: x-large;
@@ -144,13 +165,16 @@ button{
     border-radius: 12px;
     padding: 8px;
     margin: 4px;
+
     .material-symbols-outlined {
         font-size: x-large;
     }
+
     &.current {
         background-color: @heroes-purple;
     }
 }
+
 .searchBar {
     display: block;
     margin: 0 auto;
@@ -162,46 +186,55 @@ button{
     margin: 0;
     padding: 0;
     margin-left: 16px;
-    .subItem{
+
+    .subItem {
         width: 100%;
         display: flex;
         justify-content: space-between;
     }
-    .removeSeries{
+
+    .removeSeries {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: medium;
         }
+
         border: none;
         margin-right: 16px;
     }
 }
 
-.accountPage{
-    h3{
+.accountPage {
+    h3 {
         margin: 0px;
         margin-bottom: 4px;
     }
-    p{
+
+    p {
         margin: 0;
         margin-bottom: 12px;
     }
 }
-.accountEdit{
+
+.accountEdit {
     display: flex;
     justify-content: space-between;
 
     .accountButton {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: x-large;
         }
+
         border: none;
         margin-right: 16px;
     }
 }
+
 .accountHeader {
     margin-bottom: 0;
 }
@@ -213,23 +246,29 @@ button{
     padding: 4px;
     border-radius: 24px;
     position: relative;
-    .deleteMessage{
+
+    .deleteMessage {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: x-large;
         }
+
         border: none;
         position: absolute;
         top: 8px;
         right: 8px;
     }
-    h3{
+
+    h3 {
         text-align: center;
     }
+
     p {
         padding: 4px;
     }
+
     .dateText {
         font-size: small;
         display: flex;
@@ -237,7 +276,8 @@ button{
     }
 
 }
-.submitButton{
+
+.submitButton {
     color: whitesmoke;
     background-color: @heroes-purple;
     border-width: 0;
@@ -251,8 +291,10 @@ button{
     margin-bottom: 8px;
     padding: 16px;
     border-radius: 24px;
+
     form {
         text-align: center;
+
         button {
             background-color: @heroes-gold;
             border-width: 0;
@@ -260,6 +302,7 @@ button{
             padding: 8px
         }
     }
+
     #bodyInput {
         width: 95%;
         margin-top: 8px;
@@ -272,26 +315,32 @@ button{
     margin: 0;
     padding: 0;
     margin-left: 16px;
-    .customerRow{
+
+    .customerRow {
         width: 100%;
         display: flex;
         justify-content: space-between;
+
         .pendingButtons {
             display: flex;
         }
     }
-    .customerInnerDiv{
+
+    .customerInnerDiv {
         width: 100%;
         display: flex;
         justify-content: space-between;
         margin-right: 16px;
     }
-    .customerOptions{
+
+    .customerOptions {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: medium;
         }
+
         border: none;
         margin-right: 16px;
     }
@@ -299,6 +348,7 @@ button{
 
 .flyawayMenu {
     display: flex;
+
     .customerMenu {
         position: absolute;
         right: 58px;
@@ -307,6 +357,7 @@ button{
         z-index: 1;
         width: 84px;
         margin: 8px;
+
         button {
             background-color: @background-grey;
             color: whitesmoke;
@@ -320,12 +371,15 @@ button{
 .weekSelection {
     display: flex;
     justify-content: space-between;
+
     .weekSelectors {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: x-large;
         }
+
         border: none;
         margin-right: 16px;
     }
@@ -338,9 +392,11 @@ button{
         margin-right: auto;
         width: 60%;
     }
-    .pullDiv{
+
+    .pullDiv {
         display: flex;
         align-items: center;
+
         p {
             font-size: large;
             font-weight: 500;
@@ -353,14 +409,17 @@ button{
             padding-right: 16px;
 
         }
-        label{
+
+        label {
             margin-left: 8px;
         }
-        input{
+
+        input {
             width: 32px;
             margin-left: 8px;
         }
     }
+
     .pullButton {
         color: @dark-background-grey;
         border-width: 0;
@@ -370,17 +429,19 @@ button{
         padding-right: 12px;
         font-size: large;
         margin-top: 8px;
+
         &.afterFoc {
             background-color: rgb(195, 0, 0);
             color: whitesmoke;
         }
+
         &.beforeFoc {
             background-color: @heroes-gold;
         }
     }
 }
 
-.boxEdit{
+.boxEdit {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -389,9 +450,11 @@ button{
     button {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: x-large;
         }
+
         border: none;
         margin-right: 16px;
     }
@@ -400,56 +463,69 @@ button{
 .weekSelector {
     display: flex;
     justify-content: space-between;
+    width: 300px;
+
     .weekSelectors {
         color: whitesmoke;
         background: none;
+
         .material-symbols-outlined {
             font-size: x-large;
         }
+
         border: none;
         margin-right: 16px;
     }
 }
 
-.storeInfoPage{
-    p{
+.storeInfoPage {
+    p {
         margin: 4px;
     }
 }
-.adminPage{
-    form{
-        p{
+
+.adminPage {
+    form {
+        p {
             margin: 4px;
-            font-size:large;
+            font-size: large;
             font-weight: 600;
-            
+
         }
-        #hoursSubmit{
+
+        #hoursSubmit {
             margin-top: 8px;
         }
     }
-    .taxRateDiv{
+
+    .taxRateDiv {
         display: flex;
+
         input {
             width: 60px;
         }
     }
+
     #conversionInput {
         width: 60px;
     }
 }
+
 .pullsTable {
     border: 1px solid;
     border-collapse: collapse;
+
     tr {
-        &:nth-child(even){
+        &:nth-child(even) {
             background-color: @dark-background-grey;
         }
     }
+
     th {
         border: 2px solid;
         padding: 4px;
         background-color: @dark-background-grey;
+
         button {
             background: none;
             border: none;
@@ -459,20 +535,24 @@ button{
             text-decoration: underline;
         }
     }
+
     td {
         padding: 4px;
-        &.centeredCell{
+
+        &.centeredCell {
             text-align: center;
         }
     }
 }
+
 .subTable {
-    button{
+    button {
         margin-left: 30px;
         background: none;
         border: none;
         color: whitesmoke;
-        .material-symbols-outlined{
+
+        .material-symbols-outlined {
             font-size: medium;
         }
     }
@@ -480,49 +560,67 @@ button{
 
 // Fullscreen
 
-.desktopDisplay{
+.desktopDisplay {
     display: none;
 }
-@media screen and (min-width: 480px ) {
+
+@media screen and (min-width: 480px) {
     #displayWindow {
         position: absolute;
         margin-left: 170px + 16;
         z-index: 0;
     }
-    .desktopDisplay{
+
+    .desktopDisplay {
         display: block;
     }
+
     #iconBarBot {
+        position: fixed;
         a {
             text-decoration: none;
         }
         left: 0;
+        top: 0;
         bottom: auto;
         height: 100%;
         width: 170px;
         z-index: 1;
+        
         nav {
-            // margin-top: @barHeight + 16;
+            position: fixed;
+            top: @barHeight + 32;
             display: flex;
             flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
             margin-left: 16px;
+
             .botLinks {
                 display: flex;
-                p {margin-left: 4px;}
+                align-items: center;
+                p {
+                    margin-left: 4px;
+                }
             }
         }
     }
+
     #iconBarTop {
-        nav{
+        nav {
             margin-top: 12px;
         }
-        a{
+
+        a {
             text-decoration: none;
         }
+
         p {
             margin-top: 0;
         }
     }
+
     .gridDisplay {
         margin-top: 16px;
         border-radius: 16px;
@@ -530,28 +628,34 @@ button{
         grid-template-columns: auto auto auto auto;
         gap: 8px;
         padding: 8px;
+
         img {
             width: 90%;
             // margin: px;
             line-height: 120px;
         }
     }
+
     .bookInfo {
         display: flex;
         width: 100%;
         justify-content: flex-start;
-        .bookTextBlock{
+
+        .bookTextBlock {
             margin-left: 16px;
-            width:300px;
+            width: 300px;
         }
+
         .bookImage {
             display: flex;
             width: 300px;
         }
 
     }
-    .imageContainer { 
+
+    .imageContainer {
         width: 80vw;
+
         img {
             height: 250px;
             width: auto;

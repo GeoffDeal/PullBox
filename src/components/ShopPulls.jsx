@@ -35,22 +35,12 @@ const ShopPulls = () => {
     }, [customers])
     
     useEffect(() => {
-        console.log(pulls);
         const weeksBooks = pulls.filter(book => {
             return calcWeek(sortConditions.dateType === 'release' ? book.Release : book.FOCDueDate) === sortConditions.timestamp;
         })
-        console.log(weeksBooks);
         setWeeksPulls(weeksBooks);
     }, [pulls, sortConditions])
 
-
-    // useEffect(() => {
-        // const now = new Date();
-        // const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        // lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
-        // const timestamp = calcWeek(lastSunday);
-    //     weekChange(timestamp);
-    // }, [pulls]);
 
     useEffect(() => {
 
