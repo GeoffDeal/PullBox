@@ -20,8 +20,8 @@ const WeekSelect = ({ onDataPass }) => {
         setSunday(day);
         const timestamp = calcWeek(day);
         onDataPass(timestamp);
-    }
 
+    }
     return(
         <div className="weekSelector">
             <button onClick={pastWeek} className="weekSelectors"><span className="material-symbols-outlined">chevron_left</span></button>

@@ -9,11 +9,20 @@ const ShopPulls = () => {
     const { customers } = useContext(CustomersContext);
     const [ pulls, setPulls ] = useState([]);
     const [ weeksPulls, setWeeksPulls ] = useState();
-    const [ sortBy, setSortBy ] = useState('Publisher');
+    const [ sortBy, setSortBy ] = useState({
+        az: 'ascending',
+        type: 'Publisher'
+    });
     const [ sortedPulls, setSortedPulls ] = useState();
+    const defaultTimestamp = () => {
+        const now = new Date();
+        const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+        return calcWeek(lastSunday);
+    }
     const [ sortConditions, setSortConditions ] = useState({
-        date: 'release',
-        sort: 'ascending'
+        dateType: 'release',
+        timestamp: defaultTimestamp()
     });
 
     useEffect(() => {
@@ -25,23 +34,23 @@ const ShopPulls = () => {
         setPulls(totalPulls);
     }, [customers])
     
-    const weekChange = (date) => {
-        if (sortConditions.date === 'release') {  //ternary conditional to clean up
-            const weeksBooks = pulls.filter(book => calcWeek(book.Release) === date )
-            setWeeksPulls(weeksBooks);
-        } else {
-            const weeksBooks = pulls.filter(book => calcWeek(book.FOCDueDate) === date )
-            setWeeksPulls(weeksBooks);
-        }
-
-    }
     useEffect(() => {
-        const now = new Date();
-        const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
-        const timestamp = calcWeek(lastSunday);
-        weekChange(timestamp);
-    }, [pulls]);
+        console.log(pulls);
+        const weeksBooks = pulls.filter(book => {
+            return calcWeek(sortConditions.dateType === 'release' ? book.Release : book.FOCDueDate) === sortConditions.timestamp;
+        })
+        console.log(weeksBooks);
+        setWeeksPulls(weeksBooks);
+    }, [pulls, sortConditions])
+
+
+    // useEffect(() => {
+        // const now = new Date();
+        // const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        // lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+        // const timestamp = calcWeek(lastSunday);
+    //     weekChange(timestamp);
+    // }, [pulls]);
 
     useEffect(() => {
 
@@ -63,11 +72,11 @@ const ShopPulls = () => {
                 }
             })
             combinedBooks.sort((a, b) => {
-                if (a[sortBy] < b[sortBy]) {
-                    return sortConditions.sort === 'ascending' ? -1 : 1;
+                if (a[sortBy.type] < b[sortBy.type]) {
+                    return sortBy.sort === 'ascending' ? -1 : 1;
                 }
-                if (a[sortBy] > b[sortBy]) {
-                    return sortConditions.sort === 'ascending' ? 1 : -1;
+                if (a[sortBy.type] > b[sortBy.type]) {
+                    return sortBy.sort === 'ascending' ? 1 : -1;
                 }
                 return 0;
             })
@@ -77,24 +86,48 @@ const ShopPulls = () => {
     }, [weeksPulls, sortBy, sortConditions])
 
     const toggleAscending = () => {
+        setSortBy(prev => ({
+            ...prev,
+            az: prev.az === 'ascending' ? 'descending' : 'ascending'
+        }))
+    }
+    const changeDateType = (e) => {
         setSortConditions(prev => ({
             ...prev,
-            sort: prev.sort === 'ascending' ? 'descending' : 'ascending'
+            dateType: e.target.value
+        }))
+    }
+    const changeDate = (date) => {
+        setSortConditions(prev => ({
+            ...prev, 
+            timestamp: date
         }))
     }
 
     const sortPublisher = () => {
-        sortBy !== 'Publisher' ? setSortBy('Publisher') : toggleAscending();
+        sortBy.type !== 'Publisher' ? setSortBy(prev =>({
+            ...prev,
+            type: 'Publisher'
+        })) 
+        : toggleAscending();
     }
     const sortTitle = () => {
-        sortBy !== 'ProductName' ? setSortBy('ProductName') : toggleAscending();
+        sortBy.type !== 'ProductName' ? setSortBy(prev => ({
+            ...prev,
+            type: 'ProductName'
+        })) 
+        : toggleAscending();
     }
 
     return(
         <div className="shopPulls">
             <h1>Customer Pulls</h1>
 
-            <WeekSelect onDataPass={weekChange} />
+            <select onChange={(e) => changeDateType(e)}>
+                <option value="release">Release Date</option>
+                <option value="foc">FOC Date</option>
+            </select>
+            <WeekSelect onDataPass={changeDate} />
             <table className="pullsTable">
                 <thead>
                     <tr>
@@ -116,7 +149,7 @@ const ShopPulls = () => {
                     })}
                 </tbody>
             </table>
-            <button onClick={() => {console.log(sortedPulls)}}>Push Me</button>
+            <button onClick={() => {console.log(sortConditions.timestamp)}}>Push Me</button>
         </div>
     )
 }

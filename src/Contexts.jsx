@@ -88,7 +88,7 @@ const Contexts = ({children}) => {
         "ItemCode": "0624IM293",
         "Sku": "70985303979200321",
         "MSRP": "$3.99",
-        "Release": "2024-08-14",
+        "Release": "2024-08-21",
         "FOCDueDate": "2024-07-22",
         "Qty.Ord.OnTime": 1,
         "Qty.Ord.Late": "",

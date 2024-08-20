@@ -102,10 +102,7 @@ export function xlsxToObjects (workbook, publisher) {
         }
     })
     
-    console.log(books);
     const sorted = bookSort(books); //Temporary placement for sort until it can be done on backend
-    console.log(sorted);
-
 
     return sorted;
 }
