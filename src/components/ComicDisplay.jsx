@@ -36,12 +36,10 @@ function ComicsDisplay (props) {
             if (taxRates[type]) {
                 taxRate = (taxRates[type] * 0.01) + 1;
             }
-            console.log('Tax rate: ', taxRate);
             productSorted[type].forEach((book) => {
                 total += parseFloat(book.MSRP.replace('$', '')) * conversion * taxRate;
             })
         })
-        console.log(productSorted, total);
         return total.toFixed(2);
 
     }

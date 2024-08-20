@@ -47,7 +47,6 @@ function CustomerDetails() {
                         <li key={series}>
                             <div className="subItem">
                                 {series}
-                                {/* <button className="removeSeries" onClick={() => removeButton(series)}><span className="material-symbols-outlined">remove</span></button> */}
                             </div>
                         </li>)}
                 </ul>

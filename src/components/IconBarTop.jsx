@@ -12,7 +12,6 @@ function IconBarTop () {
             <nav>
                 <NavLink to={user.customer ? "/storeinfo" : "/admin"}><span className="material-symbols-outlined">store</span><p className="desktopDisplay">Store</p></NavLink>
                 <NavLink to="/account"><span className="material-symbols-outlined">account_circle</span><p className="desktopDisplay">Account</p></NavLink>
-                {/* <NavLink to="/settings"><span className="material-symbols-outlined">settings</span></NavLink> */}
             </nav>
         </div>
     )

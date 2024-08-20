@@ -139,7 +139,6 @@ const ShopPulls = () => {
                     })}
                 </tbody>
             </table>
-            <button onClick={() => {console.log(sortConditions.timestamp)}}>Push Me</button>
         </div>
     )
 }

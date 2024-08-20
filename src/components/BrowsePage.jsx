@@ -56,7 +56,6 @@ const BrowsePage = () => {
     return(
         <div>
             <h1>Browse</h1>
-            <button onClick={()=>{console.log(publisher)}}>Push Me</button>
             <p>Browse by: </p>
             <select onChange={filterChange}>
                 <option value='release'>Release Date</option>
@@ -69,7 +68,7 @@ const BrowsePage = () => {
                     <option value={'Comic'}>Comics</option>
                     <option value={'Trade Paperback'}>Trade Paperbacks</option>
                     <option value={'Hardcover'}>Hardcovers</option>
-                    <option value={'Omnibus'}>Omnibuses</option>
+                    {/* <option value={'Omnibus'}>Omnibuses</option> */}
                     <option value={'Graphic Novel'}>Graphic Novels</option>
                     <option value={'Poster'}>Posters</option>
                 </select>}

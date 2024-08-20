@@ -1,11 +1,10 @@
 import ExcelJS from 'exceljs';
-import { useState, useContext } from 'react';
-import { ComicList } from '../Contexts';
+import { useState } from 'react';
 
 export const categoryObj = { // Translate from category/sort column of excel
     HC: 'Hardcover',
     HCMR: 'Hardcover',
-    OMNIBUS: 'Omnibus',
+    OMNIBUS: 'Hardcover',
     TP: 'Trade Paperback',
     TR: 'Trade Paperback',
     TRMR: 'Trade Paperback',
@@ -57,7 +56,6 @@ const handleImport = (event) => {
 
     getWorkbook();
     cleanSheet();
-    console.log(workbook);
 }
 
 export function xlsxToObjects (workbook, publisher) {

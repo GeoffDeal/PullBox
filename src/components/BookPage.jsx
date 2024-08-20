@@ -89,7 +89,6 @@ function BookPage() {
                             {afterFoc && <p>It is after the final order cutoff, you will receive this book based on availablity</p>}
                         </div>
                     }
-                    <button onClick={() => console.log(book)}>Push me</button>
                 </div>
             </div>
         </div>

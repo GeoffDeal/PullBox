@@ -1,7 +1,6 @@
 import { ComicList, UserContext } from "../Contexts";
 import ComicsDisplay, { calcWeek } from "./ComicDisplay";
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
 import SearchDisplay from "./SearchDisplay";
 
 function Home () {

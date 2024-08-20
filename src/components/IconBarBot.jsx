@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { Outlet, NavLink, BrowserRouter } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { UserContext } from "../Contexts";
 
 
-function IconBarBot (props) {
+function IconBarBot () {
     const { user } = useContext(UserContext);
 
     return (

@@ -28,7 +28,7 @@ const AdminPage = () => {
             const workbook = new ExcelJS.Workbook();
             try {
 
-            await workbook.xlsx.load(arrayBuffer); // check for potential errors here
+            await workbook.xlsx.load(arrayBuffer); 
 
             workbook.removeWorksheet(2); //Clear useless sheets and rows
             workbook.worksheets[0].spliceRows(1, 1);
@@ -55,7 +55,7 @@ const AdminPage = () => {
             }
         }
         try {
-            reader.readAsArrayBuffer(file); // check for potential errors here
+            reader.readAsArrayBuffer(file); 
         }
         catch(error) {
             console.log(error);

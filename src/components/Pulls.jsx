@@ -32,9 +32,6 @@ function Pulls () {
         day.setDate(sunday.getDate() - 7);
         setSunday(day);
     }
-    // const searchedBooks = searchFilter ? 
-    // comics.filter(book => book[searchFilter].toLocaleLowerCase().includes(query.toLocaleLowerCase())) 
-    // : comics
 
     return (
         <>
