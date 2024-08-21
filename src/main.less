@@ -352,19 +352,27 @@ button {
     .customerMenu {
         position: absolute;
         right: 58px;
-        border: 1px solid @heroes-black;
+        border: 0;
+        border-radius: 16px;
         background-color: @dark-background-grey;
         z-index: 1;
         width: 84px;
+        padding: 4px;
         margin: 8px;
 
-        button {
-            background-color: @background-grey;
+        button,
+        .flyawayNav {
+            background-color: @heroes-purple;
             color: whitesmoke;
             border-width: 0;
             margin: 8px;
             padding: 4px;
+            font-size: small;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
         }
+
     }
 }
 
@@ -659,6 +667,14 @@ button {
         img {
             height: 250px;
             width: auto;
+        }
+    }
+    .flyawayMenu {
+        display: flex;
+    
+        .customerMenu {
+            position: absolute;
+            right: -84px;
         }
     }
 }

@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Contexts from "./Contexts";
 import Account from "./components/Account";
-import Settings from "./components/Settings";
 import Layout from "./components/Layout";
 import NoPage from "./components/NoPage";
 import Home from "./components/Home";
@@ -27,7 +26,6 @@ function App() {
             <Route path="admin" element={<AdminPage />} />
             <Route path="storeinfo" element={<StoreInfo />} />
             <Route path="account" element={<Account />} />
-            <Route path="settings" element={<Settings />} />
             <Route path="browse" element={<BrowsePage />} />
             <Route path="searchpage" element={<SearchPage />} />
             <Route path="pulls" element={<Pulls />} />

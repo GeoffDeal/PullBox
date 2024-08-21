@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { createElement, useContext, useEffect, useState } from "react";
 import { CustomersContext } from "../Contexts";
 import WeekSelect from "./WeekSelect";
 import { calcWeek } from "./ComicDisplay";
 import { handleTitle } from "./SearchDisplay";
 import ShopSubTable from "./ShopSubTable";
+import ExcelJS from 'exceljs';
 
 const ShopPulls = () => {
     const { customers } = useContext(CustomersContext);
@@ -109,6 +110,51 @@ const ShopPulls = () => {
         : toggleAscending();
     }
 
+    // Create excel sheet and populate pulls
+
+    async function createExcel() {
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = 'Heroes&Hobbies';
+        workbook.created = new Date();
+
+        const sheet = workbook.addWorksheet('Order Form');
+        sheet.columns = [
+            { header: 'Sku', key: 'sku', width: 60 },
+            { header: 'Quantity', key: 'quantity', width: 20 },
+        ]
+        sortedPulls.forEach((book) => {
+            sheet.addRow([book.Sku, book["Qty.Ord.OnTime"]]);
+        })
+
+        const cells = [ 'A1', 'B1'];
+        cells.forEach (cellName => {
+            const cell = sheet.getCell(cellName);
+            cell.font = { color: { argb: 'FFFFFF' } }
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '4167b8' } };
+        })
+
+        const date = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+        const fileName = 'heroesorderform' + date + '.xlsx';
+        let buffer;
+        try {
+            buffer = await workbook.xlsx.writeBuffer();
+        }
+        catch (error) {
+            console.log(error.message);
+            return;
+        }
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
     return(
         <div className="shopPulls">
             <h1>Customer Pulls</h1>
@@ -139,6 +185,7 @@ const ShopPulls = () => {
                     })}
                 </tbody>
             </table>
+            { sortConditions.dateType === 'foc' && <button onClick={() => createExcel()}>Export Pulls</button>}
         </div>
     )
 }

@@ -27,9 +27,17 @@ const AdminPage = () => {
             const arrayBuffer = e.target.result;
             const workbook = new ExcelJS.Workbook();
             try {
-
             await workbook.xlsx.load(arrayBuffer); 
-
+            }
+            catch (error){
+                console.log(error);
+                setUploadMessage(`There was a problem with the upload`);
+                setTimeout(() => {
+                    setUploadMessage('')
+                }, 20000);
+                return;
+            }
+            
             workbook.removeWorksheet(2); //Clear useless sheets and rows
             workbook.worksheets[0].spliceRows(1, 1);
 
@@ -44,15 +52,8 @@ const AdminPage = () => {
             setComics([
                 ...updatedList,
                 ...newBooks
-            ]);}
-            catch (error){
-                console.log(error);
-                setUploadMessage(`There was a problem with the upload: ${error.message}`);
-                setTimeout(() => {
-                    setUploadMessage('')
-                }, 20000);
-                return;
-            }
+            ]);
+
         }
         try {
             reader.readAsArrayBuffer(file); 
