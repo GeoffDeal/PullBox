@@ -1,6 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
+import WeekSelect from "./WeekSelect";
+import { calcWeek } from "./ComicDisplay";
 
 function Pulls () {
     const { user, setUser } = useContext(UserContext);
@@ -22,27 +24,22 @@ function Pulls () {
     lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
 
     const [ sunday, setSunday ] = useState(lastSunday);
-    const futureWeek = () => {
-        const day = new Date (sunday);
-        day.setDate(sunday.getDate() + 7);
-        setSunday(day);
-    }
-    const pastWeek = () => {
-        const day = new Date(sunday);
-        day.setDate(sunday.getDate() - 7);
-        setSunday(day);
-    }
+    useEffect(() => {
+        const now = new Date();
+        const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+        const timestamp = calcWeek(lastSunday);
+        setSunday(timestamp);
+    }, []);
+    
 
     return (
         <>
             <h1>Pulls and Subs</h1>
             <h3>Your pulls for the week of</h3>
-            <div className="weekSelection">
-                <button onClick={pastWeek} className="weekSelectors"><span className="material-symbols-outlined">chevron_left</span></button>
-                <p>{ sunday.toDateString() }</p>
-                <button onClick={futureWeek} className="weekSelectors"><span className="material-symbols-outlined">chevron_right</span></button>
-            </div>
-            <ComicsDisplay date={ sunday.getTime() }/>
+            <WeekSelect onDataPass={setSunday} />
+
+            <ComicsDisplay date={ sunday }/>
             <h3>Your subscription list:</h3>
             <ul className="bookSubs">
                 {user.subList.map((series) => 

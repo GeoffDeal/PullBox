@@ -19,7 +19,19 @@ const Contexts = ({children}) => {
         subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest'],
         userID: 0,
         customerType: 'active',
-        pulls: [],
+        pulls: [{
+          "ProductName": "FALLING IN LOVE ON THE PATH TO HELL #3 CVR B 1:15 MIKE HAWTHORNE VAR\n1:15 Qualifying Variant",
+          "Category": "Q.VARIANTS",
+          "ItemCode": "0624IM293",
+          "Sku": "70985303979200321",
+          "MSRP": "$3.99",
+          "Release": "2024-08-21",
+          "FOCDueDate": "2024-07-22",
+          "Qty.Ord.OnTime": 1,
+          "Qty.Ord.Late": "",
+          "ImageURL": "https://www.universaldist.com/api/v1/images/297585dd-d83f-4edf-af80-4ce1e526d793/raw?size=l",
+          "Publisher": "Image",
+        },],
     });
     
     const [customers, setCustomers] = useState([
