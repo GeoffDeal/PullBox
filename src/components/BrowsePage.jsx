@@ -54,7 +54,7 @@ const BrowsePage = () => {
     }, []);
 
     return(
-        <div>
+        <div className="pageDisplay">
             <h1>Browse</h1>
             <p>Browse by: </p>
             <select onChange={filterChange}>

@@ -11,7 +11,7 @@ function SearchPage () {
     const searchedBooks = comics.filter(searchBooks);
 
     return (
-        <>
+        <div className="pageDisplay">
             <h1>Find Comics:</h1>
             <input 
                 type="text" 
@@ -25,7 +25,7 @@ function SearchPage () {
                 })}
             />
             {display && <SearchDisplay query={ searchedBooks } />}
-        </>
+        </div>
     )
 };
 

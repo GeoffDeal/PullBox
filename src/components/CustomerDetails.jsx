@@ -26,7 +26,7 @@ function CustomerDetails() {
     }
 
     return (
-        <div className="customerDetails">
+        <div className="customerDetails pageDisplay">
             <h1>{ customer.name }</h1>
             <div className="boxEdit">
                 <h3>Box:</h3>

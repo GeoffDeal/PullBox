@@ -23,7 +23,7 @@ function CustomersPage() {
 
 
     return (
-        <>
+        <div className="pageDisplay">
             <h1>Customers</h1>
             <h3>Current Customers:</h3>
             <div id="customerList" className="customerLists">
@@ -58,7 +58,7 @@ function CustomersPage() {
                         <button onClick={() => restoreCustomer(customer.userID)} className="customerOptions"><span className="material-symbols-outlined">add</span></button>
                     </div></li>)}
             </div>
-        </>
+        </div>
     )
 }
 

@@ -16,14 +16,14 @@ function Home () {
     const focComics = comics.filter(book => calcWeek(book.FOCDueDate) === calcWeek(nextSunday));
 
     return (
-        <>
+        <div className="pageDisplay">
             <h1>Welcome {user.name}</h1>
             <h3>Your pulls for this week:</h3>
             <ComicsDisplay date={ lastSunday.getTime()} />
             <h3>Upcoming FOCs. Last chance!</h3>
             <SearchDisplay query={ focComics }/>
 
-        </>
+        </div>
     )
 };
 

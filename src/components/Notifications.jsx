@@ -24,7 +24,7 @@ function Notifications () {
     }
     
     return (
-        <>
+        <div className="notificationPage pageDisplay">
             <h1>Notifications</h1>
             { !user.customer && <div className="messageInput">
                 <form onSubmit={messageSubmit}>
@@ -49,7 +49,7 @@ function Notifications () {
                     <Message key={ index } title={ message.title } date={ message.date } body={ message.body} id={message.id} />
                 ))}
             </div>
-        </>
+        </div>
     ) 
 }
 

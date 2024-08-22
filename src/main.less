@@ -483,12 +483,17 @@ button {
             font-weight: 600;
 
         }
-
         #hoursSubmit {
             margin-top: 8px;
         }
     }
-
+    #fileImport{
+        align-items: center;
+        height: 40px;
+        #uploadMessage{
+            margin-left: 16px;
+        }
+    }
     .taxRateDiv {
         display: flex;
 
@@ -555,6 +560,7 @@ button {
     display: none;
 }
 
+
 @media screen and (min-width: 480px) {
     #displayWindow {
         position: absolute;
@@ -612,6 +618,15 @@ button {
         }
     }
 
+    .fullscreenFlex{
+        display: flex;
+        width: 100%;
+
+    }
+    .fullscreenDiv{
+        padding: 16px;
+    }
+
     .gridDisplay {
         margin-top: 16px;
         border-radius: 16px;
@@ -625,6 +640,13 @@ button {
             // margin: px;
             line-height: 120px;
         }
+    }
+    .pageDisplay {
+        margin: 32px;
+    }
+
+    .messageBox{
+        width: 80%;
     }
 
     .bookInfo {

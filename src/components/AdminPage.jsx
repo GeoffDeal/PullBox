@@ -34,7 +34,7 @@ const AdminPage = () => {
                 setUploadMessage(`There was a problem with the upload`);
                 setTimeout(() => {
                     setUploadMessage('')
-                }, 20000);
+                }, 10000);
                 return;
             }
             
@@ -60,17 +60,17 @@ const AdminPage = () => {
         }
         catch(error) {
             console.log(error);
-            setUploadMessage(`There was a problem with the upload: ${error.message}`);
+            setUploadMessage(`There was a problem with the upload`);
             setTimeout(() => {
                 setUploadMessage('')
-            }, 20000);
+            }, 10000);
             return;
         }
         
         inputRef.current.value = '';
         setUploadMessage('Uploaded!');
         setTimeout(() => {
-            setUploadMessage('')
+            setUploadMessage(' ')
         }, 2000);
     }
 
@@ -131,81 +131,91 @@ const AdminPage = () => {
     }
 
     return (
-        <div className="adminPage">
+        <div className="adminPage pageDisplay">
             <h1>Store Admin</h1>
-            <h3>Import Universal Files</h3>
-            <form onSubmit={handleImport}>
-                <input type="file" onChange={fileChange} ref={inputRef}/>
-                <input type="submit" value="Upload" />
-            </form>
-                {uploadMessage && <p>{ uploadMessage }</p>} 
-            <h3>Change Store Info</h3>
-                <form onSubmit={storeUpdate}>
-                    <label htmlFor="phoneInput">Phone: </label>
-                    <input 
-                        id="phoneInput"
-                        type="tel"
-                        onChange={phoneChange}
-                    /> <br />
-                    <label htmlFor="addressInput">Address: </label>
-                    <input 
-                        id="addressInput"
-                        type="text"
-                        onChange={addressChange}
-                    /> <br />
-                    <label htmlFor="emailInput">Email: </label>
-                    <input 
-                        id="emailInput"
-                        type="text"
-                        onChange={emailChange}
-                    /> <br />
-                    <button type="submit">Update</button>
-                </form>
-            <h3>Change Store Hours</h3>
-            <form className="timeForm">
-                {weekdays.map(day => {
-                    const openKey = day.toLowerCase() + 'open';
-                    const closeKey = day.toLowerCase() + 'close';
-                    return(
-                        <div key={day} className="dayTimes">
-                            <p className="dayName">{day}</p>
-                            <label htmlFor={openKey}>Open: </label>
-                            <input 
-                                id={openKey} 
-                                value={storeInfo.hours[openKey]} 
-                                type="time"
-                                onChange={hourChange} />
-                            <label htmlFor={closeKey}>Close: </label>
-                            <input 
-                                id={closeKey}
-                                value={storeInfo.hours[closeKey]} 
-                                type="time"
-                                onChange={hourChange} />
-                        </div>
-                    )
-                })}
-            </form>
-            <h3>Set Tax Rate</h3>
-            <ul>
-                {taxRates && Object.keys(taxRates).map((key, index) => {
-                    return <li key={index}>{ key }: { taxRates[key] }%</li>
-                })}
-            </ul>
-            <form onSubmit={(e) => {updateRates(e)}}>
-                <select onChange={(e) => {setProduct(e.target.value)}}>
-                    {productTypes.map((type, index) => {
-                        return <option key={index} value={ type }>{ type }</option>
-                    })}
-                </select>
-                <div className="taxRateDiv">
-                    <input type="number" onChange={(e) => {setRate(e.target.value)}} value={rate}/><p>%</p>
+            <div className="fullscreenDiv">
+                <h3>Import Universal Files</h3>
+                <div className="fullscreenFlex" id="fileImport">
+                    <form onSubmit={handleImport} >
+                        <input type="file" onChange={fileChange} ref={inputRef}/>
+                        <input type="submit" value="Upload" />
+                    </form>
+                    <p id="uploadMessage">{ uploadMessage }</p>
                 </div>
-                <button type="submit">Update</button>
-            </form>
-            <h3>Set Coversion Rate</h3>
-            <label htmlFor="conversionInput">Conversion rate from USD: </label>
-            <input type="number" id="conversionInput" onChange={(e) => changeConversion(e)}/>
-            <p>Current conversion: { conversion }</p> 
+            </div>
+            <div className="fullscreenFlex">
+                <div className="fullscreenDiv">
+                    <h3>Change Store Info</h3>
+                        <form onSubmit={storeUpdate}>
+                            <label htmlFor="phoneInput">Phone: </label>
+                            <input 
+                                id="phoneInput"
+                                type="tel"
+                                onChange={phoneChange}
+                            /> <br />
+                            <label htmlFor="addressInput">Address: </label>
+                            <input 
+                                id="addressInput"
+                                type="text"
+                                onChange={addressChange}
+                            /> <br />
+                            <label htmlFor="emailInput">Email: </label>
+                            <input 
+                                id="emailInput"
+                                type="text"
+                                onChange={emailChange}
+                            /> <br />
+                            <button type="submit">Update</button>
+                        </form>
+                    <h3>Change Store Hours</h3>
+                    <form className="timeForm">
+                        {weekdays.map(day => {
+                            const openKey = day.toLowerCase() + 'open';
+                            const closeKey = day.toLowerCase() + 'close';
+                            return(
+                                <div key={day} className="dayTimes">
+                                    <p className="dayName">{day}</p>
+                                    <label htmlFor={openKey}>Open: </label>
+                                    <input 
+                                        id={openKey} 
+                                        value={storeInfo.hours[openKey]} 
+                                        type="time"
+                                        onChange={hourChange} />
+                                    <label htmlFor={closeKey}>Close: </label>
+                                    <input 
+                                        id={closeKey}
+                                        value={storeInfo.hours[closeKey]} 
+                                        type="time"
+                                        onChange={hourChange} />
+                                </div>
+                            )
+                        })}
+                    </form>
+                </div>
+                <div className="fullscreenDiv">
+                    <h3>Set Tax Rate</h3>
+                    <ul>
+                        {taxRates && Object.keys(taxRates).map((key, index) => {
+                            return <li key={index}>{ key }: { taxRates[key] }%</li>
+                        })}
+                    </ul>
+                    <form onSubmit={(e) => {updateRates(e)}}>
+                        <select onChange={(e) => {setProduct(e.target.value)}}>
+                            {productTypes.map((type, index) => {
+                                return <option key={index} value={ type }>{ type }</option>
+                            })}
+                        </select>
+                        <div className="taxRateDiv">
+                            <input type="number" onChange={(e) => {setRate(e.target.value)}} value={rate}/><p>%</p>
+                        </div>
+                        <button type="submit">Update</button>
+                    </form>
+                    <h3>Set Coversion Rate</h3>
+                    <label htmlFor="conversionInput">Conversion rate from USD: </label>
+                    <input type="number" id="conversionInput" onChange={(e) => changeConversion(e)}/>
+                    <p>Current conversion: { conversion }</p> 
+                </div>
+            </div>
         </div>
     )
 }

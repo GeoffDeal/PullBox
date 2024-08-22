@@ -6,7 +6,7 @@ function Account () {
     const { user, setUser } = useContext(UserContext);
 
     return (
-        <div className="accountPage">
+        <div className="accountPage pageDisplay">
             <h1>Account Details for {user.name}</h1>
             <h3 className="accountHeader">Name: </h3><AccountToggle label="name" value={ user.name } />
             <h3 className="accountHeader">Email: </h3><AccountToggle label="email"  value={ user.email } />

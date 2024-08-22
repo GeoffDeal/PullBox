@@ -65,7 +65,7 @@ function BookPage() {
     }
 
     return (
-        <div className="bookPage">
+        <div className="bookPage pageDisplay">
             <h1>{ handleTitle(book.ProductName) }</h1>
             <div className="bookInfo">
                 <img className="bookImage" src={ book.ImageURL } alt="Comic cover" />

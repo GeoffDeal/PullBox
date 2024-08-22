@@ -156,7 +156,7 @@ const ShopPulls = () => {
     }
 
     return(
-        <div className="shopPulls">
+        <div className="shopPulls pageDisplay">
             <h1>Customer Pulls</h1>
 
             <select onChange={(e) => changeDateType(e)}>

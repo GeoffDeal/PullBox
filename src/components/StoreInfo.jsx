@@ -6,7 +6,7 @@ const StoreInfo = () => {
     const { storeInfo } = useContext(StoreInformation);
 
     return (
-        <div className="storeInfoPage">
+        <div className="storeInfoPage pageDisplay">
             <h1>Store Information</h1>
             {storeInfo.phone && <p>Phone number: { storeInfo.phone }</p>}
             {storeInfo.address && <p>Address: { storeInfo.address }</p>}

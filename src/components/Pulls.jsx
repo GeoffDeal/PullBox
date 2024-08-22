@@ -34,7 +34,7 @@ function Pulls () {
     
 
     return (
-        <>
+        <div className="pageDisplay">
             <h1>Pulls and Subs</h1>
             <h3>Your pulls for the week of</h3>
             <WeekSelect onDataPass={setSunday} />
@@ -51,7 +51,7 @@ function Pulls () {
                     </li>)}
             </ul>
             
-        </>
+        </div>
     )
 
 }
