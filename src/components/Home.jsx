@@ -1,6 +1,6 @@
-import { ComicList, UserContext } from "../Contexts";
+import { ComicList, UserContext, CustomersContext, ConversionRate } from "../Contexts";
 import ComicsDisplay, { calcWeek } from "./ComicDisplay";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SearchDisplay from "./SearchDisplay";
 
 function Home () {
@@ -15,11 +15,45 @@ function Home () {
 
     const focComics = comics.filter(book => calcWeek(book.FOCDueDate) === calcWeek(nextSunday));
 
+    // Week's total for shop
+
+    const { customers } = useContext(CustomersContext);
+    const { conversion } = useContext(ConversionRate);
+    const [ weeksBooks, setWeeksBooks ] = useState([]);
+    const [ expectedIncome, setExpectedIncome ] = useState();
+
+    useEffect(() => {
+        let pulls = [];
+        customers.forEach(customer => {
+            const customersWeek = customer.pulls.filter((book) => calcWeek(book.Release) === lastSunday.getTime());
+            pulls = pulls.concat(customersWeek);
+        })
+        setWeeksBooks(pulls);
+    }, []);
+    useEffect(() => {
+        let priceTotal = 0;
+        weeksBooks.forEach((book) =>{
+            const cadPrice = parseFloat(book.MSRP.replace('$', '')) * conversion;
+            priceTotal += cadPrice;
+        })
+        const totalRounded = priceTotal.toFixed(2);
+        setExpectedIncome(totalRounded);
+    }, [weeksBooks])
+
+
     return (
         <div className="pageDisplay">
             <h1>Welcome {user.name}</h1>
-            <h3>Your pulls for this week:</h3>
-            <ComicsDisplay date={ lastSunday.getTime()} />
+            {user.customer ?
+            <div>
+                <h3>Your pulls for this week:</h3>
+                <ComicsDisplay date={ lastSunday.getTime()} />
+            </div> :
+            <div>
+                <h3>Your customers' pulls for this week:</h3>
+                <p>Total books pulled: { weeksBooks.length }</p>
+                <p>Expected income from pulls: ${ expectedIncome }</p>
+            </div>}
             <h3>Upcoming FOCs. Last chance!</h3>
             <SearchDisplay query={ focComics }/>
 
