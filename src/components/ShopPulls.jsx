@@ -113,46 +113,52 @@ const ShopPulls = () => {
     // Create excel sheet and populate pulls
 
     async function createExcel() {
-        const workbook = new ExcelJS.Workbook();
-        workbook.creator = 'Heroes&Hobbies';
-        workbook.created = new Date();
+        const pulledPublishers = new Set (sortedPulls.map(book => book.Publisher));
 
-        const sheet = workbook.addWorksheet('Order Form');
-        sheet.columns = [
-            { header: 'Sku', key: 'sku', width: 60 },
-            { header: 'Quantity', key: 'quantity', width: 20 },
-        ]
-        sortedPulls.forEach((book) => {
-            sheet.addRow([book.Sku, book["Qty.Ord.OnTime"]]);
-        })
+        for (const pub of pulledPublishers) {
+            const pubSorted = sortedPulls.filter((book) => book.Publisher === pub)
 
-        const cells = [ 'A1', 'B1'];
-        cells.forEach (cellName => {
-            const cell = sheet.getCell(cellName);
-            cell.font = { color: { argb: 'FFFFFF' } }
-            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '4167b8' } };
-        })
-
-        const date = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
-        const fileName = 'heroesorderform' + date + '.xlsx';
-        let buffer;
-        try {
-            buffer = await workbook.xlsx.writeBuffer();
+            const workbook = new ExcelJS.Workbook();
+            workbook.creator = 'Heroes&Hobbies';
+            workbook.created = new Date();
+    
+            const sheet = workbook.addWorksheet('Order Form');
+            sheet.columns = [
+                { header: 'Sku', key: 'sku', width: 60 },
+                { header: 'Quantity', key: 'quantity', width: 20 },
+            ]
+            pubSorted.forEach((book) => {
+                sheet.addRow([book.Sku, book["Qty.Ord.OnTime"]]);
+            })
+    
+            const cells = [ 'A1', 'B1'];
+            cells.forEach (cellName => {
+                const cell = sheet.getCell(cellName);
+                cell.font = { color: { argb: 'FFFFFF' } }
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '4167b8' } };
+            })
+    
+            const date = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            const fileName = 'heroesorderform' + date + pub + '.xlsx';
+            let buffer;
+            try {
+                buffer = await workbook.xlsx.writeBuffer();
+            }
+            catch (error) {
+                console.log(error.message);
+                return;
+            }
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
-        catch (error) {
-            console.log(error.message);
-            return;
-        }
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
     }
 
     return(
