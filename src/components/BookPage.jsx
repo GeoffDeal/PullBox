@@ -91,6 +91,7 @@ function BookPage() {
                     }
                 </div>
             </div>
+            <button onClick={() => {console.log(book)}}>Push Me</button>
         </div>
     )
 }

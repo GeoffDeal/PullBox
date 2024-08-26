@@ -59,6 +59,24 @@ const handleImport = (event) => {
 }
 
 export function xlsxToObjects (workbook, publisher) {
+    const marvelPriceSwitch = {
+        '$5.00': '$3.99',
+        '$6.25': '$4.99',
+        '$7.50': '$5.99',
+        '$8.75': '$6.99',
+        '$10.00': '$7.99',
+        '$11.25': '$8.99',
+        '$12.50': '$9.99',
+    }
+    const indiePriceSwitch ={
+        '$5.29': '$3.99',
+        '$6.99': '$4.99',
+        '$7.99': '$5.99',
+        '$9.50': '$6.99',
+        '$10.99': '$7.99',
+        '$11.99': '$8.99',
+        '$12.99': '$9.99',
+    }
     const books = [];
     const header = [];
 
@@ -94,6 +112,13 @@ export function xlsxToObjects (workbook, publisher) {
                 book.Incentive = productType;
             } else{
                 book.ProductType = categoryObj[productType];
+            }
+
+            if (book.Publisher === 'Marvel' && (book.ProductType ==='Comic' || book.ProductType === 'Incentive')) {
+                book.MSRP = marvelPriceSwitch[book.MSRP] ? marvelPriceSwitch[book.MSRP] : book.MSRP;
+            }
+            if (book.Publisher === 'Idw' && (book.ProductType ==='Comic' || book.ProductType === 'Incentive')) {
+                book.MSRP = indiePriceSwitch[book.MSRP] ? indiePriceSwitch[book.MSRP] : book.MSRP;
             }
         
             book.ProductType !== 'Remove' && books.push(book);
