@@ -1,5 +1,5 @@
 import { useContext, useState, useRef } from "react";
-import { StoreInformation, ComicList, TaxRates, ConversionRate} from "../Contexts";
+import { StoreInformation, ComicList, TaxRates, ConversionRate, SeriesContext} from "../Contexts";
 import ExcelJS from 'exceljs';
 import { xlsxToObjects, doublesCheck, bookSort } from "./BackendFunctions";
 
@@ -13,6 +13,8 @@ const AdminPage = () => {
     const { comics, setComics } = useContext(ComicList);
     const [ uploadMessage, setUploadMessage] = useState('');
     const inputRef = useRef();
+
+    const { series, setSeries } = useContext(SeriesContext);
 
     //Hand importing excel sheets
     const fileChange = (event) => {
@@ -47,16 +49,15 @@ const AdminPage = () => {
             const publisherName = worksheetName.slice(firstCut, secondCut).toLocaleLowerCase();
             const capitalName = publisherName.charAt(0).toLocaleUpperCase() + publisherName.slice(1);
 
-            const newBooks = xlsxToObjects(workbook, capitalName);
+            const { newBooks, seriesList } = xlsxToObjects(workbook, capitalName);
             const updatedList = doublesCheck(newBooks, comics);
             const sortedList = bookSort(newBooks.concat(updatedList));
             setComics(sortedList);
-            // setComics([
-            //     ...updatedList,
-            //     ...newBooks
-            // ]);
 
-
+            setSeries(prev => ({
+                ...prev,
+                ...seriesList,
+            }))
         }
         try {
             reader.readAsArrayBuffer(file); 
@@ -219,6 +220,7 @@ const AdminPage = () => {
                     <p>Current conversion: { conversion }</p> 
                 </div>
             </div>
+            <button onClick={() => {console.log(series)}}>Push Me</button>
         </div>
     )
 }

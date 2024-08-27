@@ -8,6 +8,7 @@ export const ComicList = createContext();
 export const StoreInformation = createContext();
 export const TaxRates = createContext();
 export const ConversionRate = createContext();
+export const SeriesContext = createContext();
 
 const Contexts = ({children}) => {
     const [user, setUser] = useState({
@@ -182,23 +183,26 @@ const Contexts = ({children}) => {
     })
     const [ taxRates, setTaxRates ] = useState({});
     const [ conversion, setConversion ] = useState(1);
+    const [ series, setSeries ] = useState({});
     
     return (
-      <ConversionRate.Provider value={{ conversion, setConversion}}>
-        <TaxRates.Provider value={{ taxRates, setTaxRates }}>
-          <StoreInformation.Provider value={{ storeInfo, setStoreInfo }}>
-            <ComicList.Provider value={{ comics, setComics }}>
-              <CustomersContext.Provider value={{ customers, setCustomers }}>
-                  <NotificationContext.Provider value={{ messages, setMessages }}>
-                    <UserContext.Provider value={{ user, setUser }}>
-                        { children }
-                    </UserContext.Provider>
-                  </NotificationContext.Provider>
-              </CustomersContext.Provider>
-            </ComicList.Provider>
-          </StoreInformation.Provider>
-        </TaxRates.Provider>
-      </ConversionRate.Provider>
+      <SeriesContext.Provider value={{ series, setSeries }}>
+        <ConversionRate.Provider value={{ conversion, setConversion}}>
+          <TaxRates.Provider value={{ taxRates, setTaxRates }}>
+            <StoreInformation.Provider value={{ storeInfo, setStoreInfo }}>
+              <ComicList.Provider value={{ comics, setComics }}>
+                <CustomersContext.Provider value={{ customers, setCustomers }}>
+                    <NotificationContext.Provider value={{ messages, setMessages }}>
+                      <UserContext.Provider value={{ user, setUser }}>
+                          { children }
+                      </UserContext.Provider>
+                    </NotificationContext.Provider>
+                </CustomersContext.Provider>
+              </ComicList.Provider>
+            </StoreInformation.Provider>
+          </TaxRates.Provider>
+        </ConversionRate.Provider>
+      </SeriesContext.Provider>
     )
 }
 

@@ -1,5 +1,6 @@
 import ExcelJS from 'exceljs';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
 
 export const categoryObj = { // Translate from category/sort column of excel
     HC: 'Hardcover',
@@ -32,31 +33,31 @@ export const categoryObj = { // Translate from category/sort column of excel
     TAGS: 'Remove',
 }
 
-const handleImport = (event) => {
-    event.preventDefault();
+// const handleImport = (event) => {
+//     event.preventDefault();
 
-    const [workbook, setWorkbook] = useState();
-    const getWorkbook = () => {
-        const reader = new FileReader();
+//     const [workbook, setWorkbook] = useState();
+//     const getWorkbook = () => {
+//         const reader = new FileReader();
     
-        reader.onload = async (e) => {
-            const arrayBuffer = e.target.result;
-            const workbook = new ExcelJS.Workbook();
-            await workbook.xlsx.load(arrayBuffer);
-            setWorkbook(workbook);
-        }
-        reader.readAsArrayBuffer(file);
-    }
-    const cleanSheet = () => {
-        const moddedWorkbook = workbook;
-        moddedWorkbook.removeSheet[1];
-        moddedWorkbook.worksheets[0].splice(0, 1);
-        setWorkbook(moddedWorkbook);
-    }
+//         reader.onload = async (e) => {
+//             const arrayBuffer = e.target.result;
+//             const workbook = new ExcelJS.Workbook();
+//             await workbook.xlsx.load(arrayBuffer);
+//             setWorkbook(workbook);
+//         }
+//         reader.readAsArrayBuffer(file);
+//     }
+//     const cleanSheet = () => {
+//         const moddedWorkbook = workbook;
+//         moddedWorkbook.removeSheet[1];
+//         moddedWorkbook.worksheets[0].splice(0, 1);
+//         setWorkbook(moddedWorkbook);
+//     }
 
-    getWorkbook();
-    cleanSheet();
-}
+//     getWorkbook();
+//     cleanSheet();
+// }
 
 export function xlsxToObjects (workbook, publisher) {
     const marvelPriceSwitch = {
@@ -79,6 +80,7 @@ export function xlsxToObjects (workbook, publisher) {
     }
     const books = [];
     const header = [];
+    const series = {};
 
     workbook.worksheets[0].getRow(1).eachCell((cell, column) => {
         header.push(cell.value);
@@ -114,6 +116,29 @@ export function xlsxToObjects (workbook, publisher) {
                 book.ProductType = categoryObj[productType];
             }
 
+            if (book.ProductType === 'Comic') { // Handle series, variant, and printing info for comics
+                book.SeriesSku = book.Sku.slice(0, 12);
+                book.IssueSku = book.Sku.slice(0, 15);
+                book.Variant = book.Sku.slice(16, 17);
+                book.Printing = book.Sku.slice(17);
+
+                if (!(book.SeriesSku in series)) {
+                    let cutIndex = -1;
+                    const hastagIndex = book.ProductName.indexOf('#') ;
+                    cutIndex = hastagIndex;
+                    if (cutIndex === -1) {
+                        cutIndex = book.ProductName.toLowerCase().indexOf('cvr');
+                    }
+                    const capitalTitle = cutIndex !== -1 ? book.ProductName.slice(0, cutIndex - 1) : book.ProductName;
+                    const words = capitalTitle.toLowerCase().split(" ");
+                    const properTitle = words.map(word => {
+                        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+                    }).join(" ");
+
+                    series[book.SeriesSku] = properTitle;
+                }
+            }
+
             if (book.Publisher === 'Marvel' && (book.ProductType ==='Comic' || book.ProductType === 'Incentive')) {
                 book.MSRP = marvelPriceSwitch[book.MSRP] ? marvelPriceSwitch[book.MSRP] : book.MSRP;
             }
@@ -127,7 +152,11 @@ export function xlsxToObjects (workbook, publisher) {
     
     const sorted = bookSort(books);
 
-    return sorted;
+    return {
+        newBooks: sorted,
+        seriesList: series,
+
+    }
 }
 
 export function doublesCheck (newBooks, oldBooks) {
