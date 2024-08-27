@@ -135,7 +135,10 @@ export function xlsxToObjects (workbook, publisher) {
                         return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
                     }).join(" ");
 
-                    series[book.SeriesSku] = properTitle;
+                    series[book.SeriesSku] = {
+                        name: properTitle,
+                        publisher: book.Publisher,
+                    }
                 }
             }
 
