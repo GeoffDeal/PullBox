@@ -17,7 +17,16 @@ const Contexts = ({children}) => {
         email: 'email@emailprovider.com',
         phone: "(709) 555-5555",
         customer: true,
-        subList: ['Batman', 'Poison Ivy', 'Shazam', 'World Finest'],
+        subList: [{
+          "skus": ["709853039754"],
+          "name": "Cowl 1964",
+          "publisher": "Image"
+        },
+        {
+          "skus": ["709853033141"],
+          "name": "Rogue Sun",
+          "publisher": "Image"
+        }],
         userID: 0,
         customerType: 'active',
         pulls: [{

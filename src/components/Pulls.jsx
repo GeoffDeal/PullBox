@@ -7,8 +7,8 @@ import { calcWeek } from "./ComicDisplay";
 function Pulls () {
     const { user, setUser } = useContext(UserContext);
 
-    const removeButton = (series) => {
-        const confirmBox = window.confirm("Are you sure you wish to remove this subscription?")
+    const removeSub = (series) => {
+        const confirmBox = window.confirm("Are you sure you wish to remove this subscription and associated pulls?")
 
         if (confirmBox === true) {
             const updatedSubs = user.subList.filter(sub => sub !== series);
@@ -42,11 +42,11 @@ function Pulls () {
             <ComicsDisplay date={ sunday }/>
             <h3>Your subscription list:</h3>
             <ul className="bookSubs">
-                {user.subList.map((series) => 
-                    <li key={series}>
+                {user.subList.map((series, index) => 
+                    <li key={index}>
                         <div className="subItem">
-                            {series}
-                            <button className="removeSeries" onClick={() => removeButton(series)}><span className="material-symbols-outlined">remove</span></button>
+                            {series.name}
+                            <button className="removeSeries" onClick={() => removeSub(series)}><span className="material-symbols-outlined">remove</span></button>
                         </div>
                     </li>)}
             </ul>
