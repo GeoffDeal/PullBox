@@ -80,7 +80,7 @@ export function xlsxToObjects (workbook, publisher) {
     }
     const books = [];
     const header = [];
-    const series = {};
+    let series = [];
 
     workbook.worksheets[0].getRow(1).eachCell((cell, column) => {
         header.push(cell.value);
@@ -122,7 +122,7 @@ export function xlsxToObjects (workbook, publisher) {
                 book.Variant = book.Sku.slice(16, 17);
                 book.Printing = book.Sku.slice(17);
 
-                if (!(book.SeriesSku in series)) {
+                if (!(series.some(obj => obj.skus.includes(book.SeriesSku)))) {
                     let cutIndex = -1;
                     const hastagIndex = book.ProductName.indexOf('#') ;
                     cutIndex = hastagIndex;
@@ -135,10 +135,14 @@ export function xlsxToObjects (workbook, publisher) {
                         return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
                     }).join(" ");
 
-                    series[book.SeriesSku] = {
+                    const seriesObj = {
+                        skus: [book.SeriesSku],
                         name: properTitle,
                         publisher: book.Publisher,
                     }
+
+                    series.push(seriesObj);
+
                 }
             }
 
@@ -155,10 +159,28 @@ export function xlsxToObjects (workbook, publisher) {
     
     const sorted = bookSort(books);
 
+    const seriesNames = series.map(series => series.name);
+    const duplicates = seriesNames.filter((title, index) => seriesNames.indexOf(title) !== index);
+    duplicates.forEach((title) => {
+        const dupIndices = series.reduce((acc, currentValue, index) => {
+            if (currentValue.name === title) {
+                acc.push(index);
+            }
+            return acc;
+        }, []); 
+
+        const skuArray = [];
+        dupIndices.forEach((indNumber) => {
+            skuArray.push(...series[indNumber].skus);
+        })
+        series[dupIndices[0]].skus = skuArray;
+        const copyIndices = dupIndices.slice(1);
+        series = series.filter((_, index) => !copyIndices.includes(index));
+    })
+
     return {
         newBooks: sorted,
         seriesList: series,
-
     }
 }
 
@@ -167,6 +189,23 @@ export function doublesCheck (newBooks, oldBooks) {
     const newSkus = new Set(newBooks.map(book => book.Sku))
     const updatedList = oldBooks.filter(book => !newSkus.has(book.Sku))
     return updatedList;
+}
+
+export function seriesDoubleCheck (newSeries, oldSeries) {
+
+    const newArray = [...oldSeries];
+
+    newSeries.forEach(newSer => {
+        const isDupe = newArray.some(oldSer => {
+            return oldSer.skus.some(num => newSer.skus.includes(num));
+        })
+    
+        if (!isDupe) {
+            newArray.push(newSer);
+        }
+    })
+
+    return newArray;
 }
 
 export const findNumber = (title) => {

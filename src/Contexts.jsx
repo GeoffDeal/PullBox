@@ -183,7 +183,7 @@ const Contexts = ({children}) => {
     })
     const [ taxRates, setTaxRates ] = useState({});
     const [ conversion, setConversion ] = useState(1);
-    const [ series, setSeries ] = useState({});
+    const [ series, setSeries ] = useState([]);
     
     return (
       <SeriesContext.Provider value={{ series, setSeries }}>

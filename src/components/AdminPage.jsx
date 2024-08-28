@@ -1,7 +1,7 @@
 import { useContext, useState, useRef } from "react";
 import { StoreInformation, ComicList, TaxRates, ConversionRate, SeriesContext} from "../Contexts";
 import ExcelJS from 'exceljs';
-import { xlsxToObjects, doublesCheck, bookSort } from "./BackendFunctions";
+import { xlsxToObjects, doublesCheck, bookSort, seriesDoubleCheck } from "./BackendFunctions";
 
 
 const AdminPage = () => {
@@ -54,10 +54,9 @@ const AdminPage = () => {
             const sortedList = bookSort(newBooks.concat(updatedList));
             setComics(sortedList);
 
-            setSeries(prev => ({
-                ...prev,
-                ...seriesList,
-            }))
+            const updatedSeries = seriesDoubleCheck(seriesList, series);
+            setSeries(updatedSeries);
+
         }
         try {
             reader.readAsArrayBuffer(file); 
