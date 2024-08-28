@@ -1,6 +1,6 @@
 import { ComicList, UserContext, ConversionRate } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { handleTitle } from "./SearchDisplay";
 import { calcWeek } from "./ComicDisplay";
 
@@ -70,6 +70,7 @@ function BookPage() {
             <div className="bookInfo">
                 <img className="bookImage" src={ book.ImageURL } alt="Comic cover" />
                 <div className="bookTextBlock">
+                    <NavLink to="/seriespage" state={{ sku: book.SeriesSku }}>Series</NavLink>
                     <p>Publisher: { book.Publisher }</p>
                     <p>{ book.ProductType }</p>
                     <p>Price: { book.MSRP }USD / ${ cadRounded }CAD</p>

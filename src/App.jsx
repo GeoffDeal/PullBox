@@ -14,6 +14,7 @@ import ShopPulls from "./components/ShopPulls";
 import BrowsePage from "./components/BrowsePage";
 import AdminPage from "./components/AdminPage";
 import StoreInfo from "./components/StoreInfo";
+import SeriesPage from "./components/SeriesPage";
 
 function App() {
 
@@ -34,6 +35,8 @@ function App() {
             <Route path="notifications" element={<Notifications />} />
             <Route path="bookpage" element={<BookPage />} />
             <Route path="customerdetails" element={<CustomerDetails />} />
+            <Route path="seriespage" element={<SeriesPage />} />
+
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
