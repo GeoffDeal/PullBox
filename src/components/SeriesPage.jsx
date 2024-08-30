@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { useLocation, NavLink } from "react-router-dom"
 import { SeriesContext, ComicList, UserContext } from "../Contexts"
-import { handleTitle } from "./SearchDisplay";
+import { handleTitle, removeIssueDoubles } from "./SearchDisplay";
 
 function SeriesPage() {
 const location = useLocation();
@@ -13,7 +13,8 @@ const seriesSku = location.state.sku;
 const currentSeries = series.find(obj => obj.skus.includes(seriesSku));
 
 const seriesBooks = comics.filter(comic => currentSeries.skus.includes(comic.SeriesSku));
-seriesBooks.sort((a, b) => b.Issue - a.Issue);
+const trimmedSeriesBooks = removeIssueDoubles(seriesBooks);
+trimmedSeriesBooks.sort((a, b) => b.Issue - a.Issue);
 
 const isSubbed = user.subList.some( (sub) => JSON.stringify(sub) === JSON.stringify(currentSeries) );
 
@@ -44,7 +45,7 @@ const addSub = (series) => {
                 <button onClick={() => {addSub(currentSeries)}}>Subscribe</button>
             }
             <div className="gridDisplay">
-                {seriesBooks.map((book) => 
+                {trimmedSeriesBooks.map((book) => 
                     <NavLink to="/bookpage" state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
                         <img src={book.ImageURL} alt="Comic Cover" />
                         <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
