@@ -119,8 +119,8 @@ export function xlsxToObjects (workbook, publisher) {
             if (book.ProductType === 'Comic') { // Handle series, variant, and printing info for comics
                 book.SeriesSku = book.Sku.slice(0, 12);
                 book.IssueSku = book.Sku.slice(0, 15);
-                book.Variant = book.Sku.slice(16, 17);
-                book.Printing = book.Sku.slice(17);
+                book.Variant = book.Sku.slice(15, 16);
+                book.Printing = book.Sku.slice(16);
 
                 if (!(series.some(obj => obj.skus.includes(book.SeriesSku)))) {
                     let cutIndex = -1;

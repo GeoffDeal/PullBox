@@ -11,9 +11,11 @@ return (
             <span className="material-symbols-outlined">visibility</span> }</button>
         {display && <table>
             <thead>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Date Added</th>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Date Added</th>
+                </tr>
             </thead>
             <tbody>
                 {customers.map((customer, index) => {

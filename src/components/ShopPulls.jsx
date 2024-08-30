@@ -175,6 +175,7 @@ const ShopPulls = () => {
                     <tr>
                         <th><button onClick={sortPublisher}>Publisher</button></th>
                         <th><button onClick={sortTitle}>Title</button></th>
+                        <th>Variant #</th>
                         <th>Customers</th>
                         <th>Total Quantity</th>
                     </tr>
@@ -184,6 +185,7 @@ const ShopPulls = () => {
                         return <tr key={ index }>
                             <td className="centeredCell">{ book.Publisher }</td>
                             <td>{ handleTitle(book.ProductName) }</td>
+                            <td>{ book.Variant } </td>
                             <td><ShopSubTable customers={ book.customersList } /></td>
                             <td className="centeredCell">{ book["Qty.Ord.OnTime"] }</td>
 
