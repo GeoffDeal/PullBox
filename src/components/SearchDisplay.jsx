@@ -15,15 +15,33 @@ export function handleTitle(name) {
     return newStr.replace(/\bDm\b/g, 'DM').replace(/\bHc\b/g, 'HC').replace(/\bTp\b/g, 'TP');
 }
 
+export const removeIssueDoubles = (bookArray) => {
+    const trimmedArray = [];
+
+    bookArray.forEach((book) => {
+        if (!(trimmedArray.some(pushedBook => pushedBook.IssueSku === book.IssueSku ))) {
+            trimmedArray.push(book);
+        } else{
+            const copyIndex = trimmedArray.findIndex(pushedBook => pushedBook.IssueSku === book.IssueSku);
+            if (book.Variant < trimmedArray[copyIndex].Variant) {
+                trimmedArray[copyIndex] = book;
+            }
+        }
+    })
+    return trimmedArray;
+}
+
 function SearchDisplay (props) {
     const bookList = props.query;
 
+    const trimmedArray = removeIssueDoubles(bookList);
+
     const [ currentPage, setCurrentPage ] = useState(1);
     const firstIndex = (currentPage - 1) * 12;
-    const displayBooks = bookList.slice(firstIndex, firstIndex + 12);
+    const displayBooks = trimmedArray.slice(firstIndex, firstIndex + 12);
 
     const pages = [];
-    for (let i = 1; i <= Math.ceil(bookList.length/12); i++) {
+    for (let i = 1; i <= Math.ceil(trimmedArray.length/12); i++) {
         pages.push(i);
     }
     const limitedPages = pages.filter(i => {
@@ -33,7 +51,7 @@ function SearchDisplay (props) {
     return (
         <div className="searchDisplay">
             <div className="gridDisplay">
-                {bookList.length > 0 ?     
+                {trimmedArray.length > 0 ?     
                     (displayBooks.map((book) => 
                         <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
                             <img src={book.ImageURL} alt="Comic Cover" />
