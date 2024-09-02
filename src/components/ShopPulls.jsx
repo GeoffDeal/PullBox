@@ -192,7 +192,7 @@ const ShopPulls = () => {
                     })}
                 </tbody>
             </table>
-            { sortConditions.dateType === 'foc' && <button onClick={() => createExcel()}>Export Pulls</button>}
+            { sortConditions.dateType === 'foc' && <button className="goldButton" onClick={() => createExcel()}>Export Pulls</button>}
         </div>
     )
 }
