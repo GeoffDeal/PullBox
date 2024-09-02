@@ -29,9 +29,9 @@ function CustomerFlyway(props) {
     }
 
     return(
-        <div className="flyawayMenu">
-            <button onClick={() => setIsOpen(!isOpen) } className="customerOptions"><span className="material-symbols-outlined">more_horiz</span></button>
-            <div ref={flywayRef} className="customerMenu" style={{display: isOpen ? 'block' : 'none'}}>
+        <div className="flyawayMenu" ref={flywayRef}>
+            <button onClick={() => setIsOpen(!isOpen) } className={`customerOptions ${isOpen && 'opened'}`}><span className="material-symbols-outlined">keyboard_arrow_down</span></button>
+            <div className="customerMenu" style={{display: isOpen ? 'block' : 'none'}}>
                 <NavLink className={'flyawayNav'} to="/customerdetails" state={{ customerID: customerId }} >Customer Details</NavLink>
                 <button>Customer Pulls</button>
                 <button onClick={() => deactivateCustomer(customerId)}>Remove Customer</button>

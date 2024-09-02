@@ -342,6 +342,14 @@ button {
 
         border: none;
         margin-right: 16px;
+
+        &.opened {
+            .material-symbols-outlined {
+                font-size: large;
+                rotate: 90deg;
+                color: @heroes-gold;
+            }
+        }
     }
 }
 
@@ -352,26 +360,24 @@ button {
         position: absolute;
         right: 58px;
         border: 0;
-        border-radius: 16px;
-        background-color: @dark-background-grey;
+        border-radius: 8px;
+        background-color: black;
         z-index: 1;
         width: 84px;
-        padding: 4px;
-        margin: 8px;
 
         button,
         .flyawayNav {
-            background-color: @heroes-purple;
+            background-color: @background-grey;
             color: whitesmoke;
             border-width: 0;
-            margin: 8px;
-            padding: 4px;
+            margin: 4px;
+            padding: 2px;
             font-size: small;
             text-decoration: none;
             border-radius: 8px;
             display: inline-block;
+            text-align: center;
         }
-
     }
 }
 
@@ -699,10 +705,19 @@ button {
     }
     .flyawayMenu {
         display: flex;
+
+        button{
+
+            &.opened {
+                .material-symbols-outlined {
+                    rotate: 270deg;
+                }
+            }
+        }
     
         .customerMenu {
             position: absolute;
-            right: -84px;
+            right: -40px;
         }
     }
 }
