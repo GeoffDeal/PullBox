@@ -188,7 +188,6 @@ const ShopPulls = () => {
                             <td>{ book.Variant } </td>
                             <td><ShopSubTable customers={ book.customersList } /></td>
                             <td className="centeredCell">{ book["Qty.Ord.OnTime"] }</td>
-
                         </tr>
                     })}
                 </tbody>

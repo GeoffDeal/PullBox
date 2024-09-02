@@ -116,7 +116,7 @@ const Contexts = ({children}) => {
         "MSRP": "$3.99",
         "Release": "2024-10-09",
         "FOCDueDate": "2024-09-09",
-        "Qty.Ord.OnTime": "",
+        "Qty.Ord.OnTime": 1,
         "Qty.Ord.Late": "",
         "ImageURL": "https://www.universaldist.com/api/v1/images/647d3bc4-7e3c-4ac2-9800-df5878476b12/raw?size=l",
         "Issue": "1",
@@ -149,7 +149,28 @@ const Contexts = ({children}) => {
         "Printing": "1",
         "Customer": { name: "James", pullDate: '16/05/2024'}
 
-      }],},
+      },
+      {
+        "ProductName": "STAR WARS: EWOKS #1 DAVID LOPEZ VARIANT",
+        "Category": "CB",
+        "ItemCode": "MRVL07240241",
+        "Sku": "75960620811100121",
+        "MSRP": "$3.99",
+        "Release": "2024-10-09",
+        "FOCDueDate": "2024-09-09",
+        "Qty.Ord.OnTime": 1,
+        "Qty.Ord.Late": "",
+        "ImageURL": "https://www.universaldist.com/api/v1/images/647d3bc4-7e3c-4ac2-9800-df5878476b12/raw?size=l",
+        "Issue": "1",
+        "Publisher": "Marvel",
+        "ProductType": "Comic",
+        "SeriesSku": "759606208111",
+        "IssueSku": "759606208111001",
+        "Variant": "2",
+        "Printing": "1",
+        "Customer": { name: "James", pullDate: '16/05/2024'}
+      }
+    ],},
       { boxNumber: 4, name: 'Mike Singer', email: 'singer@test.ca', phone: '(709) 555-8888', userID: 4, customer: true, customerType: 'active', subList: ['W0rldtr33', 'Conan'], pulls: [{
         "ProductName": "IRON MAN #1 SKOTTIE YOUNG VARIANT",
         "Category": "CB",
