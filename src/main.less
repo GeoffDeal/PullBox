@@ -132,10 +132,14 @@ button {
     flex-wrap: wrap;
     max-width: fit-content;
     width: fit-content;
+    justify-content: center;
     .bookNav{
-        width: 200px;
+        margin: 8px;
+        width: 150px;
+        img {
+            max-width: 100%;
+        }
     }
-
 
     .noComics {
         text-align: center;
@@ -630,8 +634,11 @@ button {
     }
 
     #iconBarTop {
+        height:  @barHeight + 20;
+
         nav {
             margin-top: 12px;
+            margin-right: 50px;
         }
 
         a {
@@ -653,13 +660,10 @@ button {
     }
 
     .gridDisplay {
-        // margin-top: 16px;
-        // border-radius: 16px;
-        // display: grid;
-        // grid-template-columns: repeat(6, 1fr);
-        // gap: 8px;
-        // padding: 8px;
-
+        justify-content: left;
+        .bookNav{
+            width: 200px;
+        }
         img {
             width: 90%;
             // margin: px;
