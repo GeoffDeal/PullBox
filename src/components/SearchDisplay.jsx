@@ -36,12 +36,13 @@ function SearchDisplay (props) {
 
     const trimmedArray = removeIssueDoubles(bookList);
 
+    const booksPerPage = 20;
     const [ currentPage, setCurrentPage ] = useState(1);
-    const firstIndex = (currentPage - 1) * 12;
-    const displayBooks = trimmedArray.slice(firstIndex, firstIndex + 12);
+    const firstIndex = (currentPage - 1) * booksPerPage;
+    const displayBooks = trimmedArray.slice(firstIndex, firstIndex + booksPerPage);
 
     const pages = [];
-    for (let i = 1; i <= Math.ceil(trimmedArray.length/12); i++) {
+    for (let i = 1; i <= Math.ceil(trimmedArray.length/booksPerPage); i++) {
         pages.push(i);
     }
     const limitedPages = pages.filter(i => {
@@ -53,7 +54,7 @@ function SearchDisplay (props) {
             <div className="gridDisplay">
                 {trimmedArray.length > 0 ?     
                     (displayBooks.map((book) => 
-                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
+                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode} className={'bookNav'}>
                             <img src={book.ImageURL} alt="Comic Cover" />
                             <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
                         </NavLink>))

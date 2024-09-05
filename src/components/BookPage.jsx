@@ -15,7 +15,9 @@ function BookPage() {
     const itemCode = location.state.itemCode;
     const book = comics.find(comic => comic.ItemCode === itemCode);
 
-    const variantList = comics.filter(comic => comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku);
+    const variantList = book.ProductType === 'Comic' ? 
+        comics.filter(comic => comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku) 
+        : null;
 
     const cadPrice = parseFloat(book.MSRP.replace('$', '')) * conversion;
     const cadRounded = cadPrice.toFixed(2);
@@ -97,8 +99,8 @@ function BookPage() {
             <div className="variantDisplay">
                 <h3>Variant Covers:</h3>
                 <div className="gridDisplay">
-                    {variantList.map((book) => 
-                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
+                    {variantList && variantList.map((book) => 
+                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode} className={'bookNav'}>
                             <img src={book.ImageURL} alt="Comic Cover" />
                         </NavLink>)}
                 </div>

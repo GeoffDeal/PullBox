@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { useLocation, NavLink } from "react-router-dom"
 import { SeriesContext, ComicList, UserContext } from "../Contexts"
 import { handleTitle, removeIssueDoubles } from "./SearchDisplay";
