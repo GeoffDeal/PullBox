@@ -26,28 +26,30 @@ function Notifications () {
     return (
         <div className="notificationPage pageDisplay">
             <h1>Notifications</h1>
-            { !user.customer && <div className="messageInput">
-                <form onSubmit={messageSubmit}>
-                    <input 
-                        type="text" 
-                        id="titleInput"
-                        placeholder="Message Title"
-                        name="title"
-                        onChange={handleChange}>
-                    </input>
-                    <textarea 
-                        rows={5} 
-                        cols={32} 
-                        id="bodyInput"
-                        name="body"
-                        onChange={handleChange}></textarea>
-                    <input type="submit" value="Post Message" className="submitButton" />
-                </form>
-            </div> }
-            <div className="messageBox">
-                {messages.map((message, index) => (
-                    <Message key={ index } title={ message.title } date={ message.date } body={ message.body} id={message.id} />
-                ))}
+            <div className="notificationContainer">
+                { !user.customer && <div className="messageInput">
+                    <form onSubmit={messageSubmit}>
+                        <input 
+                            type="text" 
+                            id="titleInput"
+                            placeholder="Message Title"
+                            name="title"
+                            onChange={handleChange}>
+                        </input>
+                        <textarea 
+                            rows={5} 
+                            cols={32} 
+                            id="bodyInput"
+                            name="body"
+                            onChange={handleChange}></textarea>
+                        <input type="submit" value="Post Message" className="submitButton" />
+                    </form>
+                </div> }
+                <div className="messageBox">
+                    {messages.map((message, index) => (
+                        <Message key={ index } title={ message.title } date={ message.date } body={ message.body} id={message.id}/>
+                    ))}
+                </div>
             </div>
         </div>
     ) 

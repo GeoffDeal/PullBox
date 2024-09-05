@@ -229,14 +229,17 @@ button {
     margin-bottom: 0;
 }
 
+
+
 .messageContainer {
     background-color: @dark-background-grey;
     color: whitesmoke;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     padding: 4px;
     border-radius: 24px;
     position: relative;
-
+    display: block;
+    box-shadow:  4px 2px 2px @heroes-purple;
     .deleteMessage {
         color: whitesmoke;
         background: none;
@@ -279,6 +282,8 @@ button {
     background-color: @dark-background-grey;
     color: whitesmoke;
     margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 16px;
     border-radius: 24px;
 
@@ -665,8 +670,18 @@ button {
         margin: 32px;
     }
 
+    .notificationPage{
+        width: 70%;
+    }
     .messageBox{
         width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .messageInput {
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .bookInfo {
