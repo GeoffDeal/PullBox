@@ -481,6 +481,19 @@ button {
 }
 
 .adminPage {
+    input {
+        margin: 4px;
+    }
+
+    button, input[type="submit"] {
+        color: @dark-background-grey;
+        background-color: @heroes-gold;
+        border-radius: 4px;
+        border: none;
+        padding: 4px;
+        margin: 8px;
+    }
+    
     form {
         p {
             margin: 4px;
@@ -504,6 +517,14 @@ button {
 
         input {
             width: 60px;
+        }
+    }
+
+    #storeInfoForm{
+        .infoBlock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
     }
 

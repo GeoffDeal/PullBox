@@ -149,25 +149,31 @@ const AdminPage = () => {
             <div className="fullscreenFlex">
                 <div className="fullscreenDiv">
                     <h3>Change Store Info</h3>
-                        <form onSubmit={storeUpdate}>
-                            <label htmlFor="phoneInput">Phone: </label>
-                            <input 
-                                id="phoneInput"
-                                type="tel"
-                                onChange={phoneChange}
-                            /> <br />
-                            <label htmlFor="addressInput">Address: </label>
-                            <input 
-                                id="addressInput"
-                                type="text"
-                                onChange={addressChange}
-                            /> <br />
-                            <label htmlFor="emailInput">Email: </label>
-                            <input 
-                                id="emailInput"
-                                type="text"
-                                onChange={emailChange}
-                            /> <br />
+                        <form onSubmit={storeUpdate} id="storeInfoForm">
+                            <div className="infoBlock">
+                                <label htmlFor="phoneInput">Phone: </label>
+                                <input 
+                                    id="phoneInput"
+                                    type="tel"
+                                    onChange={phoneChange}
+                                /> 
+                            </div>
+                            <div className="infoBlock">
+                                <label htmlFor="addressInput">Address: </label>
+                                <input 
+                                    id="addressInput"
+                                    type="text"
+                                    onChange={addressChange}
+                                />
+                            </div>
+                            <div className="infoBlock">
+                                <label htmlFor="emailInput">Email: </label>
+                                <input 
+                                    id="emailInput"
+                                    type="text"
+                                    onChange={emailChange}
+                                />
+                            </div>
                             <button type="submit">Update</button>
                         </form>
                     <h3>Change Store Hours</h3>
