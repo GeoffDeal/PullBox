@@ -6,7 +6,7 @@ import { xlsxToObjects, doublesCheck, bookSort, seriesDoubleCheck } from "./Back
 
 const AdminPage = () => {
     const { storeInfo, setStoreInfo } = useContext(StoreInformation);
-    const [ file, setFile ] = useState('');
+    const [ files, setFiles ] = useState('');
     const [ phone, setPhone ] = useState('');
     const [ address, setAddress ] = useState('');
     const [ email, setEmail ] = useState('');
@@ -18,57 +18,81 @@ const AdminPage = () => {
 
     //Hand importing excel sheets
     const fileChange = (event) => {
-        setFile(event.target.files[0])
+        setFiles(event.target.files);
     }
-    const handleImport = (event) => {
+    const handleImport = async (event) => {
         event.preventDefault();
     
-        const reader = new FileReader();
-    
-        reader.onload = async (e) => {
-            const arrayBuffer = e.target.result;
-            const workbook = new ExcelJS.Workbook();
-            try {
-            await workbook.xlsx.load(arrayBuffer); 
-            }
-            catch (error){
-                console.log(error);
-                setUploadMessage(`There was a problem with the upload`);
-                setTimeout(() => {
-                    setUploadMessage('')
-                }, 10000);
-                return;
-            }
-            
-            workbook.removeWorksheet(2); //Clear useless sheets and rows
-            workbook.worksheets[0].spliceRows(1, 1);
+        const booksArray = [];
+        const seriesArray = [];
+        const filePromises = [];
 
-            const worksheetName = workbook.worksheets[0].name;
-            const firstCut = worksheetName.indexOf('(') + 1;
-            const secondCut = worksheetName.indexOf(' ', firstCut);
-            const publisherName = worksheetName.slice(firstCut, secondCut).toLocaleLowerCase();
-            const capitalName = publisherName.charAt(0).toLocaleUpperCase() + publisherName.slice(1);
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
 
-            const { newBooks, seriesList } = xlsxToObjects(workbook, capitalName);
-            const updatedList = doublesCheck(newBooks, comics);
-            const sortedList = bookSort(newBooks.concat(updatedList));
-            setComics(sortedList);
+            const filePromise = new Promise ((resolve, reject) => {
 
-            const updatedSeries = seriesDoubleCheck(seriesList, series);
-            setSeries(updatedSeries);
+                reader.onload = async (e) => {
+                    const arrayBuffer = e.target.result;
+                    const workbook = new ExcelJS.Workbook();
+                    try {
+                    await workbook.xlsx.load(arrayBuffer); 
+                    }
+                    catch (error){
+                        console.log(error);
+                        setUploadMessage(`There was a problem with the upload`);
+                        setTimeout(() => {
+                            setUploadMessage('')
+                        }, 10000);
+                        return;
+                    }
+                    
+                    workbook.removeWorksheet(2); //Clear useless sheets and rows
+                    workbook.worksheets[0].spliceRows(1, 1);
+        
+                    const worksheetName = workbook.worksheets[0].name;
+                    const firstCut = worksheetName.indexOf('(') + 1;
+                    const secondCut = worksheetName.indexOf(' ', firstCut);
+                    const publisherName = worksheetName.slice(firstCut, secondCut).toLocaleLowerCase();
+                    const capitalName = publisherName.charAt(0).toLocaleUpperCase() + publisherName.slice(1);
+        
+                    const { newBooks, seriesList } = xlsxToObjects(workbook, capitalName);
+                    booksArray.push(...newBooks);
+                    seriesArray.push(...seriesList);
 
+                    resolve();
+                    // const updatedList = doublesCheck(newBooks, comics);
+                    // const sortedList = bookSort(newBooks.concat(updatedList));
+                    // setComics(sortedList);
+        
+                    // const updatedSeries = seriesDoubleCheck(seriesList, series);
+                    // setSeries(updatedSeries);
+        
+                }
+                try {
+                    reader.readAsArrayBuffer(files[i]); 
+                }
+                catch(error) {
+                    console.log(error);
+                    setUploadMessage(`There was a problem with the upload`);
+                    setTimeout(() => {
+                        setUploadMessage('')
+                    }, 10000);
+                    reject(error);
+                }
+            });
+            filePromises.push(filePromise);
         }
-        try {
-            reader.readAsArrayBuffer(file); 
-        }
-        catch(error) {
-            console.log(error);
-            setUploadMessage(`There was a problem with the upload`);
-            setTimeout(() => {
-                setUploadMessage('')
-            }, 10000);
-            return;
-        }
+
+        await Promise.all(filePromises);
+
+        const updatedList = doublesCheck(booksArray, comics);
+        const sortedList = bookSort(booksArray.concat(updatedList));
+        setComics(sortedList);
+
+        const updatedSeries = seriesDoubleCheck(seriesArray, series);
+        setSeries(updatedSeries);
+
         
         inputRef.current.value = '';
         setUploadMessage('Uploaded!');
@@ -140,7 +164,7 @@ const AdminPage = () => {
                 <h3>Import Universal Files</h3>
                 <div className="fullscreenFlex" id="fileImport">
                     <form onSubmit={handleImport} >
-                        <input type="file" onChange={fileChange} ref={inputRef}/>
+                        <input type="file" onChange={fileChange} ref={inputRef} multiple/>
                         <input type="submit" value="Upload" />
                     </form>
                     <p id="uploadMessage">{ uploadMessage }</p>
