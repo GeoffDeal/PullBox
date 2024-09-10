@@ -19,13 +19,17 @@ export const removeIssueDoubles = (bookArray) => {
     const trimmedArray = [];
 
     bookArray.forEach((book) => {
-        if (!(trimmedArray.some(pushedBook => pushedBook.IssueSku === book.IssueSku ))) {
-            trimmedArray.push(book);
-        } else{
-            const copyIndex = trimmedArray.findIndex(pushedBook => pushedBook.IssueSku === book.IssueSku);
-            if (book.Variant < trimmedArray[copyIndex].Variant) {
-                trimmedArray[copyIndex] = book;
+        if (book.ProductType === 'Comic') {
+            if (!(trimmedArray.some(pushedBook => pushedBook.IssueSku === book.IssueSku ))) {
+                trimmedArray.push(book);
+            } else{
+                const copyIndex = trimmedArray.findIndex(pushedBook => pushedBook.IssueSku === book.IssueSku);
+                if (book.Variant < trimmedArray[copyIndex].Variant) {
+                    trimmedArray[copyIndex] = book;
+                }
             }
+        } else {
+            trimmedArray.push(book);
         }
     })
     return trimmedArray;

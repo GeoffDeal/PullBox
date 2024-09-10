@@ -103,7 +103,6 @@ const BrowsePage = () => {
             </select>
             {searchParams.get('timeframe') !== 'none' && <WeekSelect onDataPass={queryChange} />}
             <SearchDisplay query={ searchedBooks } />
-            <button onClick={() => console.log(searchParams)}>Push Me</button>
         </div>
     )
 }
