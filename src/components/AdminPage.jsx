@@ -61,13 +61,6 @@ const AdminPage = () => {
                     seriesArray.push(...seriesList);
 
                     resolve();
-                    // const updatedList = doublesCheck(newBooks, comics);
-                    // const sortedList = bookSort(newBooks.concat(updatedList));
-                    // setComics(sortedList);
-        
-                    // const updatedSeries = seriesDoubleCheck(seriesList, series);
-                    // setSeries(updatedSeries);
-        
                 }
                 try {
                     reader.readAsArrayBuffer(files[i]); 

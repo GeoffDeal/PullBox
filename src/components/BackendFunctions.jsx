@@ -1,5 +1,4 @@
 import ExcelJS from 'exceljs';
-import { useState, useContext } from 'react';
 
 
 export const categoryObj = { // Translate from category/sort column of excel

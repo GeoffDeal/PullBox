@@ -20,7 +20,7 @@ function App() {
 
   return (
     <Contexts>
-      <BrowserRouter>
+      <BrowserRouter basename="/PullBox">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
