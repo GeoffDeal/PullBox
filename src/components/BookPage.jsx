@@ -15,20 +15,29 @@ function BookPage() {
     const itemCode = location.state.itemCode;
     const book = comics.find(comic => comic.ItemCode === itemCode);
 
-    const variantList = book.ProductType === 'Comic' ? 
-        comics.filter(comic => comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku) 
-        : null;
+    let variantList = null;
+    let cadRounded = null;
+    let formattedRelease = null;
+    let formattedFoc = null;
+    let afterFoc = null;
+    let currentDate = null;
 
-    const cadPrice = parseFloat(book.MSRP.replace('$', '')) * conversion;
-    const cadRounded = cadPrice.toFixed(2);
-
-    const currentDate = new Date();
-    const dateOptions = {day: '2-digit', month: 'short', year: 'numeric'};
-    const release = new Date(book.Release);
-    const foc = new Date(book.FOCDueDate);
-    const formattedRelease = release.toLocaleDateString('en-GB', dateOptions);
-    const formattedFoc = foc.toLocaleDateString('en-GB', dateOptions);
-    const afterFoc  = calcWeek(book.FOCDueDate) <= calcWeek(currentDate) ? true : false;
+    if (book) {
+        variantList = book.ProductType === 'Comic' ? 
+            comics.filter(comic => comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku) 
+            : null;
+    
+        const cadPrice = parseFloat(book.MSRP.replace('$', '')) * conversion;
+        cadRounded = cadPrice.toFixed(2);
+    
+        currentDate = new Date();
+        const dateOptions = {day: '2-digit', month: 'short', year: 'numeric'};
+        const release = new Date(book.Release);
+        const foc = new Date(book.FOCDueDate);
+        formattedRelease = release.toLocaleDateString('en-GB', dateOptions);
+        formattedFoc = foc.toLocaleDateString('en-GB', dateOptions);
+        afterFoc  = calcWeek(book.FOCDueDate) <= calcWeek(currentDate) ? true : false;
+    }
 
     useEffect(() => {
         if (book) {
@@ -70,42 +79,45 @@ function BookPage() {
 
     return (
         <div className="bookPage pageDisplay">
-            <h1>{ handleTitle(book.ProductName) }</h1>
-            <div className="bookInfo">
-                <img className="bookImage" src={ book.ImageURL } alt="Comic cover" />
-                <div className="bookTextBlock">
-                    {book.ProductType === 'Comic' && <NavLink to="/seriespage" state={{ sku: book.SeriesSku }}>Series</NavLink>}
-                    <p>Publisher: { book.Publisher }</p>
-                    <p>{ book.ProductType }</p>
-                    <p>Price: { book.MSRP }USD / ${ cadRounded }CAD</p>
-                    <p>Release Date: { formattedRelease }</p>
-                    <p>Final order cutoff: { formattedFoc }</p>
-                    {calcWeek(book.Release) > calcWeek(currentDate) && 
-                        <div>
-                            <div className="pullDiv">
-                                {!user.pulls.some(comic => comic.Sku === book.Sku) && <button className={ `pullButton ${afterFoc ? 'afterFoc' : 'beforeFoc' }`} onClick={pullBook}>Pull</button>}
-                                {user.pulls.some(comic => comic.Sku === book.Sku) && 
-                                    <div><p>Pulled!</p>
-                                        <label>Number of copies:</label>
-                                        <input type="number" onChange={pullQuantity} value={quantity}/>
-                                    </div>}
+            {book ? <div>
+                <h1>{ handleTitle(book.ProductName) }</h1>
+                <div className="bookInfo">
+                    <img className="bookImage" src={ book.ImageURL } alt="Comic cover" />
+                    <div className="bookTextBlock">
+                        {book.ProductType === 'Comic' && <NavLink to="/seriespage" state={{ sku: book.SeriesSku }}>Series</NavLink>}
+                        <p>Publisher: { book.Publisher }</p>
+                        <p>{ book.ProductType }</p>
+                        <p>Price: { book.MSRP }USD / ${ cadRounded }CAD</p>
+                        <p>Release Date: { formattedRelease }</p>
+                        <p>Final order cutoff: { formattedFoc }</p>
+                        {calcWeek(book.Release) > calcWeek(currentDate) && 
+                            <div>
+                                <div className="pullDiv">
+                                    {!user.pulls.some(comic => comic.Sku === book.Sku) && <button className={ `pullButton ${afterFoc ? 'afterFoc' : 'beforeFoc' }`} onClick={pullBook}>Pull</button>}
+                                    {user.pulls.some(comic => comic.Sku === book.Sku) && 
+                                        <div><p>Pulled!</p>
+                                            <label>Number of copies:</label>
+                                            <input type="number" onChange={pullQuantity} value={quantity}/>
+                                        </div>}
+                                </div>
+                                {user.pulls.some(comic => comic.Sku === book.Sku) && <button className="pullButton beforeFoc" onClick={removePull}>Remove</button>}
+                                {afterFoc && <p>It is after the final order cutoff, you will receive this book based on availablity</p>}
                             </div>
-                            {user.pulls.some(comic => comic.Sku === book.Sku) && <button className="pullButton beforeFoc" onClick={removePull}>Remove</button>}
-                            {afterFoc && <p>It is after the final order cutoff, you will receive this book based on availablity</p>}
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
-            <div className="variantDisplay">
-                <h3>Variant Covers:</h3>
-                <div className="gridDisplay">
-                    {variantList && variantList.map((book) => 
-                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode} className={'bookNav'}>
-                            <img src={book.ImageURL} alt="Comic Cover" />
-                        </NavLink>)}
+                <div className="variantDisplay">
+                    <h3>Variant Covers:</h3>
+                    <div className="gridDisplay">
+                        {variantList && variantList.map((book) => 
+                            <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode} className={'bookNav'}>
+                                <img src={book.ImageURL} alt="Comic Cover" />
+                            </NavLink>)}
+                    </div>
                 </div>
-            </div>
-            <button onClick={() => {console.log(book)}}>Push Me</button>
+                <button onClick={() => {console.log(book)}}>Push Me</button>
+            </div> :
+            <h3>Book not found</h3>}
         </div>
     )
 }

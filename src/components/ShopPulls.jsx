@@ -1,10 +1,11 @@
-import { createElement, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CustomersContext } from "../Contexts";
 import WeekSelect from "./WeekSelect";
 import { calcWeek } from "./ComicDisplay";
 import { handleTitle } from "./SearchDisplay";
 import ShopSubTable from "./ShopSubTable";
 import ExcelJS from 'exceljs';
+import { NavLink } from "react-router-dom";
 
 const ShopPulls = () => {
     const { customers } = useContext(CustomersContext);
@@ -184,7 +185,7 @@ const ShopPulls = () => {
                     {sortedPulls && sortedPulls.map((book, index) => {
                         return <tr key={ index }>
                             <td className="centeredCell">{ book.Publisher }</td>
-                            <td>{ handleTitle(book.ProductName) }</td>
+                            <td><NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode} className={'bookNav'}>{ handleTitle(book.ProductName) }</NavLink></td>
                             <td>{ book.Variant } </td>
                             <td><ShopSubTable customers={ book.customersList } /></td>
                             <td className="centeredCell">{ book["Qty.Ord.OnTime"] }</td>
