@@ -37,20 +37,21 @@ const addSub = (series) => {
 }
 
     return (
-        <div className="pageDisplay">
+        <div className="pageDisplay seriesPage">
             <h1>{ currentSeries.name }</h1>
             <h3>{ currentSeries.publisher }</h3>
             {isSubbed ? 
-                <button onClick={() => {removeSub(currentSeries)}}>Unsubscribe</button> : 
-                <button onClick={() => {addSub(currentSeries)}}>Subscribe</button>
+                <button className="goldButton" onClick={() => {removeSub(currentSeries)}}>Unsubscribe</button> : 
+                <button className="goldButton" onClick={() => {addSub(currentSeries)}}>Subscribe</button>
             }
             <div className="gridDisplay">
                 {trimmedSeriesBooks.map((book) => 
-                    <NavLink to="/bookpage" state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
+                    <NavLink className='bookNav' to="/bookpage" state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
                         <img src={book.ImageURL} alt="Comic Cover" />
                         <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
                     </NavLink>)}
             </div>
+            <button onClick={()=>console.log(currentSeries)}>Push Me</button>
         </div>
     )
 }

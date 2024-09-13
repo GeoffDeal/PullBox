@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
 import { CustomersContext } from "../Contexts";
+import { NavLink } from "react-router-dom";
 
 function CustomerDetails() {
     const { customers, setCustomers } = useContext(CustomersContext);
@@ -44,9 +45,9 @@ function CustomerDetails() {
             {customer.subList ? 
                 <ul className="bookSubs">
                     {customer.subList.map((series) => 
-                        <li key={series}>
+                        <li key={series.skus[0]}>
                             <div className="subItem">
-                                {series}
+                                <NavLink to="/seriespage" state={{ sku: series.skus[0] }}>{series.name}</NavLink>
                             </div>
                         </li>)}
                 </ul>
