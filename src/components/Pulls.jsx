@@ -1,11 +1,16 @@
 import { useContext, useState, useEffect } from "react";
-import { UserContext } from "../Contexts";
+import { UserContext, CustomersContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import WeekSelect from "./WeekSelect";
 import { calcWeek } from "./ComicDisplay";
+import { useLocation } from "react-router-dom";
 
 function Pulls () {
     const { user, setUser } = useContext(UserContext);
+    const { customers } = useContext(CustomersContext);
+    const location = useLocation();
+    const customerID = location.state ? location.state.customerID : null;
+    const currentUser = customerID ? customers.find(user => user.userID === customerID) : user;
 
     const removeSub = (series) => {
         const confirmBox = window.confirm("Are you sure you wish to remove this subscription and associated pulls?")
@@ -36,17 +41,17 @@ function Pulls () {
     return (
         <div className="pageDisplay">
             <h1>Pulls and Subs</h1>
-            <h3>Your pulls for the week of</h3>
+            <h3>{customerID ? currentUser.name + `'s` : 'Your'} pulls for the week of</h3>
             <WeekSelect onDataPass={setSunday} />
 
-            <ComicsDisplay date={ sunday }/>
-            <h3>Your subscription list:</h3>
+            <ComicsDisplay date={ sunday } id={customerID}/>
+            <h3>{customerID ? currentUser.name + `'s` : 'Your'} subscription list:</h3>
             <ul className="bookSubs">
-                {user.subList.map((series, index) => 
+                {currentUser.subList.map((series, index) => 
                     <li key={index}>
                         <div className="subItem">
                             {series.name}
-                            <button className="removeSeries" onClick={() => removeSub(series)}><span className="material-symbols-outlined">remove</span></button>
+                            {!customerID && <button className="removeSeries" onClick={() => removeSub(series)}><span className="material-symbols-outlined">remove</span></button>}
                         </div>
                     </li>)}
             </ul>

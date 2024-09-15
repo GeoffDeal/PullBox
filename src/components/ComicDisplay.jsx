@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext, TaxRates, ConversionRate } from "../Contexts";
+import { UserContext, TaxRates, ConversionRate, CustomersContext } from "../Contexts";
 import { NavLink } from "react-router-dom";
 
 
@@ -13,11 +13,12 @@ export function calcWeek (date) {
 
 function ComicsDisplay (props) {
     const { user } = useContext(UserContext);
+    const { customers } = useContext(CustomersContext);
     const targetWeek = props.date;
     const { taxRates } = useContext(TaxRates);
     const { conversion } = useContext(ConversionRate);
-
-    const weeksPulls = user.pulls.filter(pull => calcWeek(pull.Release) === targetWeek);
+    const currentUser = props.id ? customers.find(user => user.userID === props.id) : user;
+    const weeksPulls = currentUser.pulls.filter(pull => calcWeek(pull.Release) === targetWeek);
 
     const totalCost = () => {
         const productSorted = weeksPulls.reduce((acc, product) => {
@@ -42,7 +43,7 @@ function ComicsDisplay (props) {
         })
         return total.toFixed(2);
 
-    }
+    };
 
     return (
         <div className="bookDisplay">
