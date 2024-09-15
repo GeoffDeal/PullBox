@@ -3,7 +3,7 @@ import { UserContext, CustomersContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import WeekSelect from "./WeekSelect";
 import { calcWeek } from "./ComicDisplay";
-import { useLocation } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 
 function Pulls () {
     const { user, setUser } = useContext(UserContext);
@@ -50,7 +50,8 @@ function Pulls () {
                 {currentUser.subList.map((series, index) => 
                     <li key={index}>
                         <div className="subItem">
-                            {series.name}
+                            <NavLink to="/seriespage" state={{ sku: series.skus[0] }}>{series.name}</NavLink>
+
                             {!customerID && <button className="removeSeries" onClick={() => removeSub(series)}><span className="material-symbols-outlined">remove</span></button>}
                         </div>
                     </li>)}
