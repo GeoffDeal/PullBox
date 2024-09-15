@@ -12,11 +12,17 @@ const { user, setUser } = useContext(UserContext);
 const seriesSku = location.state.sku;
 const currentSeries = series.find(obj => obj.skus.includes(seriesSku));
 
-const seriesBooks = comics.filter(comic => currentSeries.skus.includes(comic.SeriesSku));
-const trimmedSeriesBooks = removeIssueDoubles(seriesBooks);
-trimmedSeriesBooks.sort((a, b) => b.Issue - a.Issue);
+let seriesBooks =null;
+let trimmedSeriesBooks = null;
+let isSubbed = null;
+if (currentSeries) {
+    seriesBooks = comics.filter(comic => currentSeries.skus.includes(comic.SeriesSku));
+    trimmedSeriesBooks = removeIssueDoubles(seriesBooks);
+    trimmedSeriesBooks.sort((a, b) => b.Issue - a.Issue);
+    
+    isSubbed = user.subList.some( (sub) => JSON.stringify(sub) === JSON.stringify(currentSeries) );
+}
 
-const isSubbed = user.subList.some( (sub) => JSON.stringify(sub) === JSON.stringify(currentSeries) );
 
 const removeSub = (series) => {
     const confirmBox = window.confirm("Are you sure you wish to remove this subscription and associated pulls?")
@@ -38,20 +44,23 @@ const addSub = (series) => {
 
     return (
         <div className="pageDisplay seriesPage">
-            <h1>{ currentSeries.name }</h1>
-            <h3>{ currentSeries.publisher }</h3>
-            {isSubbed ? 
-                <button className="goldButton" onClick={() => {removeSub(currentSeries)}}>Unsubscribe</button> : 
-                <button className="goldButton" onClick={() => {addSub(currentSeries)}}>Subscribe</button>
-            }
-            <div className="gridDisplay">
-                {trimmedSeriesBooks.map((book) => 
-                    <NavLink className='bookNav' to="/bookpage" state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
-                        <img src={book.ImageURL} alt="Comic Cover" />
-                        <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
-                    </NavLink>)}
-            </div>
-            <button onClick={()=>console.log(currentSeries)}>Push Me</button>
+            {currentSeries ? <div>
+                <h1>{ currentSeries.name }</h1>
+                <h3>{ currentSeries.publisher }</h3>
+                {isSubbed ? 
+                    <button className="goldButton" onClick={() => {removeSub(currentSeries)}}>Unsubscribe</button> : 
+                    <button className="goldButton" onClick={() => {addSub(currentSeries)}}>Subscribe</button>
+                }
+                <div className="gridDisplay">
+                    {trimmedSeriesBooks.map((book) => 
+                        <NavLink className='bookNav' to="/bookpage" state={{ itemCode: book.ItemCode }} key={book.ItemCode}>
+                            <img src={book.ImageURL} alt="Comic Cover" />
+                            <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
+                        </NavLink>)}
+                </div>
+                <button onClick={()=>console.log(currentSeries)}>Push Me</button>
+            </div> :
+            <h3>Series not found</h3>}
         </div>
     )
 }
