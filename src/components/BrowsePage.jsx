@@ -97,7 +97,6 @@ const BrowsePage = () => {
                 <option value={'Comic'}>Comics</option>
                 <option value={'Trade Paperback'}>Trade Paperbacks</option>
                 <option value={'Hardcover'}>Hardcovers</option>
-                {/* <option value={'Omnibus'}>Omnibuses</option> */}
                 <option value={'Graphic Novel'}>Graphic Novels</option>
                 <option value={'Poster'}>Posters</option>
                 <option value={'All'}>All</option>

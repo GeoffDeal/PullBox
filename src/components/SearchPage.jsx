@@ -1,6 +1,6 @@
 import { ComicList } from "../Contexts";
 import SearchDisplay from "./SearchDisplay"
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 
 function SearchPage () {

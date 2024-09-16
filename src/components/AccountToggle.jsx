@@ -5,7 +5,7 @@ function AccountToggle(props) {
     const label = props.label;
     const userValue = props.value;
     const [toggle, setToggle] = useState(false);
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const [inputValue, setInputValue] = useState(userValue);
 
     const userSubmit = (event) => {

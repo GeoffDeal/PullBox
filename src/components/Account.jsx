@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../Contexts";
 import AccountToggle from "./AccountToggle";
 

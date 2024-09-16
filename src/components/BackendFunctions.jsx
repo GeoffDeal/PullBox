@@ -32,31 +32,6 @@ export const categoryObj = { // Translate from category/sort column of excel
     TAGS: 'Remove',
 }
 
-// const handleImport = (event) => {
-//     event.preventDefault();
-
-//     const [workbook, setWorkbook] = useState();
-//     const getWorkbook = () => {
-//         const reader = new FileReader();
-    
-//         reader.onload = async (e) => {
-//             const arrayBuffer = e.target.result;
-//             const workbook = new ExcelJS.Workbook();
-//             await workbook.xlsx.load(arrayBuffer);
-//             setWorkbook(workbook);
-//         }
-//         reader.readAsArrayBuffer(file);
-//     }
-//     const cleanSheet = () => {
-//         const moddedWorkbook = workbook;
-//         moddedWorkbook.removeSheet[1];
-//         moddedWorkbook.worksheets[0].splice(0, 1);
-//         setWorkbook(moddedWorkbook);
-//     }
-
-//     getWorkbook();
-//     cleanSheet();
-// }
 
 export function xlsxToObjects (workbook, publisher) {
     const marvelPriceSwitch = {
