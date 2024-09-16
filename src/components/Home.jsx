@@ -2,10 +2,12 @@ import { ComicList, UserContext, CustomersContext, ConversionRate } from "../Con
 import ComicsDisplay, { calcWeek } from "./ComicDisplay";
 import { useContext, useEffect, useState } from "react";
 import SearchDisplay from "./SearchDisplay";
+import { useSearchParams } from "react-router-dom";
 
 function Home () {
     const { user } = useContext(UserContext);
     const { comics } = useContext(ComicList);
+    const [ searchParams, setSearchParams ] = useSearchParams();
 
     const now = new Date();
     const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -40,6 +42,17 @@ function Home () {
         setExpectedIncome(totalRounded);
     }, [weeksBooks])
 
+    const pageChange = (pageNumber) => {
+        const page = searchParams.get('page');
+        if (Number(page) !== pageNumber) {
+        setSearchParams(prev => {
+            const updatedParams = new URLSearchParams(prev);
+            updatedParams.set('page', pageNumber);
+            return updatedParams;
+        });
+        }
+    }
+
 
     return (
         <div className="pageDisplay">
@@ -55,7 +68,7 @@ function Home () {
                 <p>Expected income from pulls: ${ expectedIncome }</p>
             </div>}
             <h3>Upcoming FOCs. Last chance!</h3>
-            <SearchDisplay query={ focComics }/>
+            <SearchDisplay query={ focComics } onPageChange={pageChange} defaultPage={searchParams.get('page')} />
 
         </div>
     )
