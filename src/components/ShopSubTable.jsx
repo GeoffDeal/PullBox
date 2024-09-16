@@ -25,6 +25,7 @@ const ShopSubTable = ({ customers }) => {
             {display && <table className="customerTable">
                 <thead>
                     <tr>
+                        <th>Box Number</th>
                         <th>Name</th>
                         <th>Amount</th>
                         <th>Date Added</th>
@@ -33,6 +34,7 @@ const ShopSubTable = ({ customers }) => {
                 <tbody>
                     {customers.map((customer, index) => {
                         return <tr key={ index }>
+                            <td>{ customer.boxNumber }</td>
                             <td>{ customer.name }</td>
                             <td>{ customer.Quantity }</td>
                             <td>{ customer.pullDate }</td>

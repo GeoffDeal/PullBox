@@ -48,6 +48,7 @@ function BookPage() {
     const pullBook = () => {
         const pullDate = new Date();
         const customerInfo = {
+            boxNumber: user.boxNumber,
             name: user.name,
             pullDate: pullDate,
         }
