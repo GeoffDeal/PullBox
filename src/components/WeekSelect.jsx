@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { calcWeek } from "./ComicDisplay";
 
-const WeekSelect = ({ onDataPass }) => {
+const WeekSelect = ({ onDataPass, defaultTime }) => {
     const now = new Date();
     const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
 
-    const [ sunday, setSunday ] = useState(lastSunday);
+    const defaultSunday = defaultTime ? new Date(Number(defaultTime)) : null;
+
+    const [ sunday, setSunday ] = useState(defaultTime ? defaultSunday : lastSunday);
     const futureWeek = () => {
         const day = new Date (sunday);
         day.setDate(sunday.getDate() + 7);

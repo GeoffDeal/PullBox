@@ -101,7 +101,7 @@ const BrowsePage = () => {
                 <option value={'Boom!'}>BOOM!</option>
                 <option value={'Dynamite'}>Dynamite</option>
             </select>
-            {searchParams.get('timeframe') !== 'none' && <WeekSelect onDataPass={queryChange} />}
+            {searchParams.get('timeframe') !== 'none' && <WeekSelect onDataPass={queryChange} defaultTime={searchParams.get('timestamp')} />}
             <SearchDisplay query={ searchedBooks } />
         </div>
     )
