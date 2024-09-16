@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import SearchDisplay from "./SearchDisplay";
 import WeekSelect from "./WeekSelect";
 import { ComicList } from "../Contexts";

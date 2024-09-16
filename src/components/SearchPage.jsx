@@ -1,13 +1,26 @@
 import { ComicList } from "../Contexts";
 import SearchDisplay from "./SearchDisplay"
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function SearchPage () {
-    const [query, setQuery] = useState("");
     const { comics } = useContext(ComicList);
-    const [display, setDisplay] = useState(false);
+    const [ searchParams, setSearchParams ] = useSearchParams();
 
-    const searchBooks = (book) => book.ProductName.toLocaleLowerCase().includes(query.toLocaleLowerCase());
+    const pageChange = (pageNumber) => {
+        const page = searchParams.get('page');
+        if (Number(page) !== pageNumber) {
+        setSearchParams(prev => {
+            const updatedParams = new URLSearchParams(prev);
+            updatedParams.set('page', pageNumber);
+            return updatedParams;
+        });
+        }
+    }
+
+    const query = searchParams.get('query') || '';
+
+    const searchBooks = (book) => query.length > 2 && book.ProductName.toLocaleLowerCase().includes(query);
     const searchedBooks = comics.filter(searchBooks);
 
     return (
@@ -15,16 +28,19 @@ function SearchPage () {
             <h1>Find Comics:</h1>
             <input 
                 type="text" 
+                value={searchParams.get('query') || undefined}
                 placeholder="Search..."
                 className="searchBar"
                 onChange={((e) => {
-                    if (e.target.value.length > 2) {
-                        setDisplay(true);
-                        setQuery(e.target.value);
-                    }
+                    setSearchParams(prev => {
+                        const updatedParams = new URLSearchParams(prev);
+                        updatedParams.set('query', e.target.value.toLocaleLowerCase());
+                        return updatedParams;
+                    });
+
                 })}
             />
-            {display && <SearchDisplay query={ searchedBooks } />}
+            {query.length > 2 && <SearchDisplay query={ searchedBooks } defaultPage={searchParams.get('page')} onPageChange={pageChange} />}
         </div>
     )
 };
