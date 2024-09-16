@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 export function handleTitle(name) {
@@ -36,12 +36,14 @@ export const removeIssueDoubles = (bookArray) => {
 }
 
 function SearchDisplay (props) {
-    const bookList = props.query;
+    const { query, defaultPage, onPageChange } = props;
 
+    const bookList = query;
     const trimmedArray = removeIssueDoubles(bookList);
 
+    const previousSearchPage = defaultPage ? Number(defaultPage) : null;
     const booksPerPage = 20;
-    const [ currentPage, setCurrentPage ] = useState(1);
+    const [ currentPage, setCurrentPage ] = useState(defaultPage ? previousSearchPage : 1);
     const firstIndex = (currentPage - 1) * booksPerPage;
     const displayBooks = trimmedArray.slice(firstIndex, firstIndex + booksPerPage);
 
@@ -52,6 +54,12 @@ function SearchDisplay (props) {
     const limitedPages = pages.filter(i => {
         return i > currentPage - 4 && i < currentPage + 4;
     })
+
+    useEffect(() => {
+        if (!onPageChange) return;
+
+        onPageChange(currentPage);
+    }, [onPageChange, currentPage])
 
     return (
         <div className="searchDisplay">

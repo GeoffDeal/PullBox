@@ -43,6 +43,16 @@ const BrowsePage = () => {
             return updatedParams;
         });
     }
+    const pageChange = (pageNumber) => {
+        const page = searchParams.get('page');
+        if (Number(page) !== pageNumber) {
+        setSearchParams(prev => {
+            const updatedParams = new URLSearchParams(prev);
+            updatedParams.set('page', pageNumber);
+            return updatedParams;
+        });
+        }
+    }
 
     useEffect(() => {
         
@@ -56,6 +66,7 @@ const BrowsePage = () => {
             timestamp: searchParams.get('timestamp') || timestamp,
             product: searchParams.get('product') || 'Comic',
             publisher: searchParams.get('publisher') || 'All',
+            page: searchParams.get('page') || '1',
         });
         setSearchParams(defaultParams);
     }, []);
@@ -102,7 +113,7 @@ const BrowsePage = () => {
                 <option value={'Dynamite'}>Dynamite</option>
             </select>
             {searchParams.get('timeframe') !== 'none' && <WeekSelect onDataPass={queryChange} defaultTime={searchParams.get('timestamp')} />}
-            <SearchDisplay query={ searchedBooks } />
+            <SearchDisplay query={ searchedBooks } defaultPage={searchParams.get('page')} onPageChange={pageChange}/>
         </div>
     )
 }
