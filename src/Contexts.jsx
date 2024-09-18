@@ -198,7 +198,76 @@ const Contexts = ({children}) => {
       			name: "John Doe",
       			pullDate: '15/05/2024'
       		}
-      	}],
+      	},{
+          "ProductName": "COWL 1964 #2 (OF 3) CVR A ROD REIS",
+          "Category": "COMICS",
+          "ItemCode": "0724IM328",
+          "Sku": "70985303975400211",
+          "MSRP": "$3.99",
+          "Release": "2024-09-18",
+          "FOCDueDate": "2024-08-26",
+          "Qty.Ord.OnTime": "",
+          "Qty.Ord.Late": "",
+          "ImageURL": "https://www.universaldist.com/api/v1/images/1f849cda-eab7-4086-9e47-fec2398c705e/raw?size=l",
+          "Issue": "2",
+          "Publisher": "Image",
+          "ProductType": "Comic",
+          "SeriesSku": "709853039754",
+          "IssueSku": "709853039754002",
+          "Variant": "1",
+          "Printing": "1",
+          "Customer": {
+            boxNumber: 1,
+      			name: "John Doe",
+      			pullDate: '15/05/2024'
+      		}
+        },{
+          "ProductName": "GREEN LANTERN CIVIL CORPS SPECIAL #1",
+          "Category": "COMICS",
+          "ItemCode": "DC07240151",
+          "Sku": "76194138326200111",
+          "MSRP": "$5.99",
+          "Release": "2024-10-09",
+          "FOCDueDate": "2024-09-16",
+          "Qty.Ord.OnTime": "",
+          "Qty.Ord.Late": "",
+          "ImageURL": "https://www.universaldist.com/api/v1/images/9139dc5b-11fa-42c3-b2eb-24f0bbdd7734/raw?size=l",
+          "Issue": "1",
+          "Publisher": "Dc",
+          "ProductType": "Comic",
+          "SeriesSku": "761941383262",
+          "IssueSku": "761941383262001",
+          "Variant": "1",
+          "Printing": "1",
+          "Customer": {
+            boxNumber: 1,
+      			name: "John Doe",
+      			pullDate: '15/05/2024'
+      		}
+        },{
+          "ProductName": "CRYPT OF SHADOWS #1",
+          "Category": "CB",
+          "ItemCode": "MRVL07240047",
+          "Sku": "75960621028200111",
+          "MSRP": "$4.99",
+          "Release": "2024-10-16",
+          "FOCDueDate": "2024-09-16",
+          "Qty.Ord.OnTime": "",
+          "Qty.Ord.Late": "",
+          "ImageURL": "https://www.universaldist.com/api/v1/images/f82a4c6e-c50a-4a57-8aa0-7574ae1507c7/raw?size=l",
+          "Issue": "1",
+          "Publisher": "Marvel",
+          "ProductType": "Comic",
+          "SeriesSku": "759606210282",
+          "IssueSku": "759606210282001",
+          "Variant": "1",
+          "Printing": "1",
+          "Customer": {
+            boxNumber: 1,
+      			name: "John Doe",
+      			pullDate: '15/05/2024'
+      		}
+        }],
       }, {
       	boxNumber: 2,
       	name: 'Geoff Deal',
@@ -291,7 +360,53 @@ const Contexts = ({children}) => {
       				name: "Geoff Deal",
       				pullDate: '17/05/2024'
       			}
-      		},
+      		},{
+            "ProductName": "ZATANNA: BRING DOWN THE HOUSE #4",
+            "Category": "COMICS",
+            "ItemCode": "DC06240206",
+            "Sku": "76194138125100411",
+            "MSRP": "$5.99",
+            "Release": "2024-09-25",
+            "FOCDueDate": "2024-09-02",
+            "Qty.Ord.OnTime": "",
+            "Qty.Ord.Late": "",
+            "ImageURL": "https://www.universaldist.com/api/v1/images/ec2c8919-3cf4-4ca4-823b-bd0c7257f115/raw?size=l",
+            "Issue": "4",
+            "Publisher": "Dc",
+            "ProductType": "Comic",
+            "SeriesSku": "761941381251",
+            "IssueSku": "761941381251004",
+            "Variant": "1",
+            "Printing": "1",
+            "Customer": {
+              boxNumber: 2,
+      				name: "Geoff Deal",
+      				pullDate: '17/05/2024'
+      			}
+          },{
+            "ProductName": "DAZZLER #2",
+            "Category": "CB",
+            "ItemCode": "MRVL07240057",
+            "Sku": "75960620960600211",
+            "MSRP": "$3.99",
+            "Release": "2024-10-23",
+            "FOCDueDate": "2024-09-23",
+            "Qty.Ord.OnTime": "",
+            "Qty.Ord.Late": "",
+            "ImageURL": "https://www.universaldist.com/api/v1/images/9b019c9a-2013-4c40-88f1-a930e5a3a26d/raw?size=l",
+            "Issue": "2",
+            "Publisher": "Marvel",
+            "ProductType": "Comic",
+            "SeriesSku": "759606209606",
+            "IssueSku": "759606209606002",
+            "Variant": "1",
+            "Printing": "1",
+            "Customer": {
+              boxNumber: 2,
+      				name: "Geoff Deal",
+      				pullDate: '17/05/2024'
+      			}
+          }
       	],
       }, {
       	boxNumber: 3,
@@ -363,7 +478,53 @@ const Contexts = ({children}) => {
       				name: "James",
       				pullDate: '16/05/2024'
       			}
-      		}
+      		},{
+            "ProductName": "MOON MAN #4 CVR C DANNY EARLS VAR",
+            "Category": "COMICS",
+            "ItemCode": "0224IM294",
+            "Sku": "70985303917400431",
+            "MSRP": "$3.99",
+            "Release": "2024-09-18",
+            "FOCDueDate": "2024-08-26",
+            "Qty.Ord.OnTime": "",
+            "Qty.Ord.Late": "",
+            "ImageURL": "https://www.universaldist.com/api/v1/images/b370036f-3036-4fda-b2ba-1de195e29464/raw?size=l",
+            "Issue": "4",
+            "Publisher": "Image",
+            "ProductType": "Comic",
+            "SeriesSku": "709853039174",
+            "IssueSku": "709853039174004",
+            "Variant": "3",
+            "Printing": "1",
+            "Customer": {
+              boxNumber:4,
+      				name: "James",
+      				pullDate: '16/05/2024'
+      			}
+          },{
+            "ProductName": "CREEPSHOW VOL 3 #1 (OF 5) CVR A MARTIN MORAZZO",
+            "Category": "COMICS",
+            "ItemCode": "0724IM261",
+            "Sku": "70985304094100111",
+            "MSRP": "$3.99",
+            "Release": "2024-09-25",
+            "FOCDueDate": "2024-09-02",
+            "Qty.Ord.OnTime": "2",
+            "Qty.Ord.Late": "",
+            "ImageURL": "https://www.universaldist.com/api/v1/images/b00b48d0-0b35-48e8-8134-b6a175b71cce/raw?size=l",
+            "Issue": "1",
+            "Publisher": "Image",
+            "ProductType": "Comic",
+            "SeriesSku": "709853040941",
+            "IssueSku": "709853040941001",
+            "Variant": "1",
+            "Printing": "1",
+            "Customer": {
+              boxNumber:4,
+      				name: "James",
+      				pullDate: '16/05/2024'
+      			}
+          }
       	],
       }, {
       	boxNumber: 4,
@@ -461,8 +622,8 @@ const Contexts = ({children}) => {
     const [messages, setMessages] = useState([
       {title: 'Flash Sale', date: 'June 8th, 2024', body: 'All back issues are 50% for the weekend!', id: 10001},
       {title: 'Free Comic Book Day', date: 'May 2nd, 2024', body: 'Free Comic Book Day is this Saturday! Great sales storewide!', id: 10002},
-      {title: 'Another Test', date: 'April 21st, 2024', body: 'This is going to be a really long text to test what it looks like when a longer message is posted. Lorem etc etc, should really use a lorem generator but I am invested now', id: 10003},
-      {title: 'Test Post', date: 'April 20th, 2024', body: 'Testing, testing, 1, 2, 3', id: 10004}
+      {title: 'New Back Issues', date: 'April 21st, 2024', body: 'New back issues have hit the floor', id: 10003},
+      {title: 'Graphic Novel Sale', date: 'April 20th, 2024', body: 'All graphic novels are 30% off, this week only!', id: 10004}
     ]);
         
     const [ comics, setComics ] = useState([]);

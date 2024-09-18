@@ -58,7 +58,6 @@ const addSub = (series) => {
                             <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
                         </NavLink>)}
                 </div>
-                <button onClick={()=>console.log(currentSeries)}>Push Me</button>
             </div> :
             <h3>Series not found</h3>}
         </div>

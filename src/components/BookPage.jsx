@@ -116,7 +116,6 @@ function BookPage() {
                             </NavLink>)}
                     </div>
                 </div>
-                <button onClick={() => {console.log(book)}}>Push Me</button>
             </div> :
             <h3>Book not found</h3>}
         </div>

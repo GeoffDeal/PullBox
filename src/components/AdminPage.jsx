@@ -242,7 +242,6 @@ const AdminPage = () => {
                     <p>Current conversion: { conversion }</p> 
                 </div>
             </div>
-            <button onClick={() => {console.log(series)}}>Push Me</button>
         </div>
     )
 }

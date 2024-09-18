@@ -80,6 +80,9 @@ const BrowsePage = () => {
             (searchParams.get('timeframe') !== 'foc' || calcWeek(product.FOCDueDate) === timestampNumber)
         );
     }
+    const selectedTimeframe = searchParams.get('timeframe') || 'release';
+    const selectedProduct = searchParams.get('product') || 'Comic';
+    const selectedPublisher = searchParams.get('publisher') || 'All';
 
     const searchedBooks = searchBooks();
 
@@ -87,13 +90,13 @@ const BrowsePage = () => {
         <div className="pageDisplay">
             <h1>Browse</h1>
             <p>Browse by: </p>
-            <select onChange={timeframeChange}>
+            <select value={selectedTimeframe} onChange={timeframeChange}>
                 <option value='release'>Release Date</option>
                 <option value='foc'>Final Order Date</option>
                 <option value='none'>None</option>
             </select>
             
-            <select onChange={productChange}>
+            <select value={selectedProduct} onChange={productChange}>
                 <option value={'Comic'}>Comics</option>
                 <option value={'Trade Paperback'}>Trade Paperbacks</option>
                 <option value={'Hardcover'}>Hardcovers</option>
@@ -101,7 +104,7 @@ const BrowsePage = () => {
                 <option value={'Poster'}>Posters</option>
                 <option value={'All'}>All</option>
             </select>
-            <select onChange={publisherChange}>
+            <select value={selectedPublisher} onChange={publisherChange}>
                 <option value={'All'}>All</option>
                 <option value={'Marvel'}>Marvel</option>
                 <option value={'Dc'}>DC</option>
