@@ -65,8 +65,8 @@ function SearchDisplay (props) {
         <div className="searchDisplay">
             <div className="gridDisplay">
                 {trimmedArray.length > 0 ?     
-                    (displayBooks.map((book) => 
-                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={book.ItemCode} className={'bookNav'}>
+                    (displayBooks.map((book, index) => 
+                        <NavLink to="/bookpage"state={{ itemCode: book.ItemCode }} key={index} className={'bookNav'}>
                             <img src={book.ImageURL} alt="Comic Cover" />
                             <p className="bookTitle">{ handleTitle(book.ProductName) }</p>
                         </NavLink>))
