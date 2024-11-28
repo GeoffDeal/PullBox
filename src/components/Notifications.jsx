@@ -8,12 +8,30 @@ function Notifications () {
     const { user } = useContext(UserContext);
     const { messages, setMessages} = useContext(NotificationContext);
 
+    const [preview, setPreview] = useState('');
     const [message, setMessage] = useState({title: '', date: '', body: '',});
 
+    const handleDrop = (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        if (file && file.type.startsWith("image/")) {
+            setMessage(values => ({...values, image: file}));
+            console.log(message);
+            const previewUrl = URL.createObjectURL(file);
+            setPreview(previewUrl);
+        }else {
+            alert('Please choose an image file');
+        }
+    }
+    const handleDragover = (event) => {
+        event.preventDefault();
+    }
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setMessage(values => ({...values, [name]: value }))
+        console.log(message);
+
     }
     const messageSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +61,7 @@ function Notifications () {
                             name="body"
                             onChange={handleChange}>
                         </textarea>
-                        <label for="imageInput" id="dropArea">
+                        <label htmlFor="imageInput" id="dropArea" name="image" onDrop={handleDrop} onDragOver={handleDragover}>
                             <input 
                                 type="file"
                                 accept="image/*"
@@ -53,7 +71,10 @@ function Notifications () {
                                 hidden>
                             </input>
                             <div id="imgPlace">
+                                {preview ? 
+                                <img src={preview} alt="Image Preview" id="imgPreview"/> :
                                 <p>Drop image or click<br />to upload image</p>
+                                }
                             </div>
                         </label><br />
                         <input type="submit" value="Post Message" className="submitButton" />
