@@ -41,13 +41,27 @@ function Notifications () {
                             cols={32} 
                             id="bodyInput"
                             name="body"
-                            onChange={handleChange}></textarea>
+                            onChange={handleChange}>
+                        </textarea>
+                        <label for="imageInput" id="dropArea">
+                            <input 
+                                type="file"
+                                accept="image/*"
+                                id="imageInput"
+                                name="image"
+                                onChange={handleChange}
+                                hidden>
+                            </input>
+                            <div id="imgPlace">
+                                <p>Drop image or click<br />to upload image</p>
+                            </div>
+                        </label><br />
                         <input type="submit" value="Post Message" className="submitButton" />
                     </form>
                 </div> }
                 <div className="messageBox">
                     {messages.map((message, index) => (
-                        <Message key={ index } title={ message.title } date={ message.date } body={ message.body} id={message.id}/>
+                        <Message key={ index } title={ message.title } date={ message.date } body={ message.body} image={message.image} id={message.id}/>
                     ))}
                 </div>
             </div>
