@@ -28,27 +28,24 @@ function Home() {
   const [maxPages, setMaxPages] = useState(1);
 
   useEffect(() => {
-    // async function ... with try catch
-    // call function here
-    api
-      .get("/products/browse", {
+    async function getFoc() {
+      const res = await api.get("/products/browse", {
         params: {
           week: "foc",
           date: nextSundayFormatted,
           limit: 20,
           page: currentPage,
         },
-      })
-      .then((response) => {
-        setFocComics(response.data.data);
-        setMaxPages(response.data.pages);
-      })
-      .catch((err) => console.log(err));
+      });
+      setFocComics(res.data.data);
+      setMaxPages(res.data.pages);
+    }
+    try {
+      getFoc();
+    } catch (err) {
+      console.error(err);
+    }
   }, [nextSundayFormatted, currentPage]);
-
-  //   const focComics = comics.filter(
-  //     (book) => calcWeek(book.FOCDueDate) === calcWeek(nextSunday)
-  //   );
 
   // Week's total for shop
 
