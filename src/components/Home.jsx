@@ -28,23 +28,30 @@ function Home() {
   const [maxPages, setMaxPages] = useState(1);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function getFoc() {
-      const res = await api.get("/products/browse", {
-        params: {
-          week: "foc",
-          date: nextSundayFormatted,
-          limit: 20,
-          page: currentPage,
-        },
-      });
-      setFocComics(res.data.data);
-      setMaxPages(res.data.pages);
+      try {
+        const res = await api.get("/products/browse", {
+          params: {
+            week: "foc",
+            date: nextSundayFormatted,
+            limit: 20,
+            page: currentPage,
+          },
+        });
+        if (!cancelled) {
+          setFocComics(res.data.data);
+          setMaxPages(res.data.pages);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
-    try {
-      getFoc();
-    } catch (err) {
-      console.error(err);
-    }
+    getFoc();
+    return () => {
+      cancelled = true;
+    };
   }, [nextSundayFormatted, currentPage]);
 
   // Week's total for shop
