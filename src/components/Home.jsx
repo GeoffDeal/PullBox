@@ -1,7 +1,7 @@
 import {
   //   ComicList,
   UserContext,
-  CustomersContext,
+  // CustomersContext,
   ConversionRate,
 } from "../Contexts";
 import ComicsDisplay, { calcWeek } from "./ComicDisplay";
@@ -18,6 +18,7 @@ function Home() {
   const now = new Date();
   const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+  const lastSundayFormatted = lastSunday.toLocaleDateString("en-CA");
   const nextSunday = new Date(lastSunday);
   nextSunday.setDate(lastSunday.getDate() + 7);
   const nextSundayFormatted = nextSunday.toLocaleDateString("en-CA");
@@ -56,21 +57,41 @@ function Home() {
 
   // Week's total for shop
 
-  const { customers } = useContext(CustomersContext);
+  // const { customers } = useContext(CustomersContext);
   const { conversion } = useContext(ConversionRate);
   const [weeksBooks, setWeeksBooks] = useState([]);
   const [expectedIncome, setExpectedIncome] = useState();
 
   useEffect(() => {
-    let pulls = [];
-    customers.forEach((customer) => {
-      const customersWeek = customer.pulls.filter(
-        (book) => calcWeek(book.Release) === lastSunday.getTime()
-      );
-      pulls = pulls.concat(customersWeek);
-    });
-    setWeeksBooks(pulls);
-  }, []);
+    let cancelled = false;
+
+    async function getWeeksBooks() {
+      try {
+        const res = await api.get("/pulls/getweekspulls", {
+          params: { release: lastSundayFormatted },
+        });
+        if (!cancelled) {
+          setWeeksBooks(res.data || []);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    getWeeksBooks();
+    return () => {
+      cancelled = true;
+    };
+  }, [lastSundayFormatted]);
+  // useEffect(() => {
+  //   let pulls = [];
+  //   customers.forEach((customer) => {
+  //     const customersWeek = customer.pulls.filter(
+  //       (book) => calcWeek(book.Release) === lastSunday.getTime()
+  //     );
+  //     pulls = pulls.concat(customersWeek);
+  //   });
+  //   setWeeksBooks(pulls);
+  // }, []);
   useEffect(() => {
     let priceTotal = 0;
     weeksBooks.forEach((book) => {
