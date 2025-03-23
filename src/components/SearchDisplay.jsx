@@ -89,7 +89,7 @@ function SearchDisplay(props) {
           bookList.map((book, index) => (
             <NavLink
               to="/bookpage"
-              state={{ itemCode: book.ItemCode }}
+              state={{ productId: book.ID }}
               key={index}
               className={"bookNav"}
             >

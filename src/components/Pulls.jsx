@@ -27,15 +27,17 @@ function Pulls () {
     const now = new Date();
     const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+    const lastSundayFormatted = lastSunday.toLocaleDateString("en-CA");
 
-    const [ sunday, setSunday ] = useState(lastSunday);
-    useEffect(() => {
-        const now = new Date();
-        const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
-        const timestamp = calcWeek(lastSunday);
-        setSunday(timestamp);
-    }, []);
+
+    const [ sunday, setSunday ] = useState(lastSundayFormatted);
+    // useEffect(() => {
+    //     const now = new Date();
+    //     const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    //     lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+    //     const timestamp = calcWeek(lastSunday);
+    //     setSunday(timestamp);
+    // }, []);
     
 
     return (

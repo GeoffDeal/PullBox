@@ -13,14 +13,8 @@ export function calcWeek(date) {
 
 function ComicsDisplay(props) {
   const { user } = useContext(UserContext);
-  //   const { customers } = useContext(CustomersContext);
-  //   const targetWeek = props.date;
   const { taxRates } = useContext(TaxRates);
   const { conversion } = useContext(ConversionRate);
-  //   const currentUser = props.id
-  //     ? customers.find((user) => user.userID === props.id)
-  //     : user;
-  // const weeksPulls = currentUser.pulls.filter(pull => calcWeek(pull.Release) === targetWeek);
   const [weeksPulls, setWeeksPulls] = useState([]);
 
   useEffect(() => {
@@ -75,11 +69,7 @@ function ComicsDisplay(props) {
     <div className="bookDisplay">
       <div className="imageContainer">
         {weeksPulls.map((book) => (
-          <NavLink
-            to="/bookpage"
-            state={{ itemCode: book.ItemCode }}
-            key={book.ItemCode}
-          >
+          <NavLink to="/bookpage" state={{ productId: book.ID }} key={book.id}>
             <img src={book.ImageURL} alt="Comic Cover" />
           </NavLink>
         ))}
