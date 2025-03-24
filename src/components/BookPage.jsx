@@ -1,4 +1,4 @@
-import { ComicList, UserContext, ConversionRate } from "../Contexts";
+import { UserContext, ConversionRate } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { handleTitle } from "./SearchDisplay";
@@ -7,7 +7,6 @@ import api from "../api/api";
 
 function BookPage() {
   const { user } = useContext(UserContext);
-  const { comics } = useContext(ComicList);
   const [quantity, setQuantity] = useState();
   const { conversion } = useContext(ConversionRate);
 
@@ -49,7 +48,35 @@ function BookPage() {
     };
   }, [productId, user.id]);
 
-  let variantList = null;
+  const [variantList, setVariantList] = useState();
+  useEffect(() => {
+    if (!book) return;
+    let cancelled = false;
+    async function getVar() {
+      try {
+        const res = await api.get("/products/getvariants", {
+          params: {
+            seriesId: book.SeriesID,
+            issue: book.Issue,
+            variant: book.Variant,
+          },
+        });
+        console.log(res);
+        if (!cancelled) {
+          setVariantList(res.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (book.SeriesID && book.Issue & book.Variant) {
+      getVar();
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [book]);
+
   let cadRounded = null;
   let formattedRelease = null;
   let formattedFoc = null;
@@ -57,13 +84,13 @@ function BookPage() {
   let currentDate = null;
 
   if (book) {
-    variantList =
-      book.ProductType === "Comic"
-        ? comics.filter(
-            (comic) =>
-              comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku
-          )
-        : null;
+    // variantList =
+    //   book.ProductType === "Comic"
+    //     ? comics.filter(
+    //         (comic) =>
+    //           comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku
+    //       )
+    //     : null;
 
     const cadPrice = parseFloat(book.MSRP.replace("$", "")) * conversion;
     cadRounded = cadPrice.toFixed(2);
@@ -198,7 +225,7 @@ function BookPage() {
             </div>
           </div>
           <div className="variantDisplay">
-            <h3>Variant Covers:</h3>
+            {variantList && <h3>Variant Covers:</h3>}
             <div className="gridDisplay">
               {variantList &&
                 variantList.map((book) => (
