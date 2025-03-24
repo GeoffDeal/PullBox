@@ -84,20 +84,19 @@ function BookPage() {
     }
   }, [book]);
 
-  const pullBook = () => {
-    const pullDate = new Date();
-    const customerInfo = {
-      boxNumber: user.boxNumber,
-      name: user.name,
-      pullDate: pullDate,
-    };
-    setUser((prev) => ({
-      ...prev,
-      pulls: [
-        ...prev.pulls,
-        { ...book, "Qty.Ord.OnTime": quantity, Customer: customerInfo },
-      ],
-    }));
+  const pullBook = async () => {
+    let cancelled = false;
+    try {
+      const res = await api.post("/pulls/addpull", {
+        userId: user.id,
+        productId: productId,
+      });
+      if (!cancelled) {
+        setPull(res.data[0]);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
   const removePull = () => {
     const revisedPulls = user.pulls.filter((comic) => comic.Sku !== book.Sku);
@@ -147,7 +146,7 @@ function BookPage() {
               {calcWeek(book.Release) > calcWeek(currentDate) && (
                 <div>
                   <div className="pullDiv">
-                    {!user.pulls.some((comic) => comic.Sku === book.Sku) && (
+                    {!pull && (
                       <button
                         className={`pullButton ${
                           afterFoc ? "afterFoc" : "beforeFoc"
@@ -157,7 +156,7 @@ function BookPage() {
                         Pull
                       </button>
                     )}
-                    {user.pulls.some((comic) => comic.Sku === book.Sku) && (
+                    {pull && (
                       <div>
                         <p>Pulled!</p>
                         <label>Number of copies:</label>
@@ -169,7 +168,7 @@ function BookPage() {
                       </div>
                     )}
                   </div>
-                  {user.pulls.some((comic) => comic.Sku === book.Sku) && (
+                  {pull && (
                     <button
                       className="pullButton beforeFoc"
                       onClick={removePull}
