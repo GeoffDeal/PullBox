@@ -12,29 +12,42 @@ function BookPage() {
   const { conversion } = useContext(ConversionRate);
 
   const location = useLocation();
-  // const itemCode = location.state.itemCode;
-  // const book = comics.find(comic => comic.ItemCode === itemCode);
   const productId = location.state.productId;
   const [book, setBook] = useState();
+  const [pull, setPull] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
     async function getBook() {
       try {
-        const res = await api.get(`/products/getproduct/${productId}`);
+        const bookRes = await api.get(`/products/getproduct/${productId}`);
         if (!cancelled) {
-          setBook(res.data);
+          setBook(bookRes.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      try {
+        const pullRes = await api.get(`/pulls/checkpull`, {
+          params: {
+            userId: user.id,
+            productId: productId,
+          },
+        });
+        if (!cancelled) {
+          setPull(pullRes.data || false);
         }
       } catch (err) {
         console.error(err);
       }
     }
+
     getBook();
     return () => {
       cancelled = true;
     };
-  }, [productId]);
+  }, [productId, user.id]);
 
   let variantList = null;
   let cadRounded = null;
