@@ -14,6 +14,7 @@ function BookPage() {
   const productId = location.state.productId;
   const [book, setBook] = useState();
   const [pull, setPull] = useState(false);
+  const [variantList, setVariantList] = useState();
 
   useEffect(() => {
     let cancelled = false;
@@ -21,13 +22,10 @@ function BookPage() {
     async function getBook() {
       try {
         const bookRes = await api.get(`/products/getproduct/${productId}`);
+        const bookData = bookRes.data;
         if (!cancelled) {
-          setBook(bookRes.data);
+          setBook(bookData);
         }
-      } catch (err) {
-        console.error(err);
-      }
-      try {
         const pullRes = await api.get(`/pulls/checkpull`, {
           params: {
             userId: user.id,
@@ -36,6 +34,18 @@ function BookPage() {
         });
         if (!cancelled) {
           setPull(pullRes.data[0] || false);
+        }
+        if (bookData) {
+          const varRes = await api.get("/products/getvariants", {
+            params: {
+              seriesId: bookData.SeriesID,
+              issue: bookData.Issue,
+              variant: bookData.Variant,
+            },
+          });
+          if (!cancelled) {
+            setVariantList(varRes.data);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -48,35 +58,6 @@ function BookPage() {
     };
   }, [productId, user.id]);
 
-  const [variantList, setVariantList] = useState();
-  useEffect(() => {
-    if (!book) return;
-    let cancelled = false;
-    async function getVar() {
-      try {
-        const res = await api.get("/products/getvariants", {
-          params: {
-            seriesId: book.SeriesID,
-            issue: book.Issue,
-            variant: book.Variant,
-          },
-        });
-        console.log(res);
-        if (!cancelled) {
-          setVariantList(res.data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    if (book.SeriesID && book.Issue & book.Variant) {
-      getVar();
-    }
-    return () => {
-      cancelled = true;
-    };
-  }, [book]);
-
   let cadRounded = null;
   let formattedRelease = null;
   let formattedFoc = null;
@@ -84,14 +65,6 @@ function BookPage() {
   let currentDate = null;
 
   if (book) {
-    // variantList =
-    //   book.ProductType === "Comic"
-    //     ? comics.filter(
-    //         (comic) =>
-    //           comic.IssueSku === book.IssueSku && comic.Sku !== book.Sku
-    //       )
-    //     : null;
-
     const cadPrice = parseFloat(book.MSRP.replace("$", "")) * conversion;
     cadRounded = cadPrice.toFixed(2);
 
@@ -129,11 +102,9 @@ function BookPage() {
     console.log(pull);
     const pullId = pull.id;
     try {
-      const res = await api.delete(`/pulls/removepull/${pullId}`);
+      await api.delete(`/pulls/removepull/${pullId}`);
 
-      if (res.status === 200) {
-        setPull(false);
-      }
+      setPull(false);
     } catch (err) {
       console.error(err);
     }
@@ -144,12 +115,9 @@ function BookPage() {
     setQuantity(newQuantity);
 
     try {
-      const res = await api.patch(`/pulls/changepullamount/${pull.id}`, {
+      await api.patch(`/pulls/changepullamount/${pull.id}`, {
         amount: newQuantity,
       });
-      if (res.status !== 200) {
-        throw new Error("Problem changing pull amount");
-      }
     } catch (err) {
       console.log(err);
       setQuantity(prevQuantity);
@@ -231,7 +199,7 @@ function BookPage() {
                 variantList.map((book) => (
                   <NavLink
                     to="/bookpage"
-                    state={{ itemCode: book.ItemCode }}
+                    state={{ productId: book.ID }}
                     key={book.ItemCode}
                     className={"bookNav"}
                   >
