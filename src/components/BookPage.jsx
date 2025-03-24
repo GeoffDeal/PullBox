@@ -36,7 +36,7 @@ function BookPage() {
           },
         });
         if (!cancelled) {
-          setPull(pullRes.data || false);
+          setPull(pullRes.data[0] || false);
         }
       } catch (err) {
         console.error(err);
@@ -98,12 +98,18 @@ function BookPage() {
       console.error(err);
     }
   };
-  const removePull = () => {
-    const revisedPulls = user.pulls.filter((comic) => comic.Sku !== book.Sku);
-    setUser((prev) => ({
-      ...prev,
-      pulls: revisedPulls,
-    }));
+  const removePull = async () => {
+    console.log(pull);
+    const pullId = pull.id;
+    try {
+      const res = await api.delete(`/pulls/removepull/${pullId}`);
+
+      if (res.status === 200) {
+        setPull(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
   const pullQuantity = (e) => {
     const newQuantity = Number(e.target.value);
