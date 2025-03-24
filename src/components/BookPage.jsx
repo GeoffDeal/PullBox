@@ -6,7 +6,7 @@ import { calcWeek } from "./ComicDisplay";
 import api from "../api/api";
 
 function BookPage() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { comics } = useContext(ComicList);
   const [quantity, setQuantity] = useState();
   const { conversion } = useContext(ConversionRate);
@@ -80,9 +80,9 @@ function BookPage() {
 
   useEffect(() => {
     if (book) {
-      setQuantity(book.Quantity || 1);
+      setQuantity(pull.amount || 1);
     }
-  }, [book]);
+  }, [book, pull]);
 
   const pullBook = async () => {
     let cancelled = false;
@@ -111,17 +111,22 @@ function BookPage() {
       console.error(err);
     }
   };
-  const pullQuantity = (e) => {
+  const pullQuantity = async (e) => {
+    const prevQuantity = quantity;
     const newQuantity = Number(e.target.value);
     setQuantity(newQuantity);
 
-    const updatedPulls = user.pulls.map((item) => {
-      return item.Sku === book.Sku ? { ...item, Quantity: newQuantity } : item;
-    });
-    setUser((prev) => ({
-      ...prev,
-      pulls: updatedPulls,
-    }));
+    try {
+      const res = await api.patch(`/pulls/changepullamount/${pull.id}`, {
+        amount: newQuantity,
+      });
+      if (res.status !== 200) {
+        throw new Error("Problem changing pull amount");
+      }
+    } catch (err) {
+      console.log(err);
+      setQuantity(prevQuantity);
+    }
   };
 
   return (
