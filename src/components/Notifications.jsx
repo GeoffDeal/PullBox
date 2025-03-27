@@ -1,19 +1,22 @@
 import Message from "./Message";
 import { UserContext } from "../Contexts";
-// import { NotificationContext } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import api from "../api/api";
 
 function Notifications() {
   const [messages, setMessages] = useState();
   const { user } = useContext(UserContext);
-  // const { messages, setMessages} = useContext(NotificationContext);
   useEffect(() => {
     let cancelled = false;
     const getNotifications = async () => {
       try {
         const res = await api.get("/notifications/getnotifications");
-        if (!cancelled) setMessages(res.data);
+        if (!cancelled) {
+          const sortedMessages = res.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setMessages(sortedMessages);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -32,7 +35,6 @@ function Notifications() {
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       setMessage((values) => ({ ...values, image: file }));
-      console.log(message);
       const previewUrl = URL.createObjectURL(file);
       setPreview(previewUrl);
     } else {
@@ -46,14 +48,20 @@ function Notifications() {
     const name = event.target.name;
     const value = event.target.value;
     setMessage((values) => ({ ...values, [name]: value }));
-    console.log(message);
   };
-  const messageSubmit = (event) => {
+  const messageSubmit = async (event) => {
     event.preventDefault();
-    const currentDate = new Date().toDateString();
-    const messageId = Math.floor(Math.random() * 10000);
-    const newMessage = { ...message, date: currentDate, id: messageId };
-    setMessages([newMessage, ...messages]);
+    const notificationData = {
+      title: message.title,
+      body: message.body,
+    };
+    // Switch file upload to url
+    // if (message.image) notificationData.imageUrl = message.image;
+    try {
+      await api.post("/notifications/createnotification", notificationData);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -119,7 +127,7 @@ function Notifications() {
               <Message
                 key={index}
                 title={message.title}
-                date={message.date}
+                date={new Date(message.date).toLocaleDateString("en-CA")}
                 body={message.body}
                 image={message.image}
                 id={message.id}
