@@ -27,23 +27,8 @@ function Notifications() {
     };
   }, []);
 
-  const [preview, setPreview] = useState("");
   const [message, setMessage] = useState({ title: "", date: "", body: "" });
 
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
-      setMessage((values) => ({ ...values, image: file }));
-      const previewUrl = URL.createObjectURL(file);
-      setPreview(previewUrl);
-    } else {
-      alert("Please choose an image file");
-    }
-  };
-  const handleDragover = (event) => {
-    event.preventDefault();
-  };
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -55,8 +40,7 @@ function Notifications() {
       title: message.title,
       body: message.body,
     };
-    // Switch file upload to url
-    // if (message.image) notificationData.imageUrl = message.image;
+    if (message.image) notificationData.imageUrl = message.imageUrl;
     try {
       await api.post("/notifications/createnotification", notificationData);
     } catch (err) {
@@ -85,33 +69,13 @@ function Notifications() {
                 name="body"
                 onChange={handleChange}
               ></textarea>
-              <label
-                htmlFor="imageInput"
-                id="dropArea"
-                name="image"
-                onDrop={handleDrop}
-                onDragOver={handleDragover}
-              >
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="imageInput"
-                  name="image"
-                  onChange={handleChange}
-                  hidden
-                ></input>
-                <div id="imgPlace">
-                  {preview ? (
-                    <img src={preview} alt="Image Preview" id="imgPreview" />
-                  ) : (
-                    <p>
-                      Drop image or click
-                      <br />
-                      to upload image
-                    </p>
-                  )}
-                </div>
-              </label>
+              <input
+                type="text"
+                id="urlInput"
+                placeholder="Image URL"
+                name="imageUrl"
+                onChange={handleChange}
+              ></input>
               <br />
               <input
                 type="submit"
