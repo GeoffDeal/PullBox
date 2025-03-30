@@ -1,10 +1,10 @@
 import Message from "./Message";
-import { UserContext } from "../Contexts";
+import { NotificationContext, UserContext } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import api from "../api/api";
 
 function Notifications() {
-  const [messages, setMessages] = useState();
+  const { messages, setMessages } = useContext(NotificationContext);
   const { user } = useContext(UserContext);
   useEffect(() => {
     let cancelled = false;
@@ -25,7 +25,7 @@ function Notifications() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [setMessages]);
 
   const [message, setMessage] = useState({ title: "", date: "", body: "" });
 
