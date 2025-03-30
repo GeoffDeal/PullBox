@@ -1,6 +1,7 @@
 import Message from "./Message";
 import { NotificationContext, UserContext } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import api from "../api/api";
 
 function Notifications() {
@@ -10,7 +11,7 @@ function Notifications() {
     let cancelled = false;
     const getNotifications = async () => {
       try {
-        const res = await api.get("/notifications/getnotifications");
+        const res = await api.get("/notifications0/getnotifications");
         if (!cancelled) {
           const sortedMessages = res.data.sort(
             (a, b) => new Date(b.date) - new Date(a.date)
@@ -19,6 +20,7 @@ function Notifications() {
         }
       } catch (err) {
         console.log(err);
+        toast.error("Error Rertrieving Notifications");
       }
     };
     getNotifications();
@@ -45,6 +47,7 @@ function Notifications() {
       await api.post("/notifications/createnotification", notificationData);
     } catch (err) {
       console.error(err);
+      toast.error("Error Connecting to Server");
     }
   };
 
