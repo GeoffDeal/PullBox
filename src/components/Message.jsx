@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { UserContext, NotificationContext } from "../Contexts";
+import { toast } from "react-toastify";
 import api from "../api/api";
 
 function Message(props) {
@@ -13,6 +14,7 @@ function Message(props) {
       setMessages(remainingMessages);
     } catch (err) {
       console.error(err);
+      toast.error("Error Connecting to Server");
     }
   };
 
