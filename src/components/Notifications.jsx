@@ -7,11 +7,12 @@ import api from "../api/api";
 function Notifications() {
   const { messages, setMessages } = useContext(NotificationContext);
   const { user } = useContext(UserContext);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
   useEffect(() => {
     let cancelled = false;
     const getNotifications = async () => {
       try {
-        const res = await api.get("/notifications0/getnotifications");
+        const res = await api.get("/notifications/getnotifications");
         if (!cancelled) {
           const sortedMessages = res.data.sort(
             (a, b) => new Date(b.date) - new Date(a.date)
@@ -27,9 +28,9 @@ function Notifications() {
     return () => {
       cancelled = true;
     };
-  }, [setMessages]);
+  }, [setMessages, fetchTrigger]);
 
-  const [message, setMessage] = useState({ title: "", date: "", body: "" });
+  const [message, setMessage] = useState({ title: "", body: "" });
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -42,9 +43,12 @@ function Notifications() {
       title: message.title,
       body: message.body,
     };
-    if (message.image) notificationData.imageUrl = message.imageUrl;
+    if (message.imageUrl) notificationData.imageUrl = message.imageUrl;
     try {
+      console.log(message);
       await api.post("/notifications/createnotification", notificationData);
+      setFetchTrigger((prev) => !prev);
+      setMessage({ title: "", body: "" });
     } catch (err) {
       console.error(err);
       toast.error("Error Connecting to Server");
@@ -63,6 +67,7 @@ function Notifications() {
                 id="titleInput"
                 placeholder="Message Title"
                 name="title"
+                value={message.title}
                 onChange={handleChange}
               ></input>
               <textarea
@@ -70,6 +75,7 @@ function Notifications() {
                 cols={32}
                 id="bodyInput"
                 name="body"
+                value={message.body}
                 onChange={handleChange}
               ></textarea>
               <input
@@ -77,6 +83,7 @@ function Notifications() {
                 id="urlInput"
                 placeholder="Image URL"
                 name="imageUrl"
+                value={message.imageUrl}
                 onChange={handleChange}
               ></input>
               <br />
