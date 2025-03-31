@@ -51,7 +51,7 @@ function Notifications() {
       setMessage({ title: "", body: "" });
     } catch (err) {
       console.error(err);
-      toast.error("Error Connecting to Server");
+      toast.error(`Error: ${err.message}`);
     }
   };
 

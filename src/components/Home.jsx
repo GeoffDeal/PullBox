@@ -2,6 +2,7 @@ import { UserContext, ConversionRate } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import { useContext, useEffect, useState } from "react";
 import SearchDisplay from "./SearchDisplay";
+import { toast } from "react-toastify";
 import api from "../api/api.js";
 
 function Home() {
@@ -39,6 +40,7 @@ function Home() {
         }
       } catch (err) {
         console.error(err);
+        toast.error(`Problem fetching products: ${err}`);
       }
     }
     getFoc();
@@ -67,6 +69,7 @@ function Home() {
         }
       } catch (err) {
         console.error(err);
+        toast.error(`Error fetching pulls: ${err}`);
       }
     }
     getWeeksBooks();
@@ -85,16 +88,6 @@ function Home() {
     setExpectedIncome(totalRounded);
   }, [weeksBooks, conversion]);
 
-  //   const pageChange = (pageNumber) => {
-  //     const page = searchParams.get("page");
-  //     if (Number(page) !== pageNumber) {
-  //       setSearchParams((prev) => {
-  //         const updatedParams = new URLSearchParams(prev);
-  //         updatedParams.set("page", pageNumber);
-  //         return updatedParams;
-  //       });
-  //     }
-  //   };
   const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
