@@ -32,20 +32,20 @@ function BookPage() {
           },
         });
 
-        if (bookData) {
-          const varRes = await api.get("/products/getvariants", {
+        let varRes = null;
+        if (bookData.SeriesID && bookData.Issue && bookData.Variant) {
+          varRes = await api.get("/products/getvariants", {
             params: {
               seriesId: bookData.SeriesID,
               issue: bookData.Issue,
               variant: bookData.Variant,
             },
           });
-
-          if (!cancelled) {
-            setBook(bookData);
-            setPull(pullRes.data[0] || false);
-            setVariantList(varRes.data);
-          }
+        }
+        if (!cancelled) {
+          setBook(bookData);
+          setPull(pullRes.data[0] || false);
+          setVariantList(varRes?.data || null);
         }
       } catch (err) {
         console.error(err);
