@@ -8,7 +8,7 @@ import api from "../api/api";
 function SeriesPage() {
   const location = useLocation();
   const seriesId = location.state.seriesId;
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [currentSeries, setCurrentSeries] = useState();
   const [seriesBooks, setSeriesBooks] = useState();
@@ -30,7 +30,7 @@ function SeriesPage() {
         if (!cancelled) {
           setCurrentSeries(seriesRes.data);
           setSeriesBooks(booksRes.data);
-          setIsSubbed(subRes.data[0].id || false);
+          setIsSubbed(subRes.data[0]?.id || false);
         }
       } catch (err) {
         console.error(err);
@@ -43,12 +43,12 @@ function SeriesPage() {
     };
   }, [seriesId, user.id]);
 
-  const removeSub = () => {
+  const removeSub = async () => {
     const confirmBox = window.confirm(
       "Are you sure you wish to remove this subscription and associated pulls?"
     );
 
-    async function deleteSub() {
+    if (confirmBox === true) {
       const subState = isSubbed;
       setIsSubbed(false);
       try {
@@ -59,15 +59,22 @@ function SeriesPage() {
         setIsSubbed(subState);
       }
     }
-    if (confirmBox === true) {
-      deleteSub();
-    }
   };
-  const addSub = (series) => {
-    setUser((user) => ({
-      ...user,
-      subList: [...user.subList, series],
-    }));
+
+  const addSub = async () => {
+    setIsSubbed(true);
+    try {
+      const res = await api.post("/subs/addsub", {
+        userId: user.id,
+        seriesId: seriesId,
+      });
+
+      setIsSubbed(res.data[0].id);
+    } catch (err) {
+      console.error(err);
+      toast.error("Problem adding subscription, try again");
+      setIsSubbed(false);
+    }
   };
 
   return (
