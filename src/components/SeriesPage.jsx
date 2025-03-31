@@ -3,6 +3,7 @@ import { useLocation, NavLink } from "react-router-dom";
 import { UserContext } from "../Contexts";
 import { handleTitle } from "./SearchDisplay";
 import { toast } from "react-toastify";
+import { confirmToast } from "../utils/toasts.jsx";
 import api from "../api/api";
 
 function SeriesPage() {
@@ -44,11 +45,7 @@ function SeriesPage() {
   }, [seriesId, user.id]);
 
   const removeSub = async () => {
-    const confirmBox = window.confirm(
-      "Are you sure you wish to remove this subscription and associated pulls?"
-    );
-
-    if (confirmBox === true) {
+    async function deleteSub() {
       const subState = isSubbed;
       setIsSubbed(false);
       try {
@@ -59,6 +56,10 @@ function SeriesPage() {
         setIsSubbed(subState);
       }
     }
+    confirmToast(
+      deleteSub,
+      "Are you sure you wish to remove sub and associated pulls?"
+    );
   };
 
   const addSub = async () => {
