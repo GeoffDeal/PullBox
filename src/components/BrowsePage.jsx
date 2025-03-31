@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import SearchDisplay from "./SearchDisplay";
 import WeekSelect from "./WeekSelect";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
 const BrowsePage = () => {
-  const [date, setDate] = useState(() => {
-    const today = new Date();
-    return today.toLocaleDateString("en-CA");
-  });
-  const [timeframe, setTimeframe] = useState("release");
-  const [product, setProduct] = useState("Comic");
-  const [publisher, setPublisher] = useState("All");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const today = new Date();
+  const formattedDay = today.toLocaleDateString("en-CA");
+
   const [maxPages, setMaxPages] = useState(1);
   const [productList, setProductList] = useState([]);
   const itemsPerPage = 20;
@@ -22,12 +20,12 @@ const BrowsePage = () => {
       try {
         const res = await api.get("/products/browse", {
           params: {
-            week: timeframe,
-            date: date,
-            product: product,
-            publisher: publisher,
+            week: searchParams.get("timeframe") || "release",
+            date: searchParams.get("date") || formattedDay,
+            product: searchParams.get("product") || "Comic",
+            publisher: searchParams.get("publisher") || "All",
+            page: searchParams.get("currentPage") || 1,
             limit: itemsPerPage,
-            page: currentPage,
           },
         });
         if (!cancelled) {
@@ -43,14 +41,30 @@ const BrowsePage = () => {
     return () => {
       cancelled = true;
     };
-  }, [timeframe, date, product, publisher, currentPage]);
+  }, [formattedDay, searchParams]);
 
   const pageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    if (searchParams.get("currentPage") !== pageNumber) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("currentPage", pageNumber);
+      setSearchParams(newParams);
+    }
   };
   const weekChange = (day) => {
     const formattedDay = day.toLocaleDateString("en-CA");
-    setDate(formattedDay);
+    if (searchParams.get("date") !== formattedDay) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("date", formattedDay);
+      setSearchParams(newParams);
+    }
+  };
+  const paramChange = (event, param) => {
+    const value = event.target.value;
+    if (searchParams.get(param) !== value) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set(param, value);
+      setSearchParams(newParams);
+    }
   };
 
   return (
@@ -58,9 +72,9 @@ const BrowsePage = () => {
       <h1>Browse</h1>
       <p>Browse by: </p>
       <select
-        value={timeframe}
+        value={searchParams.get("timeframe") || "release"}
         onChange={(event) => {
-          setTimeframe(event.target.value);
+          paramChange(event, "timeframe");
         }}
       >
         <option value="release">Release Date</option>
@@ -69,9 +83,9 @@ const BrowsePage = () => {
       </select>
 
       <select
-        value={product}
+        value={searchParams.get("product") || "Comic"}
         onChange={(event) => {
-          setProduct(event.target.value);
+          paramChange(event, "product");
         }}
       >
         <option value={"Comic"}>Comics</option>
@@ -82,9 +96,9 @@ const BrowsePage = () => {
         <option value={"All"}>All</option>
       </select>
       <select
-        value={publisher}
+        value={searchParams.get("publisher") || "All"}
         onChange={(event) => {
-          setPublisher(event.target.value);
+          paramChange(event, "publisher");
         }}
       >
         <option value={"All"}>All</option>
@@ -96,14 +110,17 @@ const BrowsePage = () => {
         <option value={"Boom!"}>BOOM!</option>
         <option value={"Dynamite"}>Dynamite</option>
       </select>
-      {timeframe !== "none" && (
-        <WeekSelect onDataPass={weekChange} defaultTime={date} />
+      {searchParams.get("timeframe") !== "none" && (
+        <WeekSelect
+          onDataPass={weekChange}
+          defaultTime={searchParams.get("date")}
+        />
       )}
       <SearchDisplay
         query={productList}
         maxPages={maxPages}
         onPageChange={pageChange}
-        defaultPage={currentPage}
+        defaultPage={searchParams.get("currentPage")}
       />
     </div>
   );
