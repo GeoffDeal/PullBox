@@ -30,7 +30,7 @@ function SeriesPage() {
         if (!cancelled) {
           setCurrentSeries(seriesRes.data);
           setSeriesBooks(booksRes.data);
-          setIsSubbed(subRes.data[0] || false);
+          setIsSubbed(subRes.data[0].id || false);
         }
       } catch (err) {
         console.error(err);
@@ -43,19 +43,24 @@ function SeriesPage() {
     };
   }, [seriesId, user.id]);
 
-  const removeSub = (series) => {
+  const removeSub = () => {
     const confirmBox = window.confirm(
       "Are you sure you wish to remove this subscription and associated pulls?"
     );
 
+    async function deleteSub() {
+      const subState = isSubbed;
+      setIsSubbed(false);
+      try {
+        await api.delete(`/subs/removesub/${isSubbed}`);
+      } catch (err) {
+        console.error(err);
+        toast.error("Problem removing subscription, try again");
+        setIsSubbed(subState);
+      }
+    }
     if (confirmBox === true) {
-      const updatedSubs = user.subList.filter(
-        (sub) => JSON.stringify(sub) !== JSON.stringify(series)
-      );
-      setUser((user) => ({
-        ...user,
-        subList: updatedSubs,
-      }));
+      deleteSub();
     }
   };
   const addSub = (series) => {
@@ -107,6 +112,7 @@ function SeriesPage() {
       ) : (
         <h3>Series not found</h3>
       )}
+      <button onClick={() => console.log(isSubbed)}>Push Me</button>
     </div>
   );
 }
