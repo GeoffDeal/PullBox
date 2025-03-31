@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext, TaxRates, ConversionRate } from "../Contexts";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../api/api";
 
 export function calcWeek(date) {
@@ -33,6 +34,7 @@ function ComicsDisplay(props) {
         }
       } catch (err) {
         console.error(err);
+        toast.error(`Error fetching pulls: ${err}`);
       }
     }
     getPulls();

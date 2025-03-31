@@ -146,7 +146,7 @@ function BookPage() {
                 <NavLink
                   className="purpleNav"
                   to="/seriespage"
-                  state={{ sku: book.SeriesSku }}
+                  state={{ seriesId: book.SeriesID }}
                 >
                   View Series
                 </NavLink>

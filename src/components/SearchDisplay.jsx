@@ -55,18 +55,6 @@ function SearchDisplay(props) {
   useEffect(() => {
     onPageChange(currentPage);
   }, [onPageChange, currentPage]);
-  //   const trimmedArray = bookList ? removeIssueDoubles(bookList) : null;
-
-  //   const previousSearchPage = defaultPage ? Number(defaultPage) : null;
-  //   const booksPerPage = 20;
-  //   const [currentPage, setCurrentPage] = useState(
-  //     defaultPage ? previousSearchPage : 1
-  //   );
-  //   const firstIndex = (currentPage - 1) * booksPerPage;
-  //   const displayBooks = trimmedArray.slice(
-  //     firstIndex,
-  //     firstIndex + booksPerPage
-  //   );
 
   const pages = [];
   for (let i = 1; i <= maxPages; i++) {
@@ -75,12 +63,6 @@ function SearchDisplay(props) {
   const limitedPages = pages.filter((i) => {
     return i > currentPage - 4 && i < currentPage + 4;
   });
-
-  //   useEffect(() => {
-  //     if (!onPageChange) return;
-
-  //     onPageChange(currentPage);
-  //   }, [onPageChange, currentPage]);
 
   return (
     <div className="searchDisplay">
