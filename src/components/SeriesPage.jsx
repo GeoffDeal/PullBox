@@ -1,21 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
-import { SeriesContext, ComicList, UserContext } from "../Contexts";
-import { handleTitle, removeIssueDoubles } from "./SearchDisplay";
+import { UserContext } from "../Contexts";
+import { handleTitle } from "./SearchDisplay";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
 function SeriesPage() {
   const location = useLocation();
-  //   const { series } = useContext(SeriesContext);
-  //   const { comics } = useContext(ComicList);
+  const seriesId = location.state.seriesId;
   const { user, setUser } = useContext(UserContext);
 
-  // const seriesSku = location.state.sku;
-  // const currentSeries = series.find(obj => obj.skus.includes(seriesSku));
-  const seriesId = location.state.seriesId;
   const [currentSeries, setCurrentSeries] = useState();
   const [seriesBooks, setSeriesBooks] = useState();
+  const [isSubbed, setIsSubbed] = useState(false);
   useEffect(() => {
     let cancelled = false;
 
@@ -23,9 +20,17 @@ function SeriesPage() {
       try {
         const seriesRes = await api.get(`/products/getseries/${seriesId}`);
         const booksRes = await api.get(`/products/getseriesbooks/${seriesId}`);
+
+        const subRes = await api.get(`/subs/checksub`, {
+          params: {
+            userId: user.id,
+            seriesId: seriesId,
+          },
+        });
         if (!cancelled) {
           setCurrentSeries(seriesRes.data);
           setSeriesBooks(booksRes.data);
+          setIsSubbed(subRes.data[0] || false);
         }
       } catch (err) {
         console.error(err);
@@ -36,21 +41,7 @@ function SeriesPage() {
     return () => {
       cancelled = true;
     };
-  }, [seriesId]);
-
-  let trimmedSeriesBooks = null;
-  let isSubbed = null;
-  //   if (currentSeries) {
-  //     seriesBooks = comics.filter((comic) =>
-  //       currentSeries.skus.includes(comic.SeriesSku)
-  //     );
-  //     trimmedSeriesBooks = removeIssueDoubles(seriesBooks);
-  //     trimmedSeriesBooks.sort((a, b) => b.Issue - a.Issue);
-
-  //     isSubbed = user.subList.some(
-  //       (sub) => JSON.stringify(sub) === JSON.stringify(currentSeries)
-  //     );
-  //   }
+  }, [seriesId, user.id]);
 
   const removeSub = (series) => {
     const confirmBox = window.confirm(
