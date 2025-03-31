@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { handleTitle } from "./SearchDisplay";
 import { calcWeek } from "./ComicDisplay";
+import { toast } from "react-toastify";
 import api from "../api/api";
 
 function BookPage() {
@@ -23,18 +24,14 @@ function BookPage() {
       try {
         const bookRes = await api.get(`/products/getproduct/${productId}`);
         const bookData = bookRes.data;
-        if (!cancelled) {
-          setBook(bookData);
-        }
+
         const pullRes = await api.get(`/pulls/checkpull`, {
           params: {
             userId: user.id,
             productId: productId,
           },
         });
-        if (!cancelled) {
-          setPull(pullRes.data[0] || false);
-        }
+
         if (bookData) {
           const varRes = await api.get("/products/getvariants", {
             params: {
@@ -43,12 +40,16 @@ function BookPage() {
               variant: bookData.Variant,
             },
           });
+
           if (!cancelled) {
+            setBook(bookData);
+            setPull(pullRes.data[0] || false);
             setVariantList(varRes.data);
           }
         }
       } catch (err) {
         console.error(err);
+        toast.error(`Problem fetching data: ${err}`);
       }
     }
 
@@ -96,6 +97,7 @@ function BookPage() {
       }
     } catch (err) {
       console.error(err);
+      toast.error("Problem adding pull, try again");
     }
   };
   const removePull = async () => {
