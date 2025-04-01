@@ -34,7 +34,6 @@ const BrowsePage = () => {
       >
         <option value="release">Release Date</option>
         <option value="foc">Final Order Date</option>
-        <option value="none">None</option>
       </select>
 
       <select
