@@ -51,7 +51,7 @@ function Notifications() {
       setMessage({ title: "", body: "" });
     } catch (err) {
       console.error(err);
-      toast.error(`Error: ${err.message}`);
+      toast.error(`Error: ${err.response.data.error[0]}`);
     }
   };
 

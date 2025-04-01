@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import { UserContext } from "../Contexts";
-import { handleTitle } from "./SearchDisplay";
+import { handleTitle } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import { confirmToast } from "../utils/toasts.jsx";
 import api from "../api/api";

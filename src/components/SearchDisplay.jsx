@@ -1,34 +1,54 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-
-export function handleTitle(name) {
-  const hastagIndex = name.indexOf("#");
-  let cutIndex = -1;
-  if (hastagIndex !== -1) {
-    cutIndex = name.indexOf(" ", hastagIndex);
-  }
-  const trimmedName = cutIndex === -1 ? name : name.slice(0, cutIndex);
-  const words = trimmedName.toLowerCase().split(" ");
-  const newStr = words
-    .map((word) => {
-      return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
-    })
-    .join(" ");
-  return newStr
-    .replace(/\bDm\b/g, "DM")
-    .replace(/\bHc\b/g, "HC")
-    .replace(/\bTp\b/g, "TP");
-}
+import { useEffect, useMemo, useState } from "react";
+import { NavLink, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api/api";
+import { findSundays, handleTitle } from "../utils/utilityFunctions.js";
 
 function SearchDisplay(props) {
-  const { query, maxPages, defaultPage, onPageChange } = props;
+  const [searchParams] = useSearchParams();
+  const [bookList, setBookList] = useState();
+  const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
+  const [maxPages, setMaxPages] = useState(1);
+  const itemsPerPage = 20;
+  const lastSunday = useMemo(() => findSundays().lastSunday, []);
 
-  const bookList = query;
-
-  const [currentPage, setCurrentPage] = useState(defaultPage || 1);
   useEffect(() => {
-    onPageChange(currentPage);
-  }, [onPageChange, currentPage]);
+    let cancelled = false;
+    const params = {
+      week: props.timeframe || searchParams.get("timeframe") || "release",
+      date: props.date || searchParams.get("date") || lastSunday,
+      product: props.product || searchParams.get("product") || "Comic",
+      publisher: props.publisher || searchParams.get("publisher") || "All",
+      page: currentPage,
+      limit: itemsPerPage,
+    };
+    async function getFoc() {
+      try {
+        const res = await api.get("/products/browse", {
+          params: params,
+        });
+        if (!cancelled) {
+          setBookList(res.data.data);
+          setMaxPages(res.data.pages);
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error(`Problem fetching products: ${err}`);
+      }
+    }
+    getFoc();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    props.date,
+    props.timeframe,
+    props.product,
+    props.publisher,
+    currentPage,
+    searchParams,
+    lastSunday,
+  ]);
 
   const pages = [];
   for (let i = 1; i <= maxPages; i++) {

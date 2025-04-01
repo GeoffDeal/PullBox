@@ -1,7 +1,7 @@
 import { UserContext, ConversionRate } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { handleTitle } from "./SearchDisplay";
+import { handleTitle } from "../utils/utilityFunctions.js";
 import { calcWeek } from "./ComicDisplay";
 import { toast } from "react-toastify";
 import api from "../api/api";
