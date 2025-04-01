@@ -5,7 +5,7 @@ import api from "../api/api";
 import { findSundays, handleTitle } from "../utils/utilityFunctions.js";
 
 function SearchDisplay(props) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [bookList, setBookList] = useState();
   const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
   const [maxPages, setMaxPages] = useState(1);
@@ -69,6 +69,13 @@ function SearchDisplay(props) {
     return i > currentPage - 4 && i < currentPage + 4;
   });
 
+  const pageChange = (page) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", page);
+    setSearchParams(newParams);
+    setCurrentPage(page);
+  };
+
   return (
     <div className="searchDisplay">
       <div className="gridDisplay">
@@ -93,7 +100,7 @@ function SearchDisplay(props) {
           <button
             className="pageButton"
             onClick={() => {
-              setCurrentPage(1);
+              pageChange(1);
             }}
           >
             <span className="material-symbols-outlined">first_page</span>
@@ -103,7 +110,7 @@ function SearchDisplay(props) {
           <button
             className="pageButton"
             onClick={() => {
-              setCurrentPage(currentPage - 1);
+              pageChange(currentPage - 1);
             }}
           >
             <span className="material-symbols-outlined">chevron_left</span>
@@ -118,7 +125,7 @@ function SearchDisplay(props) {
                 }`}
                 key={page}
                 onClick={() => {
-                  setCurrentPage(page);
+                  pageChange(page);
                 }}
               >
                 {page}
@@ -129,7 +136,7 @@ function SearchDisplay(props) {
           <button
             className="pageButton"
             onClick={() => {
-              setCurrentPage(currentPage + 1);
+              pageChange(currentPage + 1);
             }}
           >
             <span className="material-symbols-outlined">chevron_right</span>
@@ -139,7 +146,7 @@ function SearchDisplay(props) {
           <button
             className="pageButton"
             onClick={() => {
-              setCurrentPage(pages[pages.length - 1]);
+              pageChange(pages[pages.length - 1]);
             }}
           >
             <span className="material-symbols-outlined">last_page</span>
