@@ -1,48 +1,45 @@
-import { ComicList } from "../Contexts";
-import SearchDisplay from "./SearchDisplay"
-import { useContext } from "react";
+import SearchDisplay from "./SearchDisplay";
 import { useSearchParams } from "react-router-dom";
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useState } from "react";
 
-function SearchPage () {
-    const { comics } = useContext(ComicList);
-    const [ searchParams, setSearchParams ] = useSearchParams();
+function SearchPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inputValue, setInputValue] = useState(searchParams.get("query") ?? "");
 
-    const pageChange = (pageNumber) => {
-        const page = searchParams.get('page');
-        if (Number(page) !== pageNumber) {
-        setSearchParams(prev => {
-            const updatedParams = new URLSearchParams(prev);
-            updatedParams.set('page', pageNumber);
-            return updatedParams;
-        });
-        }
-    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedInput = useCallback(
+    debounce((string) => {
+      if (string.length > 2) {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set("query", string);
+        setSearchParams(newParams);
+      }
+    }, 500),
+    [searchParams, setSearchParams]
+  );
+  function handleInput(event) {
+    setInputValue(event.target.value);
+    const string = event.target.value.toLocaleLowerCase();
+    debouncedInput(string);
+  }
+  useEffect(() => {
+    return () => debouncedInput.cancel();
+  }, [debouncedInput]);
 
-    const query = searchParams.get('query') || '';
+  return (
+    <div className="pageDisplay searchPage">
+      <h1>Find Comics:</h1>
+      <input
+        type="text"
+        value={inputValue}
+        placeholder="Search..."
+        className="searchBar"
+        onChange={handleInput}
+      />
+      <SearchDisplay />
+    </div>
+  );
+}
 
-    const searchBooks = (book) => query.length > 2 && book.ProductName.toLocaleLowerCase().includes(query);
-    const searchedBooks = comics.filter(searchBooks);
-
-    return (
-        <div className="pageDisplay searchPage">
-            <h1>Find Comics:</h1>
-            <input 
-                type="text" 
-                value={searchParams.get('query') || undefined}
-                placeholder="Search..."
-                className="searchBar"
-                onChange={((e) => {
-                    setSearchParams(prev => {
-                        const updatedParams = new URLSearchParams(prev);
-                        updatedParams.set('query', e.target.value.toLocaleLowerCase());
-                        return updatedParams;
-                    });
-
-                })}
-            />
-            {query.length > 2 && <SearchDisplay query={ searchedBooks } defaultPage={searchParams.get('page')} onPageChange={pageChange} />}
-        </div>
-    )
-};
-
-export default SearchPage
+export default SearchPage;

@@ -14,19 +14,30 @@ function SearchDisplay(props) {
 
   useEffect(() => {
     let cancelled = false;
-    const params = {
-      week: props.timeframe || searchParams.get("timeframe") || "release",
-      date: props.date || searchParams.get("date") || lastSunday,
-      product: props.product || searchParams.get("product") || "Comic",
-      publisher: props.publisher || searchParams.get("publisher") || "All",
-      page: currentPage,
-      limit: itemsPerPage,
-    };
     async function getFoc() {
       try {
-        const res = await api.get("/products/browse", {
-          params: params,
-        });
+        let res;
+        if (searchParams.has("query")) {
+          const params = {
+            term: searchParams.get("query"),
+            limit: itemsPerPage,
+            page: currentPage,
+          };
+          res = await api.get("/products/search", { params: params });
+        } else {
+          const params = {
+            week: props.timeframe || searchParams.get("timeframe") || "release",
+            date: props.date || searchParams.get("date") || lastSunday,
+            product: props.product || searchParams.get("product") || "Comic",
+            publisher:
+              props.publisher || searchParams.get("publisher") || "All",
+            page: currentPage,
+            limit: itemsPerPage,
+          };
+          res = await api.get("/products/browse", {
+            params: params,
+          });
+        }
         if (!cancelled) {
           setBookList(res.data.data);
           setMaxPages(res.data.pages);
