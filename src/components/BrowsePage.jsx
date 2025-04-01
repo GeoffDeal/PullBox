@@ -1,55 +1,10 @@
-import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SearchDisplay from "./SearchDisplay";
 import WeekSelect from "./WeekSelect";
-import { toast } from "react-toastify";
-import api from "../api/api";
 
 const BrowsePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const today = new Date();
-  const formattedDay = today.toLocaleDateString("en-CA");
-
-  const [maxPages, setMaxPages] = useState(1);
-  const [productList, setProductList] = useState([]);
-  const itemsPerPage = 20;
-  useEffect(() => {
-    let cancelled = false;
-    async function getBrowsed() {
-      try {
-        const res = await api.get("/products/browse", {
-          params: {
-            week: searchParams.get("timeframe") || "release",
-            date: searchParams.get("date") || formattedDay,
-            product: searchParams.get("product") || "Comic",
-            publisher: searchParams.get("publisher") || "All",
-            page: searchParams.get("currentPage") || 1,
-            limit: itemsPerPage,
-          },
-        });
-        if (!cancelled) {
-          setProductList(res.data.data);
-          setMaxPages(res.data.pages);
-        }
-      } catch (err) {
-        console.error(err);
-        toast.error("Error retrieving products");
-      }
-    }
-    getBrowsed();
-    return () => {
-      cancelled = true;
-    };
-  }, [formattedDay, searchParams]);
-
-  const pageChange = (pageNumber) => {
-    if (searchParams.get("currentPage") !== pageNumber) {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("currentPage", pageNumber);
-      setSearchParams(newParams);
-    }
-  };
   const weekChange = (day) => {
     const formattedDay = day.toLocaleDateString("en-CA");
     if (searchParams.get("date") !== formattedDay) {
@@ -116,12 +71,7 @@ const BrowsePage = () => {
           defaultTime={searchParams.get("date")}
         />
       )}
-      <SearchDisplay
-        query={productList}
-        maxPages={maxPages}
-        onPageChange={pageChange}
-        defaultPage={searchParams.get("currentPage")}
-      />
+      <SearchDisplay />
     </div>
   );
 };
