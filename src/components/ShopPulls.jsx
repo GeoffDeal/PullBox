@@ -1,89 +1,111 @@
-import { useContext, useEffect, useState } from "react";
-import { CustomersContext } from "../Contexts";
+import { useEffect, useState } from "react";
 import WeekSelect from "./WeekSelect";
-import { calcWeek } from "./ComicDisplay";
-import { handleTitle } from "../utils/utilityFunctions.js";
+import { handleTitle, findSundays } from "../utils/utilityFunctions.js";
 import ShopSubTable from "./ShopSubTable";
 import ExcelJS from "exceljs";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../api/api.js";
 
 const ShopPulls = () => {
-  const { customers } = useContext(CustomersContext);
-  const [pulls, setPulls] = useState([]);
-  const [weeksPulls, setWeeksPulls] = useState();
+  // const { customers } = useContext(CustomersContext);
+  // const [pulls, setPulls] = useState([]);
+  // const [weeksPulls, setWeeksPulls] = useState();
   const [sortBy, setSortBy] = useState({
     az: "ascending",
     type: "Publisher",
   });
   const [sortedPulls, setSortedPulls] = useState();
-  const defaultTimestamp = () => {
-    const now = new Date();
-    const lastSunday = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    );
-    lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
-    return calcWeek(lastSunday);
-  };
-  const [sortConditions, setSortConditions] = useState({
+  // const defaultTimestamp = () => {
+  //   const now = new Date();
+  //   const lastSunday = new Date(
+  //     now.getFullYear(),
+  //     now.getMonth(),
+  //     now.getDate()
+  //   );
+  //   lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+  //   return calcWeek(lastSunday);
+  // };
+  const { lastSunday } = findSundays();
+  const [queryConditions, setQueryConditions] = useState({
     dateType: "release",
-    timestamp: defaultTimestamp(),
+    date: lastSunday,
   });
 
   useEffect(() => {
-    let totalPulls = [];
-    customers.forEach((customer) => {
-      const customerPulls = customer.pulls;
-      totalPulls = totalPulls.concat(customerPulls);
-    });
-    setPulls(totalPulls);
-  }, [customers]);
+    let cancelled = false;
 
-  useEffect(() => {
-    const weeksBooks = pulls.filter((book) => {
-      return (
-        calcWeek(
-          sortConditions.dateType === "release" ? book.Release : book.FOCDueDate
-        ) === sortConditions.timestamp
-      );
-    });
-    setWeeksPulls(weeksBooks);
-  }, [pulls, sortConditions]);
+    const getPulls = async () => {
+      try {
+        const params = { [queryConditions.dateType]: queryConditions.date };
+        const res = await api.get("/pulls/getweekspulls", { params: params });
 
-  useEffect(() => {
-    if (weeksPulls && weeksPulls.length > 0) {
-      const bookList = JSON.parse(JSON.stringify(weeksPulls));
+        if (!cancelled) setSortedPulls(res.data);
+      } catch (err) {
+        toast.error(`Problem fetching pulls: ${err.message}`);
+      }
+    };
+    getPulls();
+    return () => {
+      cancelled = true;
+    };
+  }, [queryConditions]);
 
-      const combinedBooks = [];
-      bookList.forEach((book) => {
-        //Combine multiples
-        if (!combinedBooks.some((comic) => comic.Sku === book.Sku)) {
-          book.Customer.Quantity = book["Qty.Ord.OnTime"];
-          book.customersList = [book.Customer];
-          combinedBooks.push(book);
-        } else {
-          const comic = combinedBooks.find((comic) => comic.Sku === book.Sku);
-          comic["Qty.Ord.OnTime"] =
-            comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
-          book.Customer.Quantity = book["Qty.Ord.OnTime"];
-          comic.customersList.push(book.Customer);
-        }
-      });
-      combinedBooks.sort((a, b) => {
-        if (a[sortBy.type] < b[sortBy.type]) {
-          return sortBy.sort === "ascending" ? -1 : 1;
-        }
-        if (a[sortBy.type] > b[sortBy.type]) {
-          return sortBy.sort === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-      setSortedPulls(combinedBooks);
-    } else {
-      setSortedPulls([]);
-    }
-  }, [weeksPulls, sortBy, sortConditions]);
+  // useEffect(() => {
+  //   let totalPulls = [];
+  //   customers.forEach((customer) => {
+  //     const customerPulls = customer.pulls;
+  //     totalPulls = totalPulls.concat(customerPulls);
+  //   });
+  //   setPulls(totalPulls);
+  // }, [customers]);
+
+  // useEffect(() => {
+  //   const weeksBooks = pulls.filter((book) => {
+  //     return (
+  //       calcWeek(
+  //         sortConditions.dateType === "release" ? book.Release : book.FOCDueDate
+  //       ) === sortConditions.timestamp
+  //     );
+  //   });
+  //   setWeeksPulls(weeksBooks);
+  // }, [pulls, sortConditions]);
+
+  // useEffect(() => {
+  //   if (weeksPulls && weeksPulls.length > 0) {
+  //     const bookList = JSON.parse(JSON.stringify(weeksPulls));
+
+  //     const combinedBooks = [];
+  //     bookList.forEach((book) => {
+  //       //Combine multiples
+  //       if (!combinedBooks.some((comic) => comic.Sku === book.Sku)) {
+  //         book.Customer.Quantity = book["Qty.Ord.OnTime"];
+  //         book.customersList = [book.Customer];
+  //         combinedBooks.push(book);
+  //       } else {
+  //         const comic = combinedBooks.find((comic) => comic.Sku === book.Sku);
+  //         comic["Qty.Ord.OnTime"] =
+  //           comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
+  //         book.Customer.Quantity = book["Qty.Ord.OnTime"];
+  //         comic.customersList.push(book.Customer);
+  //       }
+  //     });
+  //     combinedBooks.sort((a, b) => {
+  //       if (a[sortBy.type] < b[sortBy.type]) {
+  //         return sortBy.sort === "ascending" ? -1 : 1;
+  //       }
+  //       if (a[sortBy.type] > b[sortBy.type]) {
+  //         return sortBy.sort === "ascending" ? 1 : -1;
+  //       }
+  //       return 0;
+  //     });
+  //     setSortedPulls(combinedBooks);
+  //   } else {
+  //     setSortedPulls([]);
+  //   }
+  // }, [weeksPulls, sortBy, sortConditions]);
+
+  //Sort functions
 
   const toggleAscending = () => {
     setSortBy((prev) => ({
@@ -92,15 +114,15 @@ const ShopPulls = () => {
     }));
   };
   const changeDateType = (e) => {
-    setSortConditions((prev) => ({
+    setQueryConditions((prev) => ({
       ...prev,
       dateType: e.target.value,
     }));
   };
   const changeDate = (date) => {
-    setSortConditions((prev) => ({
+    setQueryConditions((prev) => ({
       ...prev,
-      timestamp: date,
+      date: date,
     }));
   };
 
@@ -226,7 +248,7 @@ const ShopPulls = () => {
             })}
         </tbody>
       </table>
-      {sortConditions.dateType === "foc" && (
+      {queryConditions.dateType === "foc" && (
         <button className="goldButton" onClick={() => createExcel()}>
           Export Pulls
         </button>
