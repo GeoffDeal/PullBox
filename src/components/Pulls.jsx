@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext, CustomersContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import WeekSelect from "./WeekSelect";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, useSearchParams, NavLink } from "react-router-dom";
 import { findSundays } from "../utils/utilityFunctions";
 
 function Pulls() {
@@ -29,10 +29,13 @@ function Pulls() {
   };
 
   const { lastSunday } = findSundays();
-  const [sunday, setSunday] = useState(lastSunday);
+  const [searchParams, setSearchParams] = useSearchParams();
   const weekChange = (day) => {
-    // const formattedDay = day.toLocaleDateString("en-CA");
-    setSunday(day);
+    if (searchParams.get("date") !== day) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("date", day);
+      setSearchParams(newParams);
+    }
   };
 
   return (
@@ -41,9 +44,12 @@ function Pulls() {
       <h3>
         {customerID ? currentUser.name + `'s` : "Your"} pulls for the week of
       </h3>
-      <WeekSelect onDataPass={weekChange} defaultTime={sunday} />
+      <WeekSelect
+        onDataPass={weekChange}
+        defaultTime={searchParams.get("date") || lastSunday}
+      />
 
-      <ComicsDisplay date={sunday} />
+      <ComicsDisplay date={searchParams.get("date") || lastSunday} />
       <h3>
         {customerID ? currentUser.name + `'s` : "Your"} subscription list:
       </h3>
