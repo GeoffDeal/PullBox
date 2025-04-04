@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
-function CustomerFlyway({ customer, deactivateCustomer }) {
+function CustomerFlyway({ customer, customerName, deactivateCustomer }) {
   const [isOpen, setIsOpen] = useState(false);
   const flywayRef = useRef(null);
 
@@ -41,7 +41,7 @@ function CustomerFlyway({ customer, deactivateCustomer }) {
         <NavLink
           className={"flyawayNav"}
           to="/pulls"
-          state={{ customerId: customer }}
+          state={{ customerId: customer, customerName: customerName }}
         >
           Customer Pulls
         </NavLink>

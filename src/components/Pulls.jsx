@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { UserContext, CustomersContext } from "../Contexts";
+import { UserContext } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import WeekSelect from "./WeekSelect";
 import { useLocation, useSearchParams, NavLink } from "react-router-dom";
@@ -10,12 +10,9 @@ import { toast } from "react-toastify";
 
 function Pulls() {
   const { user } = useContext(UserContext);
-  const { customers } = useContext(CustomersContext);
   const location = useLocation();
-  const customerID = location.state ? location.state.customerID : null;
-  const currentUser = customerID
-    ? customers.find((user) => user.userID === customerID)
-    : user;
+  const [customerId] = useState(location.state?.customerId || user.id);
+  const [customerName] = useState(location.state?.customerName || null);
 
   //Subscriptions
 
@@ -25,8 +22,7 @@ function Pulls() {
 
     const getSubscriptions = async () => {
       try {
-        const res = await api.get(`/subs/usersubs?id=${user.id}`);
-        console.log(res);
+        const res = await api.get(`/subs/usersubs?id=${customerId}`);
         if (!cancelled) setSubs(res.data);
       } catch (err) {
         toast.error(`Problem fetching subscriptions: ${err.message}`);
@@ -36,7 +32,7 @@ function Pulls() {
     return () => {
       cancelled = true;
     };
-  }, [user.id]);
+  }, [customerId]);
 
   const removeSub = async (subId) => {
     const prevSubs = subs;
@@ -71,7 +67,7 @@ function Pulls() {
     <div className="pageDisplay">
       <h1>Pulls and Subs</h1>
       <h3>
-        {customerID ? currentUser.name + `'s` : "Your"} pulls for the week of
+        {customerName ? customerName + `'s` : "Your"} pulls for the week of
       </h3>
       <WeekSelect
         onDataPass={weekChange}
@@ -79,9 +75,7 @@ function Pulls() {
       />
 
       <ComicsDisplay date={searchParams.get("date") || lastSunday} />
-      <h3>
-        {customerID ? currentUser.name + `'s` : "Your"} subscription list:
-      </h3>
+      <h3>{customerName ? customerName + `'s` : "Your"} subscription list:</h3>
       <ul className="bookSubs">
         {subs ? (
           subs.map((series, index) => (
@@ -94,7 +88,7 @@ function Pulls() {
                   {series.name}
                 </NavLink>
 
-                {!customerID && (
+                {!customerName && (
                   <button
                     className="removeSeries"
                     onClick={() => removeSub(series.id)}

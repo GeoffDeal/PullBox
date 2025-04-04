@@ -57,6 +57,7 @@ function CustomersPage() {
                   </div>
                   <CustomerFlyway
                     customer={customer.id}
+                    customerName={customer.name}
                     deactivateCustomer={customerStatus}
                   />
                 </div>

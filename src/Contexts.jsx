@@ -12,7 +12,7 @@ export const SeriesContext = createContext();
 
 const Contexts = ({ children }) => {
   const [user, setUser] = useState({
-    boxNumber: 1,
+    boxNumber: 2,
     name: "John Doe",
     email: "email@emailprovider.com",
     phone: "(709) 555-5555",
