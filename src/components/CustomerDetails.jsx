@@ -8,15 +8,20 @@ function CustomerDetails() {
   const location = useLocation();
   const customerId = location.state.customerId;
   const [customer, setCustomer] = useState();
+  const [subs, setSubs] = useState();
   useEffect(() => {
     let cancelled = false;
 
     const getUser = async () => {
       try {
-        const res = await api.get(`/users/${customerId}`);
-        if (!cancelled) setCustomer(res.data);
+        const userRes = await api.get(`/users/${customerId}`);
+        const subRes = await api.get(`/subs/usersubs?id=${customerId}`);
+        if (!cancelled) {
+          setCustomer(userRes.data);
+          setSubs(subRes.data);
+        }
       } catch (err) {
-        toast.error(`Problem feteching user: ${err.message}`);
+        toast.error(`Problem fetching user information: ${err.message}`);
       }
     };
     getUser();
@@ -63,13 +68,16 @@ function CustomerDetails() {
       </div>
       <p>Email: {customer && customer.email}</p>
       <p>Phone: {customer && customer.phone}</p>
-      <p>{customer && customer.name}'s Subscriptions:</p>
-      {customer && customer.subList ? (
+      <p>{customer && `${customer.name}'s Subscriptions:`}</p>
+      {subs ? (
         <ul className="bookSubs">
-          {customer.subList.map((series) => (
-            <li key={series.skus[0]}>
+          {subs.map((series) => (
+            <li key={series.series_id}>
               <div className="subItem">
-                <NavLink to="/seriespage" state={{ sku: series.skus[0] }}>
+                <NavLink
+                  to="/seriespage"
+                  state={{ seriesId: series.series_id }}
+                >
                   {series.name}
                 </NavLink>
               </div>
