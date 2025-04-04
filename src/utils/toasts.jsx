@@ -13,7 +13,7 @@ export const confirmToast = (action, message) => {
         >
           Yes
         </button>
-        <button onClick={{ closeToast }}>No</button>
+        <button onClick={closeToast}>No</button>
       </div>
     ),
     {

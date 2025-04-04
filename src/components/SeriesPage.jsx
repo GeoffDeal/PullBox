@@ -120,7 +120,6 @@ function SeriesPage() {
       ) : (
         <h3>Series not found</h3>
       )}
-      <button onClick={() => console.log(isSubbed)}>Push Me</button>
     </div>
   );
 }
