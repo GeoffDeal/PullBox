@@ -56,20 +56,6 @@ function Pulls() {
     );
   };
 
-  // const removeSub = (series) => {
-  //   const confirmBox = window.confirm(
-  //     "Are you sure you wish to remove this subscription and associated pulls?"
-  //   );
-
-  //   if (confirmBox === true) {
-  //     const updatedSubs = user.subList.filter((sub) => sub !== series);
-  //     setUser((user) => ({
-  //       ...user,
-  //       subList: updatedSubs,
-  //     }));
-  //   }
-  // };
-
   // Weekly pulls
   const { lastSunday } = findSundays();
   const [searchParams, setSearchParams] = useSearchParams();

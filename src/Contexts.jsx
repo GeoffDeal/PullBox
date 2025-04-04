@@ -16,7 +16,7 @@ const Contexts = ({ children }) => {
     name: "John Doe",
     email: "email@emailprovider.com",
     phone: "(709) 555-5555",
-    customer: true,
+    customer: false,
     subList: [
       {
         skus: ["709853039754"],
