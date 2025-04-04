@@ -34,14 +34,14 @@ function CustomerFlyway({ customer, deactivateCustomer }) {
         <NavLink
           className={"flyawayNav"}
           to="/customerdetails"
-          state={{ customerID: customer }}
+          state={{ customerId: customer }}
         >
           Customer Details
         </NavLink>
         <NavLink
           className={"flyawayNav"}
           to="/pulls"
-          state={{ customerID: customer }}
+          state={{ customerId: customer }}
         >
           Customer Pulls
         </NavLink>
