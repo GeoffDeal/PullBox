@@ -1,31 +1,32 @@
 import { useState } from "react";
+import { findSundays, localDateObj } from "../utils/utilityFunctions.js";
 
 const WeekSelect = ({ onDataPass, defaultTime }) => {
-  const now = new Date();
-  const lastSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
-  const defaultSunday = defaultTime ? new Date(defaultTime) : null;
+  let { lastSunday } = findSundays();
+  const defaultSunday = defaultTime ? defaultTime : null;
   const [sunday, setSunday] = useState(
     defaultTime ? defaultSunday : lastSunday
   );
   const futureWeek = () => {
-    const day = new Date(sunday);
-    day.setDate(sunday.getDate() + 7);
-    setSunday(day);
-    onDataPass(day);
+    const dateObj = localDateObj(sunday);
+    dateObj.setDate(dateObj.getDate() + 7);
+    const formattedDay = dateObj.toLocaleDateString("en-CA");
+    setSunday(formattedDay);
+    onDataPass(formattedDay);
   };
   const pastWeek = () => {
-    const day = new Date(sunday);
-    day.setDate(sunday.getDate() - 7);
-    setSunday(day);
-    onDataPass(day);
+    const dateObj = localDateObj(sunday);
+    dateObj.setDate(dateObj.getDate() - 7);
+    const formattedDay = dateObj.toLocaleDateString("en-CA");
+    setSunday(formattedDay);
+    onDataPass(formattedDay);
   };
   return (
     <div className="weekSelector">
       <button onClick={pastWeek} className="weekSelectors">
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
-      <p>{sunday.toLocaleDateString("en-CA")}</p>
+      <p>Week of {sunday}</p>
       <button onClick={futureWeek} className="weekSelectors">
         <span className="material-symbols-outlined">chevron_right</span>
       </button>

@@ -6,10 +6,9 @@ const BrowsePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const weekChange = (day) => {
-    const formattedDay = day.toLocaleDateString("en-CA");
-    if (searchParams.get("date") !== formattedDay) {
+    if (searchParams.get("date") !== day) {
       const newParams = new URLSearchParams(searchParams);
-      newParams.set("date", formattedDay);
+      newParams.set("date", day);
       setSearchParams(newParams);
     }
   };

@@ -9,6 +9,12 @@ export function findSundays() {
   return { lastSunday: lastSundayFormatted, nextSunday: nextSundayFormatted };
 }
 
+export function localDateObj(dateString) {
+  const [year, month, day] = dateString.split("-").map(Number);
+  const localDateObj = new Date(year, month - 1, day);
+  return localDateObj;
+}
+
 export function handleTitle(name) {
   const hastagIndex = name.indexOf("#");
   let cutIndex = -1;
