@@ -23,26 +23,21 @@ function CustomersPage() {
     };
   }, []);
 
-  const addCustomer = (key) => {
-    setCustomers((prev) =>
-      prev.map((user) =>
-        user.userID === key ? { ...user, customerType: "active" } : user
-      )
-    );
-  };
-  const rejectCustomer = (key) => {
-    setCustomers((prev) =>
-      prev.map((user) =>
-        user.userID === key ? { ...user, customerType: "inactive" } : user
-      )
-    );
-  };
-  const restoreCustomer = (key) => {
-    setCustomers((prev) =>
-      prev.map((user) =>
-        user.userID === key ? { ...user, customerType: "active" } : user
-      )
-    );
+  const customerStatus = async (key, newStatus) => {
+    const currentCustomers = [...customers];
+    try {
+      setCustomers((prev) =>
+        prev.map((customer) =>
+          customer.id === key
+            ? { ...customer, customerType: newStatus }
+            : customer
+        )
+      );
+      await api.patch(`/users/status/${key}`, { status: newStatus });
+    } catch (err) {
+      toast.error("Problem changing customer status, try again");
+      setCustomers(currentCustomers);
+    }
   };
 
   return (
@@ -60,7 +55,10 @@ function CustomersPage() {
                     <p>{customer.name}</p>
                     <p>{customer.boxNumber}</p>
                   </div>
-                  <CustomerFlyway customer={customer.id} />
+                  <CustomerFlyway
+                    customer={customer.id}
+                    deactivateCustomer={customerStatus}
+                  />
                 </div>
               </li>
             ))}
@@ -77,7 +75,7 @@ function CustomersPage() {
                   <div className="pendingButtons">
                     <button
                       onClick={() => {
-                        addCustomer(customer.id);
+                        customerStatus(customer.id, "active");
                       }}
                       className="customerOptions"
                     >
@@ -85,7 +83,7 @@ function CustomersPage() {
                     </button>
                     <button
                       onClick={() => {
-                        rejectCustomer(customer.id);
+                        customerStatus(customer.id, "inactive");
                       }}
                       className="customerOptions"
                     >
@@ -106,7 +104,7 @@ function CustomersPage() {
                 <div className="customerRow">
                   <p>{customer.name}</p>
                   <button
-                    onClick={() => restoreCustomer(customer.id)}
+                    onClick={() => customerStatus(customer.id, "active")}
                     className="customerOptions"
                   >
                     <span className="material-symbols-outlined">add</span>
