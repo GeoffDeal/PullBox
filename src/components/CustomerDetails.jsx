@@ -33,15 +33,24 @@ function CustomerDetails() {
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState(customer?.boxNumber ?? "");
 
-  const boxChange = (event) => {
+  const boxChange = async (event) => {
     event.preventDefault();
+    const currentCustomer = customer;
     const parsedNumber = Math.floor(inputValue);
     if (!isNaN(parsedNumber)) {
-      customer.boxNumber = parsedNumber;
+      setToggle(false);
+      try {
+        setCustomer((prev) => ({ ...prev, boxNumber: parsedNumber }));
+        await api.patch(`/users/update/${customerId}`, {
+          box_number: parsedNumber,
+        });
+      } catch (err) {
+        toast.error("Problem changing box number, try again");
+        setCustomer(currentCustomer);
+      }
     } else {
-      alert("Please enter a number");
+      toast.error("Please enter a number");
     }
-    setToggle(false);
   };
 
   return (
