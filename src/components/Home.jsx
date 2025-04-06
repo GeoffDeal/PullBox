@@ -28,11 +28,13 @@ function Home() {
           const bookList = res.data;
           setWeeksBooks(bookList || []);
           let priceTotal = 0;
-          bookList.forEach((book) => {
-            const cadPrice =
-              parseFloat(book.MSRP.replace("$", "")) * conversion;
-            priceTotal += cadPrice;
-          });
+          if (bookList && bookList.length > 0) {
+            bookList.forEach((book) => {
+              const cadPrice =
+                parseFloat(book.MSRP.replace("$", "")) * conversion;
+              priceTotal += cadPrice;
+            });
+          }
           const totalRounded = priceTotal.toFixed(2);
           setExpectedIncome(totalRounded);
         }
