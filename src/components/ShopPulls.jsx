@@ -50,20 +50,26 @@ const ShopPulls = () => {
             pullsList.forEach((book) => {
               if (!combinedBooks.some((product) => product.ID === book.ID)) {
                 book.totalAmount = book.amount;
-                customerPulls[book.ID] = {
-                  user: book.userId,
-                  amount: book.amount,
-                };
+                customerPulls[book.ID] = [
+                  {
+                    name: book.userName,
+                    boxNumber: book.userBoxNumber,
+                    amount: book.amount,
+                    pullDate: book.pullDate,
+                  },
+                ];
                 combinedBooks.push(book);
               } else {
                 const comic = combinedBooks.find(
                   (comic) => comic.ID === book.ID
                 );
                 comic.totalAmount += book.amount;
-                customerPulls[book.ID] = {
-                  user: book.userId,
+                customerPulls[book.ID].push({
+                  name: book.userName,
+                  boxNumber: book.userBoxNumber,
                   amount: book.amount,
-                };
+                  pullDate: book.pullDate,
+                });
               }
             });
           }
