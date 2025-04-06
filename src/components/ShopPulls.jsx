@@ -31,6 +31,7 @@ const ShopPulls = () => {
     dateType: "release",
     date: lastSunday,
   });
+  const [customerAmounts, setCustomerAmounts] = useState([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,9 +41,38 @@ const ShopPulls = () => {
         const params = { [queryConditions.dateType]: queryConditions.date };
         const res = await api.get("/pulls/getweekspulls", { params: params });
 
-        if (!cancelled) setSortedPulls(res.data);
+        if (!cancelled) {
+          const pullsList = res.data;
+          //Combine multiples
+          const combinedBooks = [];
+          const customerPulls = {};
+          if (pullsList && pullsList.length > 0) {
+            pullsList.forEach((book) => {
+              if (!combinedBooks.some((product) => product.ID === book.ID)) {
+                book.totalAmount = book.amount;
+                customerPulls[book.ID] = {
+                  user: book.userId,
+                  amount: book.amount,
+                };
+                combinedBooks.push(book);
+              } else {
+                const comic = combinedBooks.find(
+                  (comic) => comic.ID === book.ID
+                );
+                comic.totalAmount += book.amount;
+                customerPulls[book.ID] = {
+                  user: book.userId,
+                  amount: book.amount,
+                };
+              }
+            });
+          }
+          setSortedPulls(combinedBooks);
+          setCustomerAmounts(customerPulls);
+        }
       } catch (err) {
         toast.error(`Problem fetching pulls: ${err.message}`);
+        console.error(err);
       }
     };
     getPulls();
@@ -75,21 +105,21 @@ const ShopPulls = () => {
   //   if (weeksPulls && weeksPulls.length > 0) {
   //     const bookList = JSON.parse(JSON.stringify(weeksPulls));
 
-  //     const combinedBooks = [];
-  //     bookList.forEach((book) => {
-  //       //Combine multiples
-  //       if (!combinedBooks.some((comic) => comic.Sku === book.Sku)) {
-  //         book.Customer.Quantity = book["Qty.Ord.OnTime"];
-  //         book.customersList = [book.Customer];
-  //         combinedBooks.push(book);
-  //       } else {
-  //         const comic = combinedBooks.find((comic) => comic.Sku === book.Sku);
-  //         comic["Qty.Ord.OnTime"] =
-  //           comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
-  //         book.Customer.Quantity = book["Qty.Ord.OnTime"];
-  //         comic.customersList.push(book.Customer);
-  //       }
-  //     });
+  // const combinedBooks = [];
+  // bookList.forEach((book) => {
+  //   //Combine multiples
+  //   if (!combinedBooks.some((comic) => comic.Sku === book.Sku)) {
+  //     book.Customer.Quantity = book["Qty.Ord.OnTime"];
+  //     book.customersList = [book.Customer];
+  //     combinedBooks.push(book);
+  //   } else {
+  //     const comic = combinedBooks.find((comic) => comic.Sku === book.Sku);
+  //     comic["Qty.Ord.OnTime"] =
+  //       comic["Qty.Ord.OnTime"] + book["Qty.Ord.OnTime"];
+  //     book.Customer.Quantity = book["Qty.Ord.OnTime"];
+  //     comic.customersList.push(book.Customer);
+  //   }
+  // });
   //     combinedBooks.sort((a, b) => {
   //       if (a[sortBy.type] < b[sortBy.type]) {
   //         return sortBy.sort === "ascending" ? -1 : 1;
@@ -240,9 +270,9 @@ const ShopPulls = () => {
                   </td>
                   <td>{book.Variant} </td>
                   <td>
-                    <ShopSubTable customers={book.customersList} />
+                    <ShopSubTable customers={customerAmounts[book.ID]} />
                   </td>
-                  <td className="centeredCell">{book["Qty.Ord.OnTime"]}</td>
+                  <td className="centeredCell">{book.totalAmount}</td>
                 </tr>
               );
             })}
