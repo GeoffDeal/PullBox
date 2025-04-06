@@ -162,7 +162,7 @@ const ShopPulls = () => {
         { header: "Quantity", key: "quantity", width: 20 },
       ];
       pubSorted.forEach((book) => {
-        sheet.addRow([book.Sku, book["Qty.Ord.OnTime"]]);
+        sheet.addRow([book.Sku, book.totalAmount]);
       });
 
       const cells = ["A1", "B1"];
