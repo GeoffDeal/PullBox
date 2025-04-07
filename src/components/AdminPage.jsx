@@ -1,5 +1,5 @@
 import { useEffect, useContext, useState, useRef } from "react";
-import { TaxRates, ConversionRate } from "../Contexts";
+import { PriceAdjustments } from "../Contexts";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
 
@@ -98,6 +98,9 @@ const AdminPage = () => {
   ];
 
   // Tax rate functions
+  const { priceAdjustments, setPriceAdjustments } =
+    useContext(PriceAdjustments);
+
   const productTypes = [
     "Hardcover",
     "Omnibus",
@@ -110,22 +113,21 @@ const AdminPage = () => {
   ];
   const [product, setProduct] = useState("Hardcover");
   const [rate, setRate] = useState("");
-  const { taxRates, setTaxRates } = useContext(TaxRates);
 
   const updateRates = (e) => {
     e.preventDefault();
-    setTaxRates((prev) => ({
+    setPriceAdjustments((prev) => ({
       ...prev,
-      [product]: rate,
+      taxRates: { ...prev.taxRates, [product]: rate },
     }));
     setRate("");
   };
 
-  // Conversion rate
-  const { conversion, setConversion } = useContext(ConversionRate);
-
   const changeConversion = (e) => {
-    setConversion(e.target.value);
+    setPriceAdjustments((prev) => ({
+      ...prev,
+      conversion: e.target.value,
+    }));
   };
 
   return (
@@ -222,11 +224,11 @@ const AdminPage = () => {
         <div className="fullscreenDiv">
           <h3>Set Tax Rate</h3>
           <ul>
-            {taxRates &&
-              Object.keys(taxRates).map((key, index) => {
+            {priceAdjustments &&
+              Object.keys(priceAdjustments.taxRates).map((key, index) => {
                 return (
                   <li key={index}>
-                    {key}: {taxRates[key]}%
+                    {key}: {priceAdjustments.taxRates[key]}%
                   </li>
                 );
               })}
@@ -268,7 +270,7 @@ const AdminPage = () => {
             id="conversionInput"
             onChange={(e) => changeConversion(e)}
           />
-          <p>Current conversion: {conversion}</p>
+          <p>Current conversion: {priceAdjustments.conversion}</p>
         </div>
       </div>
     </div>

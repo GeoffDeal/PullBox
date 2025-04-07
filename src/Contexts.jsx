@@ -1,8 +1,9 @@
 import { createContext, useState } from "react";
 
 export const UserContext = createContext();
-export const TaxRates = createContext();
-export const ConversionRate = createContext();
+// export const TaxRates = createContext();
+// export const ConversionRate = createContext();
+export const PriceAdjustments = createContext();
 
 const Contexts = ({ children }) => {
   const [user, setUser] = useState({
@@ -15,17 +16,28 @@ const Contexts = ({ children }) => {
     customerType: "active",
   });
 
-  const [taxRates, setTaxRates] = useState({});
-  const [conversion, setConversion] = useState(1);
+  const [priceAdjustments, setPriceAdjustments] = useState({
+    conversion: 1,
+    taxRates: {
+      Hardcover: 5,
+      Omnibus: 5,
+      "Trade Paperback": 5,
+      Comic: 15,
+      "Box Set": 15,
+      "Graphic Novel": 5,
+      Poster: 15,
+      Incentive: 15,
+    },
+  });
 
   return (
-    <ConversionRate.Provider value={{ conversion, setConversion }}>
-      <TaxRates.Provider value={{ taxRates, setTaxRates }}>
-        <UserContext.Provider value={{ user, setUser }}>
-          {children}
-        </UserContext.Provider>
-      </TaxRates.Provider>
-    </ConversionRate.Provider>
+    <PriceAdjustments.Provider
+      value={{ priceAdjustments, setPriceAdjustments }}
+    >
+      <UserContext.Provider value={{ user, setUser }}>
+        {children}
+      </UserContext.Provider>
+    </PriceAdjustments.Provider>
   );
 };
 

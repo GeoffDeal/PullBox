@@ -1,4 +1,4 @@
-import { UserContext, ConversionRate } from "../Contexts";
+import { UserContext, PriceAdjustments } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { handleTitle } from "../utils/utilityFunctions.js";
@@ -9,7 +9,7 @@ import api from "../api/api";
 function BookPage() {
   const { user } = useContext(UserContext);
   const [quantity, setQuantity] = useState();
-  const { conversion } = useContext(ConversionRate);
+  const { priceAdjustments } = useContext(PriceAdjustments);
 
   const location = useLocation();
   const productId = location.state.productId;
@@ -66,7 +66,8 @@ function BookPage() {
   let currentDate = null;
 
   if (book) {
-    const cadPrice = parseFloat(book.MSRP.replace("$", "")) * conversion;
+    const cadPrice =
+      parseFloat(book.MSRP.replace("$", "")) * priceAdjustments.conversion;
     cadRounded = cadPrice.toFixed(2);
 
     currentDate = new Date();

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { UserContext, TaxRates, ConversionRate } from "../Contexts";
+import { UserContext, PriceAdjustments } from "../Contexts";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
@@ -14,8 +14,7 @@ export function calcWeek(date) {
 
 function ComicsDisplay(props) {
   const { user } = useContext(UserContext);
-  const { taxRates } = useContext(TaxRates);
-  const { conversion } = useContext(ConversionRate);
+  const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksPulls, setWeeksPulls] = useState([]);
 
   useEffect(() => {
@@ -57,11 +56,14 @@ function ComicsDisplay(props) {
 
     Object.keys(productSorted).forEach((type) => {
       let taxRate = 1;
-      if (taxRates[type]) {
-        taxRate = taxRates[type] * 0.01 + 1;
+      if (priceAdjustments.taxRates[type]) {
+        taxRate = priceAdjustments.taxRates[type] * 0.01 + 1;
       }
       productSorted[type].forEach((book) => {
-        total += parseFloat(book.MSRP.replace("$", "")) * conversion * taxRate;
+        total +=
+          parseFloat(book.MSRP.replace("$", "")) *
+          priceAdjustments.conversion *
+          taxRate;
       });
     });
     return total.toFixed(2);

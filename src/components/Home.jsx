@@ -1,4 +1,4 @@
-import { UserContext, ConversionRate } from "../Contexts";
+import { UserContext, PriceAdjustments } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import { useContext, useEffect, useState } from "react";
 import SearchDisplay from "./SearchDisplay";
@@ -12,7 +12,7 @@ function Home() {
 
   // Week's total for shop
 
-  const { conversion } = useContext(ConversionRate);
+  const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksBooks, setWeeksBooks] = useState([]);
   const [expectedIncome, setExpectedIncome] = useState();
 
@@ -31,7 +31,8 @@ function Home() {
           if (bookList && bookList.length > 0) {
             bookList.forEach((book) => {
               const cadPrice =
-                parseFloat(book.MSRP.replace("$", "")) * conversion;
+                parseFloat(book.MSRP.replace("$", "")) *
+                priceAdjustments.conversion;
               priceTotal += cadPrice;
             });
           }
@@ -47,7 +48,7 @@ function Home() {
     return () => {
       cancelled = true;
     };
-  }, [lastSunday, conversion]);
+  }, [lastSunday, priceAdjustments]);
 
   return (
     <div className="pageDisplay">
