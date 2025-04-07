@@ -114,13 +114,22 @@ const AdminPage = () => {
   const [product, setProduct] = useState("Hardcover");
   const [rate, setRate] = useState("");
 
-  const updateRates = (e) => {
+  const updateRates = async (e) => {
     e.preventDefault();
-    setPriceAdjustments((prev) => ({
-      ...prev,
-      taxRates: { ...prev.taxRates, [product]: rate },
-    }));
-    setRate("");
+    const oldAdustments = structuredClone(priceAdjustments);
+    const newAdjustments = {
+      ...oldAdustments,
+      taxRates: { ...oldAdustments.taxRates, [product]: rate },
+    };
+    try {
+      setPriceAdjustments(newAdjustments);
+      setRate("");
+      await api.put("/priceadjustments/updateadjustments", newAdjustments);
+    } catch (err) {
+      console.error(err);
+      toast.error(`Problem updating rates: ${err.message}`);
+      setPriceAdjustments(oldAdustments);
+    }
   };
 
   const changeConversion = (e) => {
