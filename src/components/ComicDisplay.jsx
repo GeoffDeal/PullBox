@@ -4,14 +4,6 @@ import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
-export function calcWeek(date) {
-  const dateObject = new Date(date);
-  dateObject.setDate(dateObject.getDate() - dateObject.getDay());
-  dateObject.setHours(0, 0, 0, 0);
-  const dateTimestamp = dateObject.getTime();
-  return dateTimestamp;
-}
-
 function ComicsDisplay(props) {
   const { user } = useContext(UserContext);
   const { priceAdjustments } = useContext(PriceAdjustments);

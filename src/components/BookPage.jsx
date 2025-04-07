@@ -1,8 +1,7 @@
 import { UserContext, PriceAdjustments } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { handleTitle } from "../utils/utilityFunctions.js";
-import { calcWeek } from "./ComicDisplay";
+import { handleTitle, afterDate } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
@@ -63,21 +62,18 @@ function BookPage() {
   let formattedRelease = null;
   let formattedFoc = null;
   let afterFoc = null;
-  let currentDate = null;
 
   if (book) {
     const cadPrice =
       parseFloat(book.MSRP.replace("$", "")) * priceAdjustments.conversion;
     cadRounded = cadPrice.toFixed(2);
 
-    currentDate = new Date();
     const dateOptions = { day: "2-digit", month: "short", year: "numeric" };
     const release = new Date(book.Release);
     const foc = new Date(book.FOCDueDate);
     formattedRelease = release.toLocaleDateString("en-GB", dateOptions);
     formattedFoc = foc.toLocaleDateString("en-GB", dateOptions);
-    afterFoc =
-      calcWeek(book.FOCDueDate) <= calcWeek(currentDate) ? true : false;
+    afterFoc = afterDate(book.FOCDueDate);
   }
 
   useEffect(() => {
@@ -151,7 +147,7 @@ function BookPage() {
                   View Series
                 </NavLink>
               )}
-              {calcWeek(book.Release) > calcWeek(currentDate) && (
+              {!afterDate(book.Release) && (
                 <div>
                   <div className="pullDiv">
                     {!pull && (

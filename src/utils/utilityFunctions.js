@@ -24,6 +24,12 @@ export function twelveHourFormat(timeString) {
   return `${hours}:${minutes} ${ampm}`;
 }
 
+export function afterDate(dateString) {
+  const now = new Date();
+  const date = new Date(dateString);
+  return now > date;
+}
+
 export function handleTitle(name) {
   const hastagIndex = name.indexOf("#");
   let cutIndex = -1;
