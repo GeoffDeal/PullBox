@@ -11,7 +11,6 @@ const StoreInfo = () => {
     const getInfo = async () => {
       try {
         const res = await api.get("/storeinfo");
-        console.log(res);
         if (!cancelled) setStoreInfo(res.data);
       } catch (err) {
         console.error(err);
@@ -22,7 +21,7 @@ const StoreInfo = () => {
     return () => {
       cancelled = true;
     };
-  });
+  }, []);
 
   return (
     <div className="storeInfoPage pageDisplay">

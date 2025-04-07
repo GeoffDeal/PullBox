@@ -1,15 +1,36 @@
-import { useContext, useState, useRef } from "react";
-import { StoreInformation, TaxRates, ConversionRate } from "../Contexts";
+import { useEffect, useContext, useState, useRef } from "react";
+import { TaxRates, ConversionRate } from "../Contexts";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
 
 const AdminPage = () => {
-  const { storeInfo, setStoreInfo } = useContext(StoreInformation);
+  // const { storeInfo, setStoreInfo } = useContext(StoreInformation);
   const [files, setFiles] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
+  // const [phone, setPhone] = useState("");
+  // const [address, setAddress] = useState("");
+  // const [email, setEmail] = useState("");
   const inputRef = useRef();
+
+  // Fetch store info
+  const [storeInfo, setStoreInfo] = useState();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const getInfo = async () => {
+      try {
+        const res = await api.get("/storeinfo");
+        if (!cancelled) setStoreInfo(res.data);
+      } catch (err) {
+        console.error(err);
+        toast.error(`Problem fetching info: ${err.message}`);
+      }
+    };
+    getInfo();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   //Handle importing excel sheets
 
@@ -40,26 +61,45 @@ const AdminPage = () => {
   };
 
   // Store info change
-  const phoneChange = (e) => {
-    setPhone(e.target.value);
+
+  const contactChange = (e) => {
+    const { name, value } = e.target;
+    setStoreInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-  const addressChange = (e) => {
-    setAddress(e.target.value);
-  };
-  const emailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const storeUpdate = (e) => {
+
+  const storeUpdate = async (e) => {
     e.preventDefault();
-    setStoreInfo((prev) => {
-      return {
-        ...prev,
-        ...(phone && { phone }),
-        ...(address && { address }),
-        ...(email && { email }),
-      };
-    });
+    try {
+      await api.put("/storeinfo/updateinfo", storeInfo);
+      toast.success("Store info updated!");
+    } catch (err) {
+      console.error(err);
+      toast.error(`Problem updating info: ${err.message}`);
+    }
   };
+  // const phoneChange = (e) => {
+  //   setPhone(e.target.value);
+  // };
+  // const addressChange = (e) => {
+  //   setAddress(e.target.value);
+  // };
+  // const emailChange = (e) => {
+  //   setEmail(e.target.value);
+  // };
+  // const storeUpdate = (e) => {
+  //   e.preventDefault();
+  //   setStoreInfo((prev) => {
+  //     return {
+  //       ...prev,
+  //       ...(phone && { phone }),
+  //       ...(address && { address }),
+  //       ...(email && { email }),
+  //     };
+  //   });
+  // };
 
   const hourChange = (event) => {
     const { id, value } = event.target;
@@ -140,15 +180,33 @@ const AdminPage = () => {
           <form onSubmit={storeUpdate} id="storeInfoForm">
             <div className="infoBlock">
               <label htmlFor="phoneInput">Phone: </label>
-              <input id="phoneInput" type="tel" onChange={phoneChange} />
+              <input
+                id="phoneInput"
+                type="tel"
+                name="phone"
+                value={storeInfo?.phone ? storeInfo.phone : ""}
+                onChange={contactChange}
+              />
             </div>
             <div className="infoBlock">
               <label htmlFor="addressInput">Address: </label>
-              <input id="addressInput" type="text" onChange={addressChange} />
+              <input
+                id="addressInput"
+                type="text"
+                name="address"
+                value={storeInfo?.address ? storeInfo.address : ""}
+                onChange={contactChange}
+              />
             </div>
             <div className="infoBlock">
               <label htmlFor="emailInput">Email: </label>
-              <input id="emailInput" type="text" onChange={emailChange} />
+              <input
+                id="emailInput"
+                type="text"
+                name="email"
+                value={storeInfo?.email ? storeInfo.email : ""}
+                onChange={contactChange}
+              />
             </div>
             <button type="submit">Update</button>
           </form>
@@ -163,14 +221,18 @@ const AdminPage = () => {
                   <label htmlFor={openKey}>Open: </label>
                   <input
                     id={openKey}
-                    value={storeInfo.hours[openKey]}
+                    value={
+                      storeInfo?.hours[openKey] ? storeInfo?.hours[openKey] : ""
+                    }
                     type="time"
                     onChange={hourChange}
                   />
                   <label htmlFor={closeKey}>Close: </label>
                   <input
                     id={closeKey}
-                    value={storeInfo.hours[closeKey]}
+                    value={
+                      storeInfo?.hours[openKey] ? storeInfo?.hours[openKey] : ""
+                    }
                     type="time"
                     onChange={hourChange}
                   />
