@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
@@ -11,8 +11,13 @@ function SearchDisplay(props) {
   const [maxPages, setMaxPages] = useState(1);
   const itemsPerPage = 20;
   const lastSunday = useMemo(() => findSundays().lastSunday, []);
+  const skipFetch = useRef(false);
 
   useEffect(() => {
+    if (skipFetch.current) {
+      skipFetch.current = false;
+      return;
+    }
     let cancelled = false;
     async function getFoc() {
       try {
@@ -40,7 +45,15 @@ function SearchDisplay(props) {
         }
         if (!cancelled) {
           setBookList(res.data.data);
-          setMaxPages(res.data.pages);
+          setMaxPages(res.data.meta.maxPages);
+          const returnedPage = res.data.meta.currentPage;
+          if (returnedPage !== currentPage) {
+            skipFetch.current = true;
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set("page", returnedPage);
+            setSearchParams(newParams);
+            setCurrentPage(returnedPage);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -59,6 +72,7 @@ function SearchDisplay(props) {
     currentPage,
     searchParams,
     lastSunday,
+    setSearchParams,
   ]);
 
   const pages = [];
