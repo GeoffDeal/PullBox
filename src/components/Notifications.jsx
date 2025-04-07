@@ -20,7 +20,7 @@ function Notifications() {
           setMessages(sortedMessages);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
         toast.error("Error Rertrieving Notifications");
       }
     };
@@ -45,7 +45,6 @@ function Notifications() {
     };
     if (message.imageUrl) notificationData.imageUrl = message.imageUrl;
     try {
-      console.log(message);
       await api.post("/notifications/createnotification", notificationData);
       setFetchTrigger((prev) => !prev);
       setMessage({ title: "", body: "" });

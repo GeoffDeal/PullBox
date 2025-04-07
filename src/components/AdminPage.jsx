@@ -79,7 +79,6 @@ const AdminPage = () => {
 
   const hourChange = (event) => {
     const { id, value } = event.target;
-    console.log(id, value);
     setStoreInfo((prev) => ({
       ...prev,
       hours: {

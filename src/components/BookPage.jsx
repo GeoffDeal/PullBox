@@ -101,7 +101,6 @@ function BookPage() {
     }
   };
   const removePull = async () => {
-    console.log(pull);
     const pullId = pull.id;
     try {
       await api.delete(`/pulls/removepull/${pullId}`);
@@ -121,7 +120,7 @@ function BookPage() {
         amount: newQuantity,
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setQuantity(prevQuantity);
     }
   };

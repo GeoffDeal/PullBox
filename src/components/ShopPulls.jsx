@@ -45,7 +45,6 @@ const ShopPulls = () => {
   );
 
   const toggleAscending = () => {
-    console.log("trigger");
     setSortBy((prev) => {
       const newOrder = prev.az === "ascending" ? "descending" : "ascending";
       const newSortBy = { ...prev, az: newOrder };
@@ -91,7 +90,6 @@ const ShopPulls = () => {
   // Fetch data
   useEffect(() => {
     let cancelled = false;
-    console.log("fetch");
     const getPulls = async () => {
       try {
         const params = { [queryConditions.dateType]: queryConditions.date };
@@ -182,7 +180,8 @@ const ShopPulls = () => {
       try {
         buffer = await workbook.xlsx.writeBuffer();
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
+        toast.error(`Problem creating form: ${error.message}`);
         return;
       }
       const blob = new Blob([buffer], {

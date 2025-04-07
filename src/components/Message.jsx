@@ -5,7 +5,6 @@ import api from "../api/api";
 
 function Message(props) {
   const { user } = useContext(UserContext);
-  // const { messages, setMessages } = useContext(NotificationContext);
   const handleDel = props.messageDel;
   const delMessage = async (id) => {
     try {
