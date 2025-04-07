@@ -1,20 +1,20 @@
 import { useContext } from "react";
-import { UserContext, NotificationContext } from "../Contexts";
+import { UserContext } from "../Contexts";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
 function Message(props) {
   const { user } = useContext(UserContext);
-  const { messages, setMessages } = useContext(NotificationContext);
+  // const { messages, setMessages } = useContext(NotificationContext);
+  const handleDel = props.messageDel;
   const delMessage = async (id) => {
     try {
       await api.delete(`notifications/deletenotification/${id}`);
 
-      const remainingMessages = messages.filter((message) => message.id !== id);
-      setMessages(remainingMessages);
+      handleDel(id);
     } catch (err) {
       console.error(err);
-      toast.error("Error Connecting to Server");
+      toast.error(`Error Connecting to Server :${err.message}`);
     }
   };
 

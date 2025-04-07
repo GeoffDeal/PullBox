@@ -1,11 +1,11 @@
 import Message from "./Message";
-import { NotificationContext, UserContext } from "../Contexts";
+import { UserContext } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
 function Notifications() {
-  const { messages, setMessages } = useContext(NotificationContext);
+  const [messages, setMessages] = useState();
   const { user } = useContext(UserContext);
   const [fetchTrigger, setFetchTrigger] = useState(false);
   useEffect(() => {
@@ -53,6 +53,13 @@ function Notifications() {
       console.error(err);
       toast.error(`Error: ${err.response.data.error[0]}`);
     }
+  };
+
+  // Handle message delete
+
+  const filterDeleted = (id) => {
+    const remainingMessages = messages.filter((message) => message.id !== id);
+    setMessages(remainingMessages);
   };
 
   return (
@@ -105,6 +112,7 @@ function Notifications() {
                 body={message.body}
                 image={message.image}
                 id={message.id}
+                messageDel={filterDeleted}
               />
             ))}
         </div>
