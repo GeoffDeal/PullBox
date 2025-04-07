@@ -4,11 +4,7 @@ import { toast } from "react-toastify";
 import api from "../api/api.js";
 
 const AdminPage = () => {
-  // const { storeInfo, setStoreInfo } = useContext(StoreInformation);
   const [files, setFiles] = useState("");
-  // const [phone, setPhone] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [email, setEmail] = useState("");
   const inputRef = useRef();
 
   // Fetch store info
@@ -80,29 +76,10 @@ const AdminPage = () => {
       toast.error(`Problem updating info: ${err.message}`);
     }
   };
-  // const phoneChange = (e) => {
-  //   setPhone(e.target.value);
-  // };
-  // const addressChange = (e) => {
-  //   setAddress(e.target.value);
-  // };
-  // const emailChange = (e) => {
-  //   setEmail(e.target.value);
-  // };
-  // const storeUpdate = (e) => {
-  //   e.preventDefault();
-  //   setStoreInfo((prev) => {
-  //     return {
-  //       ...prev,
-  //       ...(phone && { phone }),
-  //       ...(address && { address }),
-  //       ...(email && { email }),
-  //     };
-  //   });
-  // };
 
   const hourChange = (event) => {
     const { id, value } = event.target;
+    console.log(id, value);
     setStoreInfo((prev) => ({
       ...prev,
       hours: {
@@ -231,7 +208,9 @@ const AdminPage = () => {
                   <input
                     id={closeKey}
                     value={
-                      storeInfo?.hours[openKey] ? storeInfo?.hours[openKey] : ""
+                      storeInfo?.hours[closeKey]
+                        ? storeInfo?.hours[closeKey]
+                        : ""
                     }
                     type="time"
                     onChange={hourChange}
