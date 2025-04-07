@@ -15,6 +15,15 @@ export function localDateObj(dateString) {
   return localDateObj;
 }
 
+export function twelveHourFormat(timeString) {
+  const [hours, minutes] = timeString.split(":");
+  let hoursNum = parseInt(hours);
+  const ampm = hoursNum >= 12 ? "PM" : "AM";
+  hoursNum = hoursNum >= 12 ? hoursNum - 12 : hoursNum;
+  hoursNum = hoursNum == 0 ? 12 : hoursNum;
+  return `${hours}:${minutes} ${ampm}`;
+}
+
 export function handleTitle(name) {
   const hastagIndex = name.indexOf("#");
   let cutIndex = -1;

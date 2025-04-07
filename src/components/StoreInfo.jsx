@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/api.js";
 import { toast } from "react-toastify";
+import { twelveHourFormat } from "../utils/utilityFunctions.js";
 
 const StoreInfo = () => {
   const [storeInfo, setStoreInfo] = useState();
@@ -23,6 +24,16 @@ const StoreInfo = () => {
     };
   }, []);
 
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
   return (
     <div className="storeInfoPage pageDisplay">
       {storeInfo ? (
@@ -32,48 +43,19 @@ const StoreInfo = () => {
           {storeInfo.address && <p>Address: {storeInfo.address}</p>}
           {storeInfo.email && <p>Email: {storeInfo.email}</p>}
           <h3>Store Hours</h3>
-          <p>
-            Sunday:{" "}
-            {storeInfo.hours.sundayopen
-              ? `${storeInfo.hours.sundayopen} - ${storeInfo.hours.sundayclose}`
-              : "Closed"}
-          </p>
-          <p>
-            Monday:{" "}
-            {storeInfo.hours.mondayopen
-              ? `${storeInfo.hours.mondayopen} - ${storeInfo.hours.mondayclose}`
-              : "Closed"}
-          </p>
-          <p>
-            Tuesday:{" "}
-            {storeInfo.hours.tuesdayopen
-              ? `${storeInfo.hours.tuesdayopen} - ${storeInfo.hours.tuesdayclose}`
-              : "Closed"}
-          </p>
-          <p>
-            Wednesday:{" "}
-            {storeInfo.hours.wednesdayopen
-              ? `${storeInfo.hours.wednesdayopen} - ${storeInfo.hours.wednesdayclose}`
-              : "Closed"}
-          </p>
-          <p>
-            Thursday:{" "}
-            {storeInfo.hours.thursdayopen
-              ? `${storeInfo.hours.thursdayopen} - ${storeInfo.hours.thursdayclose}`
-              : "Closed"}
-          </p>
-          <p>
-            Friday:{" "}
-            {storeInfo.hours.fridayopen
-              ? `${storeInfo.hours.fridayopen} - ${storeInfo.hours.fridayclose}`
-              : "Closed"}
-          </p>
-          <p>
-            Saturday:{" "}
-            {storeInfo.hours.saturdayopen
-              ? `${storeInfo.hours.saturdayopen} - ${storeInfo.hours.saturdayclose}`
-              : "Closed"}
-          </p>
+          {storeInfo.hours &&
+            weekdays.map((day) => {
+              const openKey = day.toLowerCase() + "open";
+              const closeKey = day.toLowerCase() + "close";
+              return (
+                <div key={day} className="hoursDisplay">
+                  <p>
+                    {day}: {twelveHourFormat(storeInfo.hours[openKey])} -{" "}
+                    {twelveHourFormat(storeInfo.hours[closeKey])}
+                  </p>
+                </div>
+              );
+            })}
         </div>
       ) : (
         <p>Information unavailable</p>
