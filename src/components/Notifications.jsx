@@ -13,7 +13,7 @@ function Notifications() {
     const getNotifications = async () => {
       try {
         const res = await api.get("/notifications/getnotifications");
-        if (!cancelled) {
+        if (!cancelled && res.data) {
           const sortedMessages = res.data.sort(
             (a, b) => new Date(b.date) - new Date(a.date)
           );
