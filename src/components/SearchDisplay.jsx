@@ -43,7 +43,7 @@ function SearchDisplay(props) {
             params: params,
           });
         }
-        if (!cancelled) {
+        if (!cancelled && res.status !== 204) {
           setBookList(res.data.data);
           setMaxPages(res.data.meta.maxPages);
           const returnedPage = res.data.meta.currentPage;
