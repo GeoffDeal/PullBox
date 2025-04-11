@@ -132,11 +132,24 @@ const AdminPage = () => {
     }
   };
 
-  const changeConversion = (e) => {
-    setPriceAdjustments((prev) => ({
-      ...prev,
-      conversion: e.target.value,
-    }));
+  const [conversion, setConversion] = useState("");
+
+  const updateConversion = async (e) => {
+    e.preventDefault();
+    const oldAdustments = structuredClone(priceAdjustments);
+    const newAdjustments = {
+      ...oldAdustments,
+      conversion: conversion,
+    };
+    try {
+      setPriceAdjustments(newAdjustments);
+      setConversion("");
+      await api.put("/priceadjustments/updateadjustments", newAdjustments);
+    } catch (err) {
+      console.error(err);
+      toast.error(`Problem updating conversion: ${err.message}`);
+      setPriceAdjustments(oldAdustments);
+    }
   };
 
   return (
@@ -270,15 +283,19 @@ const AdminPage = () => {
               />
               <p>%</p>
             </div>
-            <button type="submit">Update</button>
+            <button type="submit">Update Tax Rates</button>
           </form>
           <h3>Set Coversion Rate</h3>
-          <label htmlFor="conversionInput">Conversion rate from USD: </label>
-          <input
-            type="number"
-            id="conversionInput"
-            onChange={(e) => changeConversion(e)}
-          />
+          <form onSubmit={updateConversion}>
+            <label htmlFor="conversionInput">Conversion rate from USD: </label>
+            <input
+              type="number"
+              id="conversionInput"
+              onChange={(e) => setConversion(e.target.value)}
+              value={conversion}
+            />
+            <button type="submit">Update Conversion Rate</button>
+          </form>
           <p>Current conversion: {priceAdjustments.conversion}</p>
         </div>
       </div>
