@@ -45,10 +45,12 @@ function SearchDisplay(props) {
         }
         if (!cancelled) {
           setBookList(res.data.data);
-          if (res.status == 200) {
+          if (res.status === 200) {
             setMaxPages(res.data.meta.maxPages);
+          } else {
+            setMaxPages(1);
           }
-          const returnedPage = res.data.meta.currentPage || 1;
+          const returnedPage = res.data?.meta?.currentPage || 1;
           if (returnedPage !== currentPage) {
             skipFetch.current = true;
             const newParams = new URLSearchParams(searchParams);
