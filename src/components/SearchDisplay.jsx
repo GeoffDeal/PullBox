@@ -93,7 +93,7 @@ function SearchDisplay(props) {
   return (
     <div className="searchDisplay">
       <div className="gridDisplay">
-        {bookList && bookList.length > 0 ? (
+        {bookList ? (
           bookList.map((book, index) => (
             <NavLink
               to="/bookpage"
