@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const url =
+  import.meta.env.VITE_APIURL ||
+  "https://pullboxbackend-production.up.railway.app/";
+
 const api = axios.create({
-  baseURL: "https://pullboxbackend-production.up.railway.app/",
+  baseURL: url,
   timeout: 10000,
 });
 
