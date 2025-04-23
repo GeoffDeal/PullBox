@@ -15,34 +15,40 @@ import BrowsePage from "./components/BrowsePage";
 import AdminPage from "./components/AdminPage";
 import StoreInfo from "./components/StoreInfo";
 import SeriesPage from "./components/SeriesPage";
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 
 function App() {
-
   return (
     <Contexts>
-      <BrowserRouter basename="/PullBox">
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="admin" element={<AdminPage />} />
-            <Route path="storeinfo" element={<StoreInfo />} />
-            <Route path="account" element={<Account />} />
-            <Route path="browse" element={<BrowsePage />} />
-            <Route path="searchpage" element={<SearchPage />} />
-            <Route path="pulls" element={<Pulls />} />
-            <Route path="shoppulls" element={<ShopPulls />} />
-            <Route path="customerspage" element={<CustomersPage />} />
-            <Route path="notifications" element={<Notifications />} />
-            <Route path="bookpage" element={<BookPage />} />
-            <Route path="customerdetails" element={<CustomerDetails />} />
-            <Route path="seriespage" element={<SeriesPage />} />
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
 
-            <Route path="*" element={<NoPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <SignedIn>
+        <BrowserRouter basename="/PullBox">
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="admin" element={<AdminPage />} />
+              <Route path="storeinfo" element={<StoreInfo />} />
+              <Route path="account" element={<Account />} />
+              <Route path="browse" element={<BrowsePage />} />
+              <Route path="searchpage" element={<SearchPage />} />
+              <Route path="pulls" element={<Pulls />} />
+              <Route path="shoppulls" element={<ShopPulls />} />
+              <Route path="customerspage" element={<CustomersPage />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="bookpage" element={<BookPage />} />
+              <Route path="customerdetails" element={<CustomerDetails />} />
+              <Route path="seriespage" element={<SeriesPage />} />
+
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SignedIn>
     </Contexts>
-  )
+  );
 }
 
-export default App
+export default App;

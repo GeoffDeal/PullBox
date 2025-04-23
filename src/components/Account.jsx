@@ -1,6 +1,12 @@
 import { useContext } from "react";
 import { UserContext } from "../Contexts";
 import AccountToggle from "./AccountToggle";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 function Account() {
   const { user, setUser } = useContext(UserContext);
@@ -31,6 +37,12 @@ function Account() {
       >
         Switch user type. User is customer? {user.customer ? "true" : "false"}
       </button>
+      <div>
+        <h3 className="accountHeader">Manage Clerk Account:</h3>{" "}
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
     </div>
   );
 }
