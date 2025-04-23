@@ -2,13 +2,22 @@ import { useEffect, useContext, useState, useRef } from "react";
 import { PriceAdjustments } from "../Contexts";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
+import { useUser } from "@clerk/clerk-react";
 
 const AdminPage = () => {
+  const { user, isLoaded } = useUser();
+
   const [files, setFiles] = useState("");
   const inputRef = useRef();
+  const [storeInfo, setStoreInfo] = useState();
+  const [isUploading, setIsUploading] = useState(false);
+  const { priceAdjustments, setPriceAdjustments } =
+    useContext(PriceAdjustments);
+  const [product, setProduct] = useState("Hardcover");
+  const [rate, setRate] = useState("");
+  const [conversion, setConversion] = useState("");
 
   // Fetch store info
-  const [storeInfo, setStoreInfo] = useState();
 
   useEffect(() => {
     let cancelled = false;
@@ -30,7 +39,6 @@ const AdminPage = () => {
 
   //Handle importing excel sheets
 
-  const [isUploading, setIsUploading] = useState(false);
   const fileChange = (event) => {
     setFiles(event.target.files);
   };
@@ -98,8 +106,6 @@ const AdminPage = () => {
   ];
 
   // Tax rate functions
-  const { priceAdjustments, setPriceAdjustments } =
-    useContext(PriceAdjustments);
 
   const productTypes = [
     "Hardcover",
@@ -111,8 +117,6 @@ const AdminPage = () => {
     "Poster",
     "Incentive",
   ];
-  const [product, setProduct] = useState("Hardcover");
-  const [rate, setRate] = useState("");
 
   const updateRates = async (e) => {
     e.preventDefault();
@@ -132,8 +136,6 @@ const AdminPage = () => {
     }
   };
 
-  const [conversion, setConversion] = useState("");
-
   const updateConversion = async (e) => {
     e.preventDefault();
     const oldAdustments = structuredClone(priceAdjustments);
@@ -151,6 +153,13 @@ const AdminPage = () => {
       setPriceAdjustments(oldAdustments);
     }
   };
+
+  // Auth admin check
+  if (!isLoaded) return <div className="loadingText">Loading...</div>;
+
+  const role = user?.publicMetadata?.role;
+  if (role !== "admin")
+    return <div className="adminWarning">Admin privledges required</div>;
 
   return (
     <div className="adminPage pageDisplay">

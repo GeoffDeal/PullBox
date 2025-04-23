@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import CustomerFlyway from "./CustomerFlyway";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
+import { useUser } from "@clerk/clerk-react";
 
 function CustomersPage() {
+  const { user, isLoaded } = useUser();
+
   const [customers, setCustomers] = useState();
 
   useEffect(() => {
@@ -39,6 +42,13 @@ function CustomersPage() {
       setCustomers(currentCustomers);
     }
   };
+
+  // Auth admin check
+  if (!isLoaded) return <div className="loadingText">Loading...</div>;
+
+  const role = user?.publicMetadata?.role;
+  if (role !== "admin")
+    return <div className="adminWarning">Admin privledges required</div>;
 
   return (
     <div className="pageDisplay">

@@ -1,12 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "../Contexts";
 import AccountToggle from "./AccountToggle";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+import { SignedIn, UserButton } from "@clerk/clerk-react";
 
 function Account() {
   const { user, setUser } = useContext(UserContext);

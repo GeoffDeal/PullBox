@@ -6,8 +6,11 @@ import ExcelJS from "exceljs";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
+import { useUser } from "@clerk/clerk-react";
 
 const ShopPulls = () => {
+  const { user, isLoaded } = useUser();
+
   const [sortBy, setSortBy] = useState({
     az: "ascending",
     type: "Publisher",
@@ -198,6 +201,13 @@ const ShopPulls = () => {
       URL.revokeObjectURL(url);
     }
   }
+
+  // Auth admin check
+  if (!isLoaded) return <div className="loadingText">Loading...</div>;
+
+  const role = user?.publicMetadata?.role;
+  if (role !== "admin")
+    return <div className="adminWarning">Admin privledges required</div>;
 
   return (
     <div className="shopPulls pageDisplay">

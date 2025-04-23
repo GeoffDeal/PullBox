@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
+import { useUser } from "@clerk/clerk-react";
 
 function CustomerDetails() {
+  const { user, isLoaded } = useUser();
+
   const location = useLocation();
   const customerId = location.state.customerId;
   const [customer, setCustomer] = useState();
@@ -52,6 +55,13 @@ function CustomerDetails() {
       toast.error("Please enter a number");
     }
   };
+
+  // Auth admin check
+  if (!isLoaded) return <div className="loadingText">Loading...</div>;
+
+  const role = user?.publicMetadata?.role;
+  if (role !== "admin")
+    return <div className="adminWarning">Admin privledges required</div>;
 
   return (
     <div className="customerDetails pageDisplay">
