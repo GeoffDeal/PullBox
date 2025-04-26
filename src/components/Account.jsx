@@ -4,7 +4,7 @@ import AccountToggle from "./AccountToggle";
 import { SignedIn, UserButton } from "@clerk/clerk-react";
 
 function Account() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   return (
     <div className="accountPage pageDisplay">
@@ -22,16 +22,6 @@ function Account() {
         <p>{user.userID}</p>
         <div> </div>
       </div>
-      <button
-        onClick={() => {
-          setUser((oldUser) => ({
-            ...oldUser,
-            customer: oldUser.customer ? false : true,
-          }));
-        }}
-      >
-        Switch user type. User is customer? {user.customer ? "true" : "false"}
-      </button>
       <div>
         <h3 className="accountHeader">Manage Clerk Account:</h3>{" "}
         <SignedIn>
