@@ -1,10 +1,7 @@
-// import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-// import { UserContext } from "../Contexts";
 import { useUser } from "@clerk/clerk-react";
 
 function IconBarBot() {
-  // const { user } = useContext(UserContext);
   const { user } = useUser();
 
   const role = user?.publicMetadata?.role;

@@ -1,13 +1,17 @@
-import { UserContext, PriceAdjustments } from "../Contexts";
+import { PriceAdjustments } from "../Contexts";
 import ComicsDisplay from "./ComicDisplay";
 import { useContext, useEffect, useState } from "react";
 import SearchDisplay from "./SearchDisplay";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
 import { findSundays } from "../utils/utilityFunctions.js";
+import { useUser } from "@clerk/clerk-react";
 
 function Home() {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const { user } = useUser();
+
+  const role = user?.publicMetadata?.role;
   const { lastSunday, nextSunday } = findSundays();
 
   // Week's total for shop
@@ -53,16 +57,16 @@ function Home() {
   return (
     <div className="pageDisplay">
       <h1>Welcome {user.name}</h1>
-      {user.customer ? (
-        <div>
-          <h3>Your pulls for this week:</h3>
-          <ComicsDisplay date={lastSunday} />
-        </div>
-      ) : (
+      {role === "admin" ? (
         <div>
           <h3>Your customers pulls for this week:</h3>
           <p>Total books pulled: {weeksBooks.length}</p>
           <p>Expected income from pulls: ${expectedIncome}</p>
+        </div>
+      ) : (
+        <div>
+          <h3>Your pulls for this week:</h3>
+          <ComicsDisplay date={lastSunday} />
         </div>
       )}
       <h3>Upcoming FOCs. Last chance!</h3>
