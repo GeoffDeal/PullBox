@@ -48,11 +48,11 @@ function Home() {
         toast.error(`Error fetching pulls: ${err}`);
       }
     }
-    getWeeksBooks();
+    if (role === "admin") getWeeksBooks();
     return () => {
       cancelled = true;
     };
-  }, [lastSunday, priceAdjustments]);
+  }, [lastSunday, priceAdjustments, role]);
 
   return (
     <div className="pageDisplay">
