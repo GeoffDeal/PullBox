@@ -1,11 +1,8 @@
 import { NavLink } from "react-router-dom";
 import darklogo from "../assets/darklogo.png";
-// import { useContext } from "react";
-// import { UserContext } from "../Contexts";
 import { useUser } from "@clerk/clerk-react";
 
 function IconBarTop() {
-  // const { user } = useContext(UserContext);
   const { user } = useUser();
   const role = user?.publicMetadata?.role;
 

@@ -15,6 +15,7 @@ function BookPage() {
   const [book, setBook] = useState();
   const [pull, setPull] = useState(false);
   const [variantList, setVariantList] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,6 +50,8 @@ function BookPage() {
       } catch (err) {
         console.error(err);
         toast.error(`Problem fetching data: ${err}`);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -56,7 +59,7 @@ function BookPage() {
     return () => {
       cancelled = true;
     };
-  }, [productId, user.id]);
+  }, [productId, user.id, setLoading]);
 
   let cadRounded = null;
   let formattedRelease = null;
@@ -121,6 +124,25 @@ function BookPage() {
       setQuantity(prevQuantity);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bookPage pageDisplay">

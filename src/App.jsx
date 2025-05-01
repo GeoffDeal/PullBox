@@ -18,8 +18,6 @@ import SeriesPage from "./components/SeriesPage";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 
 function App() {
-  console.log("App mounted");
-
   return (
     <Contexts>
       <SignedOut>

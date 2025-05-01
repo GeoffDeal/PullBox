@@ -8,7 +8,6 @@ import { findSundays } from "../utils/utilityFunctions.js";
 import { useUser } from "@clerk/clerk-react";
 
 function Home() {
-  // const { user } = useContext(UserContext);
   const { user } = useUser();
 
   const role = user?.publicMetadata?.role;

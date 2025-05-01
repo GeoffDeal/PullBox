@@ -1,829 +1,894 @@
 @heroes-purple: #490087;
-@heroes-gold: #CDB771;
+@heroes-gold: #cdb771;
 @heroes-black: #010000;
 @background-grey: #242424;
 @dark-background-grey: #141414;
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
-    font-size: x-large;
+  font-size: x-large;
 }
 
 body {
-    background-color: @background-grey;
-    color: whitesmoke;
-    margin: 0;
-    padding: 0;
+  background-color: @background-grey;
+  color: whitesmoke;
+  margin: 0;
+  padding: 0;
 }
 
 a {
-    color: whitesmoke;
+  color: whitesmoke;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 @barHeight: 80px;
 
 .iconBar {
-    width: 100%;
-    height: @barHeight;
-    background-color: @heroes-black;
-    color: whitesmoke;
-    position: fixed;
-    z-index: 2;
-    display: flex;
-    align-items: center;
+  width: 100%;
+  height: @barHeight;
+  background-color: @heroes-black;
+  color: whitesmoke;
+  position: fixed;
+  z-index: 2;
+  display: flex;
+  align-items: center;
 
-    nav {
-        display: inherit;
-        gap: 12px;
-    }
+  nav {
+    display: inherit;
+    gap: 12px;
+  }
 }
 
 .material-symbols-outlined {
-    font-size: xxx-large;
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 600,
-        'GRAD' 0,
-        'opsz' 48
+  font-size: xxx-large;
+  font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 48;
 }
 
 .active {
-    color: @heroes-purple;
+  color: @heroes-purple;
 }
 
 #iconBarTop {
-    top: 0;
+  top: 0;
 
-    nav {
-        margin-right: 24px;
-        margin-left: auto;
-    }
+  nav {
+    margin-right: 24px;
+    margin-left: auto;
+  }
 }
 
 #iconBarBot {
-    bottom: 0;
-    justify-content: center;
-
-
+  bottom: 0;
+  justify-content: center;
 }
 
 #topLogo {
-    height: 80px;
-    width: 80px;
-    margin-left: 24px;
+  height: 80px;
+  width: 80px;
+  margin-left: 24px;
 }
 
 #displayWindow {
-    margin: 16px;
-    margin-top: @barHeight + 16px;
-    margin-bottom: @barHeight + 16px;
+  margin: 16px;
+  margin-top: @barHeight + 16px;
+  margin-bottom: @barHeight + 16px;
 }
 
 .imageContainer {
-    vertical-align: middle;
-    display: inline-block;
-    width: 90vw;
-    white-space: nowrap;
-    overflow-x: scroll;
+  vertical-align: middle;
+  display: inline-block;
+  width: 90vw;
+  white-space: nowrap;
+  overflow-x: scroll;
 
-    img {
-        height: 120px;
-        width: auto;
-        margin: 8px;
-        display: inline-block;
-        line-height: 120px;
-    }
+  img {
+    height: 120px;
+    width: auto;
+    margin: 8px;
+    display: inline-block;
+    line-height: 120px;
+  }
 }
 
 .bookDisplay {
-    position: relative;
+  position: relative;
 }
 
 .scrollButton {
-    background-color: @heroes-gold;
-    color: @heroes-purple;
-    cursor: pointer;
-    border: 0;
-    border-radius: 32px;
+  background-color: @heroes-gold;
+  color: @heroes-purple;
+  cursor: pointer;
+  border: 0;
+  border-radius: 32px;
 
-    .material-symbols-outlined {
-        font-size: small;
-    }
+  .material-symbols-outlined {
+    font-size: small;
+  }
 
-    padding-top: 10px;
-    padding-bottom: 10px;
-    transition: 0.6s ease;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: 0.6s ease;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .gridDisplay {
-    margin-top: 16px;
-    border-radius: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    max-width: fit-content;
-    width: fit-content;
-    justify-content: center;
-    .bookNav{
-        margin: 8px;
-        width: 150px;
-        img {
-            max-width: 100%;
-        }
+  margin-top: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: fit-content;
+  width: fit-content;
+  justify-content: center;
+  .bookNav {
+    margin: 8px;
+    width: 150px;
+    img {
+      max-width: 100%;
     }
+  }
 
-    .noComics {
-        text-align: center;
-        padding: 16px;
-        font-size: larger;
-    }
+  .noComics {
+    text-align: center;
+    padding: 16px;
+    font-size: larger;
+  }
 
-    .bookTitle {
-        margin-top: 0;
-    }
+  .bookTitle {
+    margin-top: 0;
+  }
 }
 
 .pageButton {
-    color: whitesmoke;
+  color: whitesmoke;
+  font-size: x-large;
+  background-color: @heroes-black;
+  border-width: 0;
+  border-radius: 12px;
+  padding: 8px;
+  margin: 4px;
+
+  .material-symbols-outlined {
     font-size: x-large;
-    background-color: @heroes-black;
-    border-width: 0;
-    border-radius: 12px;
-    padding: 8px;
-    margin: 4px;
+  }
 
-    .material-symbols-outlined {
-        font-size: x-large;
-    }
-
-    &.current {
-        background-color: @heroes-purple;
-    }
+  &.current {
+    background-color: @heroes-purple;
+  }
 }
 
 .searchBar {
-    display: block;
-    margin: 0 auto;
-    width: 80%
+  display: block;
+  margin: 0 auto;
+  width: 80%;
 }
 
 .bookSubs {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    margin-left: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-left: 16px;
 
-    .subItem {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+  .subItem {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .removeSeries {
+    color: whitesmoke;
+    background: none;
+
+    .material-symbols-outlined {
+      font-size: medium;
     }
 
-    .removeSeries {
-        color: whitesmoke;
-        background: none;
-
-        .material-symbols-outlined {
-            font-size: medium;
-        }
-
-        border: none;
-        margin-right: 16px;
-    }
+    border: none;
+    margin-right: 16px;
+  }
 }
 
 .accountPage {
-    h3 {
-        margin: 0px;
-        margin-bottom: 4px;
-    }
+  h3 {
+    margin: 0px;
+    margin-bottom: 4px;
+  }
 
-    p {
-        margin: 0;
-        margin-bottom: 12px;
-    }
+  p {
+    margin: 0;
+    margin-bottom: 12px;
+  }
 }
 
 .accountEdit {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-    .accountButton {
-        color: whitesmoke;
-        background: none;
+  .accountButton {
+    color: whitesmoke;
+    background: none;
 
-        .material-symbols-outlined {
-            font-size: x-large;
-        }
-        border: none;
-        margin-right: 16px;
+    .material-symbols-outlined {
+      font-size: x-large;
     }
+    border: none;
+    margin-right: 16px;
+  }
 }
 
 .accountHeader {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
-
-
 .messageContainer {
-    background-color: @dark-background-grey;
+  background-color: @dark-background-grey;
+  color: whitesmoke;
+  margin-bottom: 12px;
+  padding: 4px;
+  border-radius: 24px;
+  position: relative;
+  display: block;
+  box-shadow: 4px 2px 2px @heroes-purple;
+  .deleteMessage {
     color: whitesmoke;
-    margin-bottom: 12px;
+    background: none;
+
+    .material-symbols-outlined {
+      font-size: x-large;
+    }
+
+    border: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  h3 {
+    text-align: center;
+  }
+
+  p {
     padding: 4px;
-    border-radius: 24px;
-    position: relative;
-    display: block;
-    box-shadow:  4px 2px 2px @heroes-purple;
-    .deleteMessage {
-        color: whitesmoke;
-        background: none;
+  }
 
-        .material-symbols-outlined {
-            font-size: x-large;
-        }
-
-        border: none;
-        position: absolute;
-        top: 8px;
-        right: 8px;
-    }
-
-    h3 {
-        text-align: center;
-    }
-
-    p {
-        padding: 4px;
-    }
-
-    .dateText {
-        font-size: small;
-        display: flex;
-        justify-content: end;
-    }
-
+  .dateText {
+    font-size: small;
+    display: flex;
+    justify-content: end;
+  }
 }
 
 .submitButton {
-    color: whitesmoke;
-    background-color: @heroes-purple;
-    border-width: 0;
-    border-radius: 16px;
-    padding: 8px;
+  color: whitesmoke;
+  background-color: @heroes-purple;
+  border-width: 0;
+  border-radius: 16px;
+  padding: 8px;
 }
 
 .messageInput {
-    background-color: @dark-background-grey;
-    color: whitesmoke;
+  background-color: @dark-background-grey;
+  color: whitesmoke;
+  margin-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+  border-radius: 24px;
+  #bodyInput {
+    resize: none;
+  }
+
+  form {
+    text-align: center;
+
+    button {
+      background-color: @heroes-gold;
+      border-width: 0;
+      border-radius: 12px;
+      padding: 8px;
+    }
+  }
+
+  #bodyInput {
+    width: 95%;
+    margin-top: 8px;
     margin-bottom: 8px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 16px;
-    border-radius: 24px;
-    #bodyInput{
-
-        resize: none;
+  }
+  #dropArea {
+    display: flex;
+    width: 90%;
+    height: 150px;
+    margin: auto;
+    background-color: whitesmoke;
+    padding: 8px;
+    text-align: center;
+    border-radius: 16px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    #imgPlace {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 95%;
+      height: 90%;
+      margin: 4px;
+      border: 1px dashed @background-grey;
+      border-radius: 12px;
+      #imgPreview {
+        max-width: 100%;
+        max-height: 100%;
+      }
     }
-
-    form {
-        text-align: center;
-
-        button {
-            background-color: @heroes-gold;
-            border-width: 0;
-            border-radius: 12px;
-            padding: 8px
-        }
+    p {
+      color: @background-grey;
+      margin: 0;
     }
-
-    #bodyInput {
-        width: 95%;
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
-    #dropArea {
-        display: flex;
-        width: 90%;
-        height: 150px;
-        margin: auto;
-        background-color: whitesmoke;
-        padding: 8px;
-        text-align: center;
-        border-radius: 16px;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        #imgPlace {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 95%;
-            height: 90%;
-            margin: 4px;
-            border: 1px dashed @background-grey;
-            border-radius: 12px;
-            #imgPreview {
-                max-width: 100%;
-                max-height: 100%;
-            }
-        }
-        p {
-            color: @background-grey;
-            margin: 0;
-        }
-    }
+  }
 }
 
 .customerLists {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    margin-left: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-left: 16px;
 
-    .customerRow {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+  .customerRow {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 
-        .pendingButtons {
-            display: flex;
-        }
+    .pendingButtons {
+      display: flex;
+    }
+  }
+
+  .customerInnerDiv {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 16px;
+  }
+
+  .customerOptions {
+    color: whitesmoke;
+    background: none;
+
+    .material-symbols-outlined {
+      font-size: medium;
     }
 
-    .customerInnerDiv {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        margin-right: 16px;
+    border: none;
+    margin-right: 16px;
+
+    &.opened {
+      .material-symbols-outlined {
+        font-size: large;
+        rotate: 90deg;
+        color: @heroes-gold;
+      }
     }
-
-    .customerOptions {
-        color: whitesmoke;
-        background: none;
-
-        .material-symbols-outlined {
-            font-size: medium;
-        }
-
-        border: none;
-        margin-right: 16px;
-
-        &.opened {
-            .material-symbols-outlined {
-                font-size: large;
-                rotate: 90deg;
-                color: @heroes-gold;
-            }
-        }
-    }
+  }
 }
 
 .flyawayMenu {
-    display: flex;
+  display: flex;
 
-    .customerMenu {
-        position: absolute;
-        right: 58px;
-        border: 0;
-        border-radius: 8px;
-        background-color: black;
-        z-index: 1;
-        width: 84px;
+  .customerMenu {
+    position: absolute;
+    right: 58px;
+    border: 0;
+    border-radius: 8px;
+    background-color: black;
+    z-index: 1;
+    width: 84px;
 
-        button,
-        .flyawayNav {
-            background-color: @background-grey;
-            color: whitesmoke;
-            border-width: 0;
-            margin: 4px;
-            padding: 2px;
-            font-size: small;
-            text-decoration: none;
-            border-radius: 8px;
-            display: inline-block;
-            text-align: center;
-        }
+    button,
+    .flyawayNav {
+      background-color: @background-grey;
+      color: whitesmoke;
+      border-width: 0;
+      margin: 4px;
+      padding: 2px;
+      font-size: small;
+      text-decoration: none;
+      border-radius: 8px;
+      display: inline-block;
+      text-align: center;
     }
+  }
 }
 
 .bookPage {
-    .purpleNav{
-        display: inline-block;
-        color: whitesmoke;
-        background-color: @heroes-purple;
-        border-width: 0;
-        border-radius: 24px;
-        padding: 8px;
-        padding-left: 12px;
-        padding-right: 12px;
-        font-size: large;
-        text-decoration: none;
-    }
-    .bookImage {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 60%;
-    }
-    
-    .pullDiv {
-        display: flex;
-        align-items: center;
-        
-        p {
-            font-size: large;
-            font-weight: 500;
-            background-color: @heroes-purple;
-            border-radius: 24px;
-            width: fit-content;
-            text-align: center;
-            padding: 8px;
-            padding-left: 16px;
-            padding-right: 16px;
+  .purpleNav {
+    display: inline-block;
+    color: whitesmoke;
+    background-color: @heroes-purple;
+    border-width: 0;
+    border-radius: 24px;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: large;
+    text-decoration: none;
+  }
+  .bookImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+  }
 
-        }
+  .pullDiv {
+    display: flex;
+    align-items: center;
 
-        label {
-            margin-left: 8px;
-        }
-
-        input {
-            width: 32px;
-            margin-left: 8px;
-        }
+    p {
+      font-size: large;
+      font-weight: 500;
+      background-color: @heroes-purple;
+      border-radius: 24px;
+      width: fit-content;
+      text-align: center;
+      padding: 8px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
 
-    .pullButton {
-        color: @dark-background-grey;
-        border-width: 0;
-        border-radius: 24px;
-        padding: 8px;
-        padding-left: 12px;
-        padding-right: 12px;
-        font-size: large;
-        margin-top: 8px;
-
-        &.afterFoc {
-            background-color: rgb(195, 0, 0);
-            color: whitesmoke;
-        }
-
-        &.beforeFoc {
-            background-color: @heroes-gold;
-        }
+    label {
+      margin-left: 8px;
     }
+
+    input {
+      width: 32px;
+      margin-left: 8px;
+    }
+  }
+
+  .pullButton {
+    color: @dark-background-grey;
+    border-width: 0;
+    border-radius: 24px;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: large;
+    margin-top: 8px;
+
+    &.afterFoc {
+      background-color: rgb(195, 0, 0);
+      color: whitesmoke;
+    }
+
+    &.beforeFoc {
+      background-color: @heroes-gold;
+    }
+  }
 }
 
 .boxEdit {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
 
-    button {
-        color: whitesmoke;
-        background: none;
+  button {
+    color: whitesmoke;
+    background: none;
 
-        .material-symbols-outlined {
-            font-size: x-large;
-        }
-
-        border: none;
-        margin-right: 16px;
+    .material-symbols-outlined {
+      font-size: x-large;
     }
+
+    border: none;
+    margin-right: 16px;
+  }
 }
 
 .weekSelector {
-    display: flex;
-    justify-content: space-between;
-    width: 300px;
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
 
-    .weekSelectors {
-        color: whitesmoke;
-        background: none;
+  .weekSelectors {
+    color: whitesmoke;
+    background: none;
 
-        .material-symbols-outlined {
-            font-size: x-large;
-        }
-
-        border: none;
-        margin-right: 16px;
+    .material-symbols-outlined {
+      font-size: x-large;
     }
+
+    border: none;
+    margin-right: 16px;
+  }
 }
 
 .storeInfoPage {
-    p {
-        margin: 4px;
-    }
+  p {
+    margin: 4px;
+  }
 }
 
 .adminPage {
+  input {
+    margin: 4px;
+  }
+
+  button,
+  input[type="submit"] {
+    color: @dark-background-grey;
+    background-color: @heroes-gold;
+    border-radius: 4px;
+    border: none;
+    padding: 4px;
+    margin: 8px;
+  }
+
+  form {
+    p {
+      margin: 4px;
+      font-size: large;
+      font-weight: 600;
+    }
+    #hoursSubmit {
+      margin-top: 8px;
+    }
+  }
+  #fileImport {
+    align-items: center;
+    height: 40px;
+    #uploadMessage {
+      margin-left: 16px;
+    }
+  }
+  .taxRateDiv {
+    display: flex;
+
     input {
-        margin: 4px;
+      width: 60px;
     }
+  }
 
-    button, input[type="submit"] {
-        color: @dark-background-grey;
-        background-color: @heroes-gold;
-        border-radius: 4px;
-        border: none;
-        padding: 4px;
-        margin: 8px;
+  #storeInfoForm {
+    .infoBlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    
-    form {
-        p {
-            margin: 4px;
-            font-size: large;
-            font-weight: 600;
+  }
 
-        }
-        #hoursSubmit {
-            margin-top: 8px;
-        }
-    }
-    #fileImport{
-        align-items: center;
-        height: 40px;
-        #uploadMessage{
-            margin-left: 16px;
-        }
-    }
-    .taxRateDiv {
-        display: flex;
-
-        input {
-            width: 60px;
-        }
-    }
-
-    #storeInfoForm{
-        .infoBlock {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-    }
-
-    #conversionInput {
-        width: 60px;
-    }
+  #conversionInput {
+    width: 60px;
+  }
 }
 
 .shopPulls {
-    .goldButton {
-        color: @dark-background-grey;
-        border-width: 0;
-        border-radius: 24px;
-        padding: 8px;
-        padding-left: 12px;
-        padding-right: 12px;
-        font-size: large;
-        margin-top: 8px;
-        background-color: @heroes-gold;
-    }
+  .goldButton {
+    color: @dark-background-grey;
+    border-width: 0;
+    border-radius: 24px;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: large;
+    margin-top: 8px;
+    background-color: @heroes-gold;
+  }
 }
 .pullsTable {
-    border: none;
-    border-collapse: collapse;
+  border: none;
+  border-collapse: collapse;
 
-    tr {
-        &:nth-child(even) {
-            background-color: @heroes-black;
-
-        }
-        &:nth-child(odd) {
-            background-color: @dark-background-grey;
-
-        }
+  tr {
+    &:nth-child(even) {
+      background-color: @heroes-black;
     }
-
-    th {
-        border: 2px solid;
-        padding: 4px;
-        background-color: @heroes-purple;
-
-        button {
-            background: none;
-            border: none;
-            color: whitesmoke;
-            font-size: large;
-            font-weight: 500;
-            text-decoration: underline;
-        }
+    &:nth-child(odd) {
+      background-color: @dark-background-grey;
     }
+  }
 
-    td {
-        padding: 4px;
-        &.centeredCell {
-            text-align: center;
-        }
+  th {
+    border: 2px solid;
+    padding: 4px;
+    background-color: @heroes-purple;
+
+    button {
+      background: none;
+      border: none;
+      color: whitesmoke;
+      font-size: large;
+      font-weight: 500;
+      text-decoration: underline;
     }
+  }
+
+  td {
+    padding: 4px;
+    &.centeredCell {
+      text-align: center;
+    }
+  }
 }
 
 .subTable {
-    
-    button {
-        margin-left: 30px;
-        background: none;
-        border: none;
-        color: whitesmoke;
+  button {
+    margin-left: 30px;
+    background: none;
+    border: none;
+    color: whitesmoke;
 
-        .material-symbols-outlined {
-            font-size: medium;
-        }
+    .material-symbols-outlined {
+      font-size: medium;
     }
-    .customerTable{
-        position: fixed;
-        border-collapse: collapse;
-        border: 1px solid;
-        border-color: whitesmoke;
-    }
+  }
+  .customerTable {
+    position: fixed;
+    border-collapse: collapse;
+    border: 1px solid;
+    border-color: whitesmoke;
+  }
 }
 
-.seriesPage{
-    .goldButton {
-        color: @dark-background-grey;
-        border-width: 0;
-        border-radius: 24px;
-        padding: 8px;
-        padding-left: 12px;
-        padding-right: 12px;
-        font-size: large;
-        margin-top: 8px;
-        background-color: @heroes-gold;
-    }
+.seriesPage {
+  .goldButton {
+    color: @dark-background-grey;
+    border-width: 0;
+    border-radius: 24px;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: large;
+    margin-top: 8px;
+    background-color: @heroes-gold;
+  }
+}
+
+.lds-spinner,
+.lds-spinner div,
+.lds-spinner div:after {
+  box-sizing: border-box;
+}
+.lds-spinner {
+  color: @heroes-gold;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3.2px;
+  left: 36.8px;
+  width: 6.4px;
+  height: 17.6px;
+  border-radius: 20%;
+  background: currentColor;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 // Fullscreen
 
 .desktopDisplay {
-    display: none;
+  display: none;
 }
 
-
 @media screen and (min-width: 480px) {
-    #displayWindow {
-        position: absolute;
-        margin-left: 170px + 16;
-        z-index: 0;
+  #displayWindow {
+    position: absolute;
+    margin-left: 170px + 16;
+    z-index: 0;
+  }
+
+  .desktopDisplay {
+    display: block;
+  }
+
+  #iconBarBot {
+    position: fixed;
+    a {
+      text-decoration: none;
     }
+    left: 0;
+    top: 0;
+    bottom: auto;
+    height: 100%;
+    width: 170px;
+    z-index: 1;
 
-    .desktopDisplay {
-        display: block;
-    }
+    nav {
+      position: fixed;
+      top: @barHeight + 32;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-left: 16px;
 
-    #iconBarBot {
-        position: fixed;
-        a {
-            text-decoration: none;
-        }
-        left: 0;
-        top: 0;
-        bottom: auto;
-        height: 100%;
-        width: 170px;
-        z-index: 1;
-        
-        nav {
-            position: fixed;
-            top: @barHeight + 32;
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            margin-left: 16px;
-
-            .botLinks {
-                display: flex;
-                align-items: center;
-                p {
-                    margin-left: 4px;
-                }
-            }
-        }
-    }
-
-    #iconBarTop {
-        height:  @barHeight + 20;
-
-        nav {
-            margin-top: 12px;
-            margin-right: 50px;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
+      .botLinks {
+        display: flex;
+        align-items: center;
         p {
-            margin-top: 0;
+          margin-left: 4px;
         }
+      }
+    }
+  }
+
+  #iconBarTop {
+    height: @barHeight + 20;
+
+    nav {
+      margin-top: 12px;
+      margin-right: 50px;
     }
 
-    .fullscreenFlex{
-        display: flex;
-        width: 100%;
-
-    }
-    .fullscreenDiv{
-        padding: 16px;
+    a {
+      text-decoration: none;
     }
 
-    .gridDisplay {
-        justify-content: left;
-        .bookNav{
-            width: 200px;
+    p {
+      margin-top: 0;
+    }
+  }
+
+  .fullscreenFlex {
+    display: flex;
+    width: 100%;
+  }
+  .fullscreenDiv {
+    padding: 16px;
+  }
+
+  .gridDisplay {
+    justify-content: left;
+    .bookNav {
+      width: 200px;
+    }
+    img {
+      width: 90%;
+      // margin: px;
+      line-height: 120px;
+    }
+  }
+  .pageDisplay {
+    margin: 32px;
+  }
+
+  .notificationPage {
+    width: 100%;
+  }
+  .messageBox {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .messageInput {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .bookInfo {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+
+    .bookTextBlock {
+      margin-left: 16px;
+      width: 300px;
+    }
+
+    .bookImage {
+      display: flex;
+      width: 300px;
+    }
+  }
+
+  .imageContainer {
+    width: 80vw;
+
+    img {
+      height: 250px;
+      width: auto;
+    }
+  }
+  .flyawayMenu {
+    display: flex;
+
+    button {
+      &.opened {
+        .material-symbols-outlined {
+          rotate: 270deg;
         }
-        img {
-            width: 90%;
-            // margin: px;
-            line-height: 120px;
-        }
-    }
-    .pageDisplay {
-        margin: 32px;
+      }
     }
 
-    .notificationPage{
-        width: 100%;
+    .customerMenu {
+      position: absolute;
+      right: -40px;
     }
-    .messageBox{
-        width: 80%;
-        margin-right: auto;
-        margin-left: auto;
+  }
+  .bookSubs {
+    .subItem {
+      width: 20%;
+      display: flex;
+      justify-content: space-between;
     }
-    .messageInput {
-        width: 60%;
-        margin-left: auto;
-        margin-right: auto;
+  }
+  .searchPage {
+    .searchBar {
+      width: 200px;
+      margin: 0;
     }
-
-    .bookInfo {
-        display: flex;
-        width: 100%;
-        justify-content: flex-start;
-
-        .bookTextBlock {
-            margin-left: 16px;
-            width: 300px;
-        }
-
-        .bookImage {
-            display: flex;
-            width: 300px;
-        }
-
-    }
-
-    .imageContainer {
-        width: 80vw;
-
-        img {
-            height: 250px;
-            width: auto;
-        }
-    }
-    .flyawayMenu {
-        display: flex;
-
-        button{
-
-            &.opened {
-                .material-symbols-outlined {
-                    rotate: 270deg;
-                }
-            }
-        }
-    
-        .customerMenu {
-            position: absolute;
-            right: -40px;
-        }
-    }
-    .bookSubs{
-
-        .subItem {
-            width: 20%;
-            display: flex;
-            justify-content: space-between;
-        }
-    }
-    .searchPage{
-        .searchBar {
-            width: 200px;
-            margin: 0;
-        }
-    }
+  }
 }
