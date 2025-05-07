@@ -1,35 +1,66 @@
-import { useContext } from "react";
-import { UserContext } from "../Contexts";
-import AccountToggle from "./AccountToggle";
-import { SignedIn, UserButton } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
+import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
+import api from "../api/api.js";
+import { toast } from "react-toastify";
 
 function Account() {
-  const { user } = useContext(UserContext);
+  const { user, isLoaded } = useUser();
+  const [account, setAccount] = useState();
 
-  return (
-    <div className="accountPage pageDisplay">
-      <h1>Account Details for {user.name}</h1>
-      <h3 className="accountHeader">Name: </h3>
-      <AccountToggle label="name" value={user.name} />
-      <h3 className="accountHeader">Email: </h3>
-      <AccountToggle label="email" value={user.email} />
-      <h3 className="accountHeader">Phone: </h3>
-      <AccountToggle label="phone" value={user.phone} />
-      <h3 className="accountHeader">Boxnumber: </h3>
-      <p>{user.boxNumber}</p>
-      <div className="accountEdit">
-        <h3>User ID: </h3>
-        <p>{user.userID}</p>
-        <div> </div>
+  useEffect(() => {
+    let cancelled = false;
+
+    const getUser = async () => {
+      try {
+        const userRes = await api.get(`/users/${user.id}`);
+        if (!cancelled) {
+          setAccount(userRes.data);
+        }
+      } catch (err) {
+        toast.error(`Problem fetching user information: ${err.message}`);
+      }
+    };
+    getUser();
+    return () => {
+      cancelled = true;
+    };
+  }, [user.id]);
+
+  if (!isLoaded) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
-      <div>
-        <h3 className="accountHeader">Manage Clerk Account:</h3>{" "}
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+    );
+  }
+  if (account) {
+    return (
+      <div className="accountPage pageDisplay">
+        <h1>Account Details for {account.name}</h1>
+        <h3 className="accountHeader">Name: </h3> <p>{account.name}</p>
+        <h3 className="accountHeader">Email: </h3> <p>{account.email}</p>
+        <h3 className="accountHeader">Boxnumber: </h3>{" "}
+        <p>{account.boxNumber}</p>
+        <div>
+          <h3 className="accountHeader">Manage Clerk Account:</h3>{" "}
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Account;
