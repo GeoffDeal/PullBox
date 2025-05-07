@@ -44,8 +44,8 @@ function CustomerDetails() {
       setToggle(false);
       try {
         setCustomer((prev) => ({ ...prev, boxNumber: parsedNumber }));
-        await api.patch(`/users/update/${customerId}`, {
-          box_number: parsedNumber,
+        await api.patch(`/users/boxnumber/${customerId}`, {
+          boxNumber: parsedNumber,
         });
       } catch (err) {
         toast.error("Problem changing box number, try again");
