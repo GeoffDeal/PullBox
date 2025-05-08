@@ -1,12 +1,13 @@
-import { UserContext, PriceAdjustments } from "../Contexts";
+import { PriceAdjustments } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { handleTitle, afterDate } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import api from "../api/api";
+import { useUser } from "@clerk/clerk-react";
 
 function BookPage() {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const [quantity, setQuantity] = useState();
   const { priceAdjustments } = useContext(PriceAdjustments);
 

@@ -1,13 +1,15 @@
 import Message from "./Message";
-import { UserContext } from "../Contexts";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../api/api";
+import { useUser } from "@clerk/clerk-react";
 
 function Notifications() {
   const [messages, setMessages] = useState();
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const [fetchTrigger, setFetchTrigger] = useState(false);
+  const role = user?.publicMetadata?.role;
+
   useEffect(() => {
     let cancelled = false;
     const getNotifications = async () => {
@@ -65,7 +67,7 @@ function Notifications() {
     <div className="notificationPage pageDisplay">
       <h1>Notifications</h1>
       <div className="notificationContainer">
-        {!user.customer && (
+        {role === "admin" && (
           <div className="messageInput">
             <form onSubmit={messageSubmit}>
               <input

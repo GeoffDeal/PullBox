@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../Contexts";
+import { useEffect, useState } from "react";
 import ComicsDisplay from "./ComicDisplay";
 import WeekSelect from "./WeekSelect";
 import { useLocation, useSearchParams, NavLink } from "react-router-dom";
@@ -7,9 +6,10 @@ import { findSundays } from "../utils/utilityFunctions";
 import { confirmToast } from "../utils/toasts.jsx";
 import api from "../api/api";
 import { toast } from "react-toastify";
+import { useUser } from "@clerk/clerk-react";
 
 function Pulls() {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const location = useLocation();
   const [customerId] = useState(location.state?.customerId || user.id);
   const [customerName] = useState(location.state?.customerName || null);

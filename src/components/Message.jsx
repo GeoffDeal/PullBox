@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import { UserContext } from "../Contexts";
 import { toast } from "react-toastify";
 import api from "../api/api";
+import { useUser } from "@clerk/clerk-react";
 
 function Message(props) {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
+  const role = user?.publicMetadata?.role;
+
   const handleDel = props.messageDel;
   const delMessage = async (id) => {
     try {
@@ -20,7 +21,7 @@ function Message(props) {
   return (
     <div className="messageContainer">
       <h3>{props.title}</h3>
-      {!user.customer && (
+      {role === "admin" && (
         <button className="deleteMessage" onClick={() => delMessage(props.id)}>
           <span className="material-symbols-outlined">close</span>
         </button>

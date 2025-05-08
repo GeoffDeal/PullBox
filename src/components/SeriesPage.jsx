@@ -1,15 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
-import { UserContext } from "../Contexts";
 import { handleTitle } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import { confirmToast } from "../utils/toasts.jsx";
 import api from "../api/api";
+import { useUser } from "@clerk/clerk-react";
 
 function SeriesPage() {
   const location = useLocation();
   const seriesId = location.state.seriesId;
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   const [currentSeries, setCurrentSeries] = useState();
   const [seriesBooks, setSeriesBooks] = useState();

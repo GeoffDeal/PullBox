@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { UserContext, PriceAdjustments } from "../Contexts";
+import { PriceAdjustments } from "../Contexts";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
+import { useUser } from "@clerk/clerk-react";
 
 function ComicsDisplay(props) {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksPulls, setWeeksPulls] = useState([]);
 
