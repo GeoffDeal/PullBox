@@ -7,8 +7,7 @@ import { useUser } from "@clerk/clerk-react";
 const AdminPage = () => {
   const { user, isLoaded } = useUser();
 
-  const [files, setFiles] = useState("");
-  const inputRef = useRef();
+  // const inputRef = useRef();
   const [storeInfo, setStoreInfo] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const { priceAdjustments, setPriceAdjustments } =
@@ -16,6 +15,8 @@ const AdminPage = () => {
   const [product, setProduct] = useState("Hardcover");
   const [rate, setRate] = useState("");
   const [conversion, setConversion] = useState("");
+  const [fileInputs, setFileInputs] = useState([{ file: null, publisher: "" }]);
+  const fileInputRefs = useRef([]);
 
   // Fetch store info
 
@@ -39,30 +40,77 @@ const AdminPage = () => {
 
   //Handle importing excel sheets
 
-  const fileChange = (event) => {
-    setFiles(event.target.files);
-  };
-  const handleImport = async (event) => {
-    event.preventDefault();
-    setIsUploading(true);
-    try {
-      if (files.length < 1) throw new Error("Please choose a file");
-      const filesArray = [...files];
-      const formData = new FormData();
-      filesArray.forEach((file) => {
-        formData.append("file", file);
-      });
-      await api.post("/products/upload", formData);
-      toast.success(`Upload Successful!`);
-      inputRef.current.value = null;
-      setFiles("");
-    } catch (err) {
-      toast.error(`Problem with upload: ${err.message}`);
-      console.error(err);
-    } finally {
-      setIsUploading(false);
+  const handleFileChange = (index, newFile) => {
+    const updated = [...fileInputs];
+    updated[index].file = newFile;
+    setFileInputs(updated);
+
+    if (index === fileInputs.length - 1 && newFile) {
+      setFileInputs([...updated, { file: null, publisher: "" }]);
     }
   };
+
+  const handlePublisherChange = (index, newPublisher) => {
+    const updated = [...fileInputs];
+    updated[index].publisher = newPublisher;
+    setFileInputs(updated);
+  };
+
+  const handleImport = async (formData) => {
+    const backupFileInputs = [...fileInputs];
+
+    setFileInputs([{ file: null, publisher: "" }]);
+
+    try {
+      await api.post("/products/upload", formData);
+      toast.success(`Upload Successful!`);
+
+      fileInputRefs.current.forEach((input) => {
+        if (input) input.value = "";
+      });
+    } catch (err) {
+      setFileInputs(backupFileInputs);
+      toast.error(`Problem with upload: ${err.message}`);
+      console.error(err);
+    }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setIsUploading(true);
+
+    const invalidPairs = fileInputs.filter(
+      (pair) => pair.file && !pair.publisher
+    );
+
+    if (invalidPairs.length > 0) {
+      toast.error("Each file must have a valid publisher.");
+      setIsUploading(false);
+      return;
+    }
+
+    const validPairs = fileInputs.filter((pair) => pair.file && pair.publisher);
+    const formData = new FormData();
+
+    validPairs.forEach((pair, index) => {
+      formData.append(`uploads[${index}][file]`, pair.file);
+      formData.append(`uploads[${index}][publisher]`, pair.publisher);
+    });
+
+    await handleImport(formData);
+    setIsUploading(false);
+  };
+
+  const publisherOptions = [
+    "Marvel",
+    "DC",
+    "Image",
+    "Dark Horse",
+    "Boom",
+    "IDW",
+    "Dynamite",
+    "Independent",
+  ];
 
   // Store info change
 
@@ -167,14 +215,29 @@ const AdminPage = () => {
       <div className="fullscreenDiv">
         <h3>Import Universal Files</h3>
         <div className="fullscreenFlex" id="fileImport">
-          <form onSubmit={handleImport}>
-            <input
-              type="file"
-              onChange={fileChange}
-              disabled={isUploading}
-              ref={inputRef}
-              multiple
-            />
+          <form onSubmit={onSubmit}>
+            {fileInputs.map((pair, index) => (
+              <div key={index} className="file-pair">
+                <input
+                  type="file"
+                  disabled={isUploading}
+                  ref={(el) => (fileInputRefs.current[index] = el)}
+                  onChange={(e) => handleFileChange(index, e.target.files[0])}
+                />
+                <select
+                  value={pair.publisher}
+                  onChange={(e) => handlePublisherChange(index, e.target.value)}
+                  disabled={isUploading}
+                >
+                  <option value="">Select publisher</option>
+                  {publisherOptions.map((pub) => (
+                    <option key={pub} value={pub}>
+                      {pub}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
             <input
               type="submit"
               disabled={isUploading}
