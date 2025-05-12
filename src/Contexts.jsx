@@ -1,42 +1,33 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import api from "./api/api.js";
 
-export const UserContext = createContext();
-// export const TaxRates = createContext();
-// export const ConversionRate = createContext();
 export const PriceAdjustments = createContext();
 
 const Contexts = ({ children }) => {
-  const [user, setUser] = useState({
-    boxNumber: 2,
-    name: "John Doe",
-    email: "email@emailprovider.com",
-    phone: "(709) 555-5555",
-    customer: false,
-    id: 1,
-    customerType: "active",
-  });
+  const [priceAdjustments, setPriceAdjustments] = useState();
+  useEffect(() => {
+    let cancelled = false;
 
-  const [priceAdjustments, setPriceAdjustments] = useState({
-    conversion: 1,
-    taxRates: {
-      Hardcover: 5,
-      Omnibus: 5,
-      "Trade Paperback": 5,
-      Comic: 15,
-      "Box Set": 15,
-      "Graphic Novel": 5,
-      Poster: 15,
-      Incentive: 15,
-    },
-  });
+    const fetchAdjustments = async () => {
+      try {
+        const res = await api.get("/priceadjustments");
+        if (!cancelled) setPriceAdjustments(res.data);
+      } catch (err) {
+        console.error("Error fetching adjustments", err);
+      }
+    };
+
+    fetchAdjustments();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <PriceAdjustments.Provider
       value={{ priceAdjustments, setPriceAdjustments }}
     >
-      <UserContext.Provider value={{ user, setUser }}>
-        {children}
-      </UserContext.Provider>
+      {children}
     </PriceAdjustments.Provider>
   );
 };
