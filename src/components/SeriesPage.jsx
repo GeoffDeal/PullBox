@@ -58,7 +58,7 @@ function SeriesPage() {
     }
     confirmToast(
       deleteSub,
-      "Are you sure you wish to remove sub and associated pulls?"
+      "Are you sure you wish to remove this subsciption and associated pulls?"
     );
   };
 

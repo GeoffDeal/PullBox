@@ -3,6 +3,7 @@
 @heroes-black: #010000;
 @background-grey: #242424;
 @dark-background-grey: #141414;
+@pop-up-border: rgb(85, 85, 85);
 
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -246,6 +247,9 @@ button {
   color: whitesmoke;
   margin-bottom: 12px;
   padding: 4px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: @pop-up-border;
   border-radius: 24px;
   position: relative;
   display: block;
@@ -663,6 +667,43 @@ button {
     margin-top: 8px;
     background-color: @heroes-gold;
   }
+}
+
+.confirmToast {
+  background-color: @dark-background-grey;
+  color: whitesmoke;
+  padding: 16px 24px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: @pop-up-border;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  box-shadow: 1px 3px 4px @heroes-purple;
+  button {
+    display: flex;
+    width: 30%;
+    justify-content: center;
+    background-color: @heroes-gold;
+    color: @dark-background-grey;
+    padding: 4px;
+    margin: 2px;
+    border: none;
+    border-radius: 12px;
+  }
+}
+.custom-toast-wrapper {
+  background: none;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.custom-toast-body {
+  padding: 0;
+  margin: 0;
 }
 
 .lds-spinner,
