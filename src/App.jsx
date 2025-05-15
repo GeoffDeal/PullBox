@@ -15,17 +15,19 @@ import BrowsePage from "./components/BrowsePage";
 import AdminPage from "./components/AdminPage";
 import StoreInfo from "./components/StoreInfo";
 import SeriesPage from "./components/SeriesPage";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import SignInPage from "./components/SignInPage";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 function App() {
   return (
     <Contexts>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-
-      <SignedIn>
-        <BrowserRouter basename="/">
+      <BrowserRouter basename="/">
+        <SignedOut>
+          <Routes>
+            <Route path="*" element={<SignInPage />} />
+          </Routes>
+        </SignedOut>
+        <SignedIn>
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
@@ -45,8 +47,8 @@ function App() {
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
-        </BrowserRouter>
-      </SignedIn>
+        </SignedIn>
+      </BrowserRouter>
     </Contexts>
   );
 }
