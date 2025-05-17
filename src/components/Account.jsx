@@ -61,6 +61,14 @@ function Account() {
       </div>
     );
   }
+  return (
+    <div>
+      <h3 className="accountHeader">Manage Clerk Account:</h3>{" "}
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </div>
+  );
 }
 
 export default Account;
