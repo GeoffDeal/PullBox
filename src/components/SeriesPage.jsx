@@ -108,7 +108,7 @@ function SeriesPage() {
               <NavLink
                 className="bookNav"
                 to="/bookpage"
-                state={{ itemCode: book.ItemCode }}
+                state={{ productId: book.ID }}
                 key={book.ItemCode}
               >
                 <img src={book.ImageURL} alt="Comic Cover" />
