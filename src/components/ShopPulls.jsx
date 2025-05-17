@@ -105,9 +105,13 @@ const ShopPulls = () => {
           const customerPulls = {};
           if (pullsList && pullsList.length > 0) {
             pullsList.forEach((book) => {
-              if (!combinedBooks.some((product) => product.ID === book.ID)) {
+              if (
+                !combinedBooks.some(
+                  (product) => product.productId === book.productId
+                )
+              ) {
                 book.totalAmount = book.amount;
-                customerPulls[book.ID] = [
+                customerPulls[book.productId] = [
                   {
                     name: book.userName,
                     boxNumber: book.userBoxNumber,
@@ -118,10 +122,10 @@ const ShopPulls = () => {
                 combinedBooks.push(book);
               } else {
                 const comic = combinedBooks.find(
-                  (comic) => comic.ID === book.ID
+                  (comic) => comic.productId === book.productId
                 );
                 comic.totalAmount += book.amount;
-                customerPulls[book.ID].push({
+                customerPulls[book.productId].push({
                   name: book.userName,
                   boxNumber: book.userBoxNumber,
                   amount: book.amount,
@@ -242,7 +246,7 @@ const ShopPulls = () => {
                     <NavLink
                       to="/bookpage"
                       state={{ productId: book.productId }}
-                      key={book.ID}
+                      key={book.productId}
                       className={"bookNav"}
                     >
                       {handleTitle(book.ProductName)}
@@ -251,7 +255,7 @@ const ShopPulls = () => {
                   <td>{book.Variant} </td>
                   <td>
                     <ShopSubTable
-                      customers={customerAmounts[book.ID]}
+                      customers={customerAmounts[book.productId]}
                       foc={book.FOCDueDate}
                     />
                   </td>
