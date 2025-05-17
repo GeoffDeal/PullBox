@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 
 const ShopSubTable = (props) => {
   const customersArray = props.customers;
+  const foc = props.foc;
   const [display, setDisplay] = useState(false);
   const subTableRef = useRef(null);
   const handleOutsideClick = (event) => {
@@ -42,8 +43,23 @@ const ShopSubTable = (props) => {
                 <tr key={index}>
                   <td>{customer.boxNumber}</td>
                   <td>{customer.name}</td>
-                  <td>{customer.amount}</td>
-                  <td>{customer.pullDate}</td>
+                  <td
+                    style={{
+                      fontWeight: customer.amount === 1 ? "normal" : "bold",
+                    }}
+                  >
+                    {customer.amount}
+                  </td>
+                  <td
+                    style={{
+                      color:
+                        customer.pullDate > foc
+                          ? "rgb(246, 129, 127)"
+                          : "whitesmoke",
+                    }}
+                  >
+                    {customer.pullDate}
+                  </td>
                 </tr>
               );
             })}

@@ -250,7 +250,10 @@ const ShopPulls = () => {
                   </td>
                   <td>{book.Variant} </td>
                   <td>
-                    <ShopSubTable customers={customerAmounts[book.ID]} />
+                    <ShopSubTable
+                      customers={customerAmounts[book.ID]}
+                      foc={book.FOCDueDate}
+                    />
                   </td>
                   <td className="centeredCell">{book.totalAmount}</td>
                 </tr>
