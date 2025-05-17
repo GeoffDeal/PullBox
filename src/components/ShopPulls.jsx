@@ -241,7 +241,7 @@ const ShopPulls = () => {
                   <td>
                     <NavLink
                       to="/bookpage"
-                      state={{ productId: book.ID }}
+                      state={{ productId: book.productId }}
                       key={book.ID}
                       className={"bookNav"}
                     >
