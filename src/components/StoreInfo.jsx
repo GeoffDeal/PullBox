@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import api from "../api/api.js";
 import { toast } from "react-toastify";
 import { twelveHourFormat } from "../utils/utilityFunctions.js";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 const StoreInfo = () => {
   const [storeInfo, setStoreInfo] = useState();
+  const getHeaders = useAuthHeader();
 
   useEffect(() => {
     let cancelled = false;
 
     const getInfo = async () => {
       try {
-        const res = await api.get("/storeinfo");
+        const headers = await getHeaders();
+        const res = await api.get("/storeinfo", { headers });
         if (!cancelled) setStoreInfo(res.data);
       } catch (err) {
         console.error(err);
@@ -22,7 +25,7 @@ const StoreInfo = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [getHeaders]);
 
   const weekdays = [
     "Sunday",

@@ -3,10 +3,11 @@ import CustomerFlyway from "./CustomerFlyway";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 function CustomersPage() {
   const { user, isLoaded } = useUser();
-
+  const getHeaders = useAuthHeader();
   const [customers, setCustomers] = useState();
 
   useEffect(() => {
@@ -14,7 +15,8 @@ function CustomersPage() {
 
     const getCustomers = async () => {
       try {
-        const res = await api.get("users/customers");
+        const headers = await getHeaders();
+        const res = await api.get("users/customers", { headers });
         if (!cancelled) setCustomers(res.data);
       } catch (err) {
         toast.error(`Problem fetching customers: ${err.message}`);
@@ -24,7 +26,7 @@ function CustomersPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [getHeaders]);
 
   const customerStatus = async (key, newStatus) => {
     const currentCustomers = [...customers];
@@ -36,7 +38,12 @@ function CustomersPage() {
             : customer
         )
       );
-      await api.patch(`/users/status/${key}`, { status: newStatus });
+      const headers = await getHeaders();
+      await api.patch(
+        `/users/status/${key}`,
+        { status: newStatus },
+        { headers }
+      );
     } catch (err) {
       toast.error("Problem changing customer status, try again");
       setCustomers(currentCustomers);

@@ -3,23 +3,31 @@ import { PriceAdjustments } from "../Contexts";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter";
 
 function ComicsDisplay(props) {
   const { user } = useUser();
+  const { isLoaded } = useAuth();
   const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksPulls, setWeeksPulls] = useState([]);
+  const getHeaders = useAuthHeader();
 
   useEffect(() => {
+    if (!isLoaded) return;
     let cancelled = false;
 
     async function getPulls() {
       try {
+        const headers = await getHeaders();
+        if (!headers) return;
+
         const res = await api.get("/pulls/getuserpulls", {
           params: {
             userId: user.id,
             release: props.date,
           },
+          headers,
         });
         if (!cancelled) {
           setWeeksPulls(res.data || []);
@@ -33,7 +41,7 @@ function ComicsDisplay(props) {
     return () => {
       cancelled = true;
     };
-  }, [user.id, props.date]);
+  }, [user.id, props.date, getHeaders, isLoaded]);
 
   const totalCost = () => {
     const productSorted = weeksPulls.reduce((acc, product) => {

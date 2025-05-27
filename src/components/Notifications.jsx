@@ -3,18 +3,23 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter";
 
 function Notifications() {
   const [messages, setMessages] = useState();
   const { user } = useUser();
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const role = user?.publicMetadata?.role;
+  const getHeaders = useAuthHeader();
 
   useEffect(() => {
     let cancelled = false;
     const getNotifications = async () => {
       try {
-        const res = await api.get("/notifications/getnotifications");
+        const headers = await getHeaders();
+        const res = await api.get("/notifications/getnotifications", {
+          headers,
+        });
         if (!cancelled && res.data) {
           const sortedMessages = res.data.sort(
             (a, b) => new Date(b.date) - new Date(a.date)
@@ -30,7 +35,7 @@ function Notifications() {
     return () => {
       cancelled = true;
     };
-  }, [setMessages, fetchTrigger]);
+  }, [setMessages, fetchTrigger, getHeaders]);
 
   const [message, setMessage] = useState({ title: "", body: "" });
 
@@ -47,7 +52,10 @@ function Notifications() {
     };
     if (message.imageUrl) notificationData.imageUrl = message.imageUrl;
     try {
-      await api.post("/notifications/createnotification", notificationData);
+      const headers = await getHeaders();
+      await api.post("/notifications/createnotification", notificationData, {
+        headers,
+      });
       setFetchTrigger((prev) => !prev);
       setMessage({ title: "", body: "" });
     } catch (err) {

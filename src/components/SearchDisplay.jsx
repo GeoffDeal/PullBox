@@ -3,6 +3,8 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
 import { findSundays, handleTitle } from "../utils/utilityFunctions.js";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
+import { useAuth } from "@clerk/clerk-react";
 
 function SearchDisplay(props) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,8 +14,12 @@ function SearchDisplay(props) {
   const itemsPerPage = 20;
   const lastSunday = useMemo(() => findSundays().lastSunday, []);
   const skipFetch = useRef(false);
+  const getHeaders = useAuthHeader();
+  const { isLoaded } = useAuth();
 
   useEffect(() => {
+    if (!isLoaded) return;
+
     if (skipFetch.current) {
       skipFetch.current = false;
       return;
@@ -22,13 +28,15 @@ function SearchDisplay(props) {
     async function getFoc() {
       try {
         let res;
+        const headers = await getHeaders();
+        if (!headers) return;
         if (searchParams.has("query")) {
           const params = {
             term: searchParams.get("query"),
             limit: itemsPerPage,
             page: currentPage,
           };
-          res = await api.get("/products/search", { params: params });
+          res = await api.get("/products/search", { params: params, headers });
         } else {
           const params = {
             week: props.timeframe || searchParams.get("timeframe") || "release",
@@ -41,6 +49,7 @@ function SearchDisplay(props) {
           };
           res = await api.get("/products/browse", {
             params: params,
+            headers,
           });
         }
         if (!cancelled) {
@@ -77,6 +86,8 @@ function SearchDisplay(props) {
     searchParams,
     lastSunday,
     setSearchParams,
+    getHeaders,
+    isLoaded,
   ]);
 
   const pages = [];

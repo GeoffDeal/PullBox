@@ -1,15 +1,17 @@
 import { toast } from "react-toastify";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter";
 
 function Message(props) {
   const { user } = useUser();
   const role = user?.publicMetadata?.role;
-
+  const getHeaders = useAuthHeader();
   const handleDel = props.messageDel;
   const delMessage = async (id) => {
     try {
-      await api.delete(`notifications/deletenotification/${id}`);
+      const headers = await getHeaders();
+      await api.delete(`notifications/deletenotification/${id}`, { headers });
 
       handleDel(id);
     } catch (err) {

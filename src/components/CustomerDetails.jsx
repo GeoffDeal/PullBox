@@ -4,10 +4,11 @@ import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter";
 
 function CustomerDetails() {
   const { user, isLoaded } = useUser();
-
+  const getHeaders = useAuthHeader();
   const location = useLocation();
   const customerId = location.state.customerId;
   const [customer, setCustomer] = useState();
@@ -17,8 +18,11 @@ function CustomerDetails() {
 
     const getUser = async () => {
       try {
-        const userRes = await api.get(`/users/${customerId}`);
-        const subRes = await api.get(`/subs/usersubs?id=${customerId}`);
+        const headers = await getHeaders();
+        const userRes = await api.get(`/users/${customerId}`, { headers });
+        const subRes = await api.get(`/subs/usersubs?id=${customerId}`, {
+          headers,
+        });
         if (!cancelled) {
           setCustomer(userRes.data);
           setSubs(subRes.data);
@@ -31,7 +35,7 @@ function CustomerDetails() {
     return () => {
       cancelled = true;
     };
-  }, [customerId]);
+  }, [customerId, getHeaders]);
 
   const [toggle, setToggle] = useState(false);
   const [inputValue, setInputValue] = useState(customer?.boxNumber ?? "");
@@ -44,9 +48,14 @@ function CustomerDetails() {
       setToggle(false);
       try {
         setCustomer((prev) => ({ ...prev, boxNumber: parsedNumber }));
-        await api.patch(`/users/boxnumber/${customerId}`, {
-          boxNumber: parsedNumber,
-        });
+        const headers = await getHeaders();
+        await api.patch(
+          `/users/boxnumber/${customerId}`,
+          {
+            boxNumber: parsedNumber,
+          },
+          { headers }
+        );
       } catch (err) {
         toast.error("Problem changing box number, try again");
         setCustomer(currentCustomer);

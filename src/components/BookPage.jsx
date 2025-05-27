@@ -5,12 +5,13 @@ import { handleTitle, afterDate } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 function BookPage() {
   const { user } = useUser();
   const [quantity, setQuantity] = useState();
   const { priceAdjustments } = useContext(PriceAdjustments);
-
+  const getHeaders = useAuthHeader();
   const location = useLocation();
   const productId = location.state.productId;
   const [book, setBook] = useState();
@@ -23,7 +24,10 @@ function BookPage() {
 
     async function getBook() {
       try {
-        const bookRes = await api.get(`/products/getproduct/${productId}`);
+        const headers = await getHeaders();
+        const bookRes = await api.get(`/products/getproduct/${productId}`, {
+          headers,
+        });
         const bookData = bookRes.data;
 
         const pullRes = await api.get(`/pulls/checkpull`, {
@@ -31,6 +35,7 @@ function BookPage() {
             userId: user.id,
             productId: productId,
           },
+          headers,
         });
 
         let varRes = null;
@@ -41,6 +46,7 @@ function BookPage() {
               issue: bookData.Issue,
               variant: bookData.Variant,
             },
+            headers,
           });
         }
         if (!cancelled) {
@@ -60,7 +66,7 @@ function BookPage() {
     return () => {
       cancelled = true;
     };
-  }, [productId, user.id, setLoading]);
+  }, [productId, user.id, setLoading, getHeaders]);
 
   let cadRounded = null;
   let formattedRelease = null;
@@ -89,10 +95,15 @@ function BookPage() {
   const pullBook = async () => {
     let cancelled = false;
     try {
-      const res = await api.post("/pulls/addpull", {
-        userId: user.id,
-        productId: productId,
-      });
+      const headers = await getHeaders();
+      const res = await api.post(
+        "/pulls/addpull",
+        {
+          userId: user.id,
+          productId: productId,
+        },
+        { headers }
+      );
       if (!cancelled) {
         setPull(res.data[0]);
       }
@@ -104,7 +115,8 @@ function BookPage() {
   const removePull = async () => {
     const pullId = pull.id;
     try {
-      await api.delete(`/pulls/removepull/${pullId}`);
+      const headers = await getHeaders();
+      await api.delete(`/pulls/removepull/${pullId}`, { headers });
 
       setPull(false);
     } catch (err) {
@@ -117,9 +129,14 @@ function BookPage() {
     setQuantity(newQuantity);
 
     try {
-      await api.patch(`/pulls/changepullamount/${pull.id}`, {
-        amount: newQuantity,
-      });
+      const headers = await getHeaders();
+      await api.patch(
+        `/pulls/changepullamount/${pull.id}`,
+        {
+          amount: newQuantity,
+        },
+        { headers }
+      );
     } catch (err) {
       console.error(err);
       setQuantity(prevQuantity);

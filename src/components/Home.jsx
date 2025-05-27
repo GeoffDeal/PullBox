@@ -6,10 +6,11 @@ import { toast } from "react-toastify";
 import api from "../api/api.js";
 import { findSundays } from "../utils/utilityFunctions.js";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 function Home() {
   const { user } = useUser();
-
+  const getHeaders = useAuthHeader();
   const role = user?.publicMetadata?.role;
   const { lastSunday, nextSunday } = findSundays();
 
@@ -24,8 +25,10 @@ function Home() {
 
     async function getWeeksBooks() {
       try {
+        const headers = await getHeaders();
         const res = await api.get("/pulls/getweekspulls", {
           params: { release: lastSunday },
+          headers,
         });
         if (!cancelled) {
           const bookList = res.data;
@@ -51,7 +54,7 @@ function Home() {
     return () => {
       cancelled = true;
     };
-  }, [lastSunday, priceAdjustments, role]);
+  }, [lastSunday, priceAdjustments, role, getHeaders]);
 
   return (
     <div className="pageDisplay">

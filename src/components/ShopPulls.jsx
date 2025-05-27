@@ -7,10 +7,11 @@ import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 const ShopPulls = () => {
   const { user, isLoaded } = useUser();
-
+  const getHeaders = useAuthHeader();
   const [sortBy, setSortBy] = useState({
     az: "ascending",
     type: "Publisher",
@@ -95,8 +96,9 @@ const ShopPulls = () => {
     let cancelled = false;
     const getPulls = async () => {
       try {
+        const headers = await getHeaders();
         const params = { [queryConditions.dateType]: queryConditions.date };
-        const res = await api.get("/pulls/getweekspulls", { params: params });
+        const res = await api.get("/pulls/getweekspulls", { params, headers });
 
         if (!cancelled) {
           const pullsList = res.data;
@@ -147,7 +149,7 @@ const ShopPulls = () => {
     return () => {
       cancelled = true;
     };
-  }, [queryConditions]);
+  }, [queryConditions, getHeaders]);
 
   // Create excel sheet and populate pulls
 

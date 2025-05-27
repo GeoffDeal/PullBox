@@ -5,12 +5,13 @@ import { toast } from "react-toastify";
 import { confirmToast } from "../utils/toasts.jsx";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 function SeriesPage() {
   const location = useLocation();
   const seriesId = location.state.seriesId;
   const { user } = useUser();
-
+  const getHeaders = useAuthHeader();
   const [currentSeries, setCurrentSeries] = useState();
   const [seriesBooks, setSeriesBooks] = useState();
   const [isSubbed, setIsSubbed] = useState(false);
@@ -19,14 +20,20 @@ function SeriesPage() {
 
     async function getSeries() {
       try {
-        const seriesRes = await api.get(`/products/getseries/${seriesId}`);
-        const booksRes = await api.get(`/products/getseriesbooks/${seriesId}`);
+        const headers = await getHeaders();
+        const seriesRes = await api.get(`/products/getseries/${seriesId}`, {
+          headers,
+        });
+        const booksRes = await api.get(`/products/getseriesbooks/${seriesId}`, {
+          headers,
+        });
 
         const subRes = await api.get(`/subs/checksub`, {
           params: {
             userId: user.id,
             seriesId: seriesId,
           },
+          headers,
         });
         if (!cancelled) {
           setCurrentSeries(seriesRes.data);
@@ -42,14 +49,15 @@ function SeriesPage() {
     return () => {
       cancelled = true;
     };
-  }, [seriesId, user.id]);
+  }, [seriesId, user.id, getHeaders]);
 
   const removeSub = async () => {
     async function deleteSub() {
       const subState = isSubbed;
       setIsSubbed(false);
       try {
-        await api.delete(`/subs/removesub/${isSubbed}`);
+        const headers = await getHeaders();
+        await api.delete(`/subs/removesub/${isSubbed}`, { headers });
       } catch (err) {
         console.error(err);
         toast.error("Problem removing subscription, try again");
@@ -65,10 +73,15 @@ function SeriesPage() {
   const addSub = async () => {
     setIsSubbed(true);
     try {
-      const res = await api.post("/subs/addsub", {
-        userId: user.id,
-        seriesId: seriesId,
-      });
+      const headers = await getHeaders();
+      const res = await api.post(
+        "/subs/addsub",
+        {
+          userId: user.id,
+          seriesId: seriesId,
+        },
+        { headers }
+      );
 
       setIsSubbed(res.data[0].id);
     } catch (err) {

@@ -3,10 +3,11 @@ import { PriceAdjustments } from "../Contexts";
 import { toast } from "react-toastify";
 import api from "../api/api.js";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 const AdminPage = () => {
   const { user, isLoaded } = useUser();
-
+  const getHeaders = useAuthHeader();
   // const inputRef = useRef();
   const [storeInfo, setStoreInfo] = useState();
   const [isUploading, setIsUploading] = useState(false);
@@ -25,7 +26,8 @@ const AdminPage = () => {
 
     const getInfo = async () => {
       try {
-        const res = await api.get("/storeinfo");
+        const headers = await getHeaders();
+        const res = await api.get("/storeinfo", { headers });
         if (!cancelled) setStoreInfo(res.data);
       } catch (err) {
         console.error(err);
@@ -36,7 +38,7 @@ const AdminPage = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [getHeaders]);
 
   //Handle importing excel sheets
 
@@ -62,7 +64,8 @@ const AdminPage = () => {
     setFileInputs([{ file: null, publisher: "" }]);
 
     try {
-      await api.post("/products/upload", formData);
+      const headers = await getHeaders();
+      await api.post("/products/upload", formData, { headers });
       toast.success(`Upload Successful!`);
 
       fileInputRefs.current.forEach((input) => {
@@ -125,7 +128,8 @@ const AdminPage = () => {
   const storeUpdate = async (e) => {
     e.preventDefault();
     try {
-      await api.put("/storeinfo/updateinfo", storeInfo);
+      const headers = await getHeaders();
+      await api.put("/storeinfo/updateinfo", storeInfo, { headers });
       toast.success("Store info updated!");
     } catch (err) {
       console.error(err);
@@ -176,7 +180,10 @@ const AdminPage = () => {
     try {
       setPriceAdjustments(newAdjustments);
       setRate("");
-      await api.put("/priceadjustments/updateadjustments", newAdjustments);
+      const headers = await getHeaders();
+      await api.put("/priceadjustments/updateadjustments", newAdjustments, {
+        headers,
+      });
     } catch (err) {
       console.error(err);
       toast.error(`Problem updating rates: ${err.message}`);
@@ -194,7 +201,10 @@ const AdminPage = () => {
     try {
       setPriceAdjustments(newAdjustments);
       setConversion("");
-      await api.put("/priceadjustments/updateadjustments", newAdjustments);
+      const headers = await getHeaders();
+      await api.put("/priceadjustments/updateadjustments", newAdjustments, {
+        headers,
+      });
     } catch (err) {
       console.error(err);
       toast.error(`Problem updating conversion: ${err.message}`);

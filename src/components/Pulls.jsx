@@ -7,12 +7,14 @@ import { confirmToast } from "../utils/toasts.jsx";
 import api from "../api/api";
 import { toast } from "react-toastify";
 import { useUser } from "@clerk/clerk-react";
+import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 function Pulls() {
   const { user } = useUser();
   const location = useLocation();
   const [customerId] = useState(location.state?.customerId || user.id);
   const [customerName] = useState(location.state?.customerName || null);
+  const getHeaders = useAuthHeader();
 
   //Subscriptions
 
@@ -22,7 +24,10 @@ function Pulls() {
 
     const getSubscriptions = async () => {
       try {
-        const res = await api.get(`/subs/usersubs?id=${customerId}`);
+        const headers = await getHeaders();
+        const res = await api.get(`/subs/usersubs?id=${customerId}`, {
+          headers,
+        });
         if (!cancelled) setSubs(res.data);
       } catch (err) {
         toast.error(`Problem fetching subscriptions: ${err.message}`);
@@ -32,15 +37,16 @@ function Pulls() {
     return () => {
       cancelled = true;
     };
-  }, [customerId]);
+  }, [customerId, getHeaders]);
 
   const removeSub = async (subId) => {
     const prevSubs = subs;
     async function deleteSub() {
       try {
+        const headers = await getHeaders();
         const newSubs = subs.filter((sub) => sub.id !== subId);
         setSubs(newSubs);
-        await api.delete(`/subs/removesub/${subId}`);
+        await api.delete(`/subs/removesub/${subId}`, { headers });
       } catch (err) {
         toast.error("Problem removing subscription, try again");
         setSubs(prevSubs);

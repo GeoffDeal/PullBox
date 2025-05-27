@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 import api from "../api/api.js";
 import { toast } from "react-toastify";
+import { useAuthHeader } from "../utils/authHeaderSetter";
 
 function Account() {
   const { user, isLoaded } = useUser();
   const [account, setAccount] = useState();
+  const getHeaders = useAuthHeader();
 
   useEffect(() => {
     let cancelled = false;
 
     const getUser = async () => {
       try {
-        const userRes = await api.get(`/users/${user.id}`);
+        const headers = await getHeaders();
+        const userRes = await api.get(`/users/${user.id}`, { headers });
         if (!cancelled) {
           setAccount(userRes.data);
         }
@@ -24,7 +27,7 @@ function Account() {
     return () => {
       cancelled = true;
     };
-  }, [user.id]);
+  }, [user.id, getHeaders]);
 
   if (!isLoaded) {
     return (
