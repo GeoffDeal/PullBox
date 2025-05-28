@@ -19,13 +19,14 @@ function Home() {
   const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksBooks, setWeeksBooks] = useState([]);
   const [expectedIncome, setExpectedIncome] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
     async function getWeeksBooks() {
       try {
+        setLoading(true);
         const headers = await getHeaders();
         const res = await api.get("/pulls/getweekspulls", {
           params: { release: lastSunday },
