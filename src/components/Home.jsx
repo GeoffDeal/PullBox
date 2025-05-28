@@ -36,7 +36,7 @@ function Home() {
           const bookList = res.data;
           setWeeksBooks(bookList || []);
           let priceTotal = 0;
-          if (bookList && bookList.length > 0) {
+          if (bookList && bookList.length > 0 && priceAdjustments?.conversion) {
             bookList.forEach((book) => {
               const cadPrice =
                 parseFloat(book.MSRP.replace("$", "")) *
