@@ -8,7 +8,6 @@ import { useAuthHeader } from "../utils/authHeaderSetter.js";
 const AdminPage = () => {
   const { user, isLoaded } = useUser();
   const getHeaders = useAuthHeader();
-  // const inputRef = useRef();
   const [storeInfo, setStoreInfo] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const { priceAdjustments, setPriceAdjustments } =
@@ -378,7 +377,7 @@ const AdminPage = () => {
             />
             <button type="submit">Update Conversion Rate</button>
           </form>
-          <p>Current conversion: {priceAdjustments.conversion}</p>
+          <p>Current conversion: {priceAdjustments?.conversion}</p>
         </div>
       </div>
     </div>
