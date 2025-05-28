@@ -15,6 +15,8 @@ function SeriesPage() {
   const [currentSeries, setCurrentSeries] = useState();
   const [seriesBooks, setSeriesBooks] = useState();
   const [isSubbed, setIsSubbed] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -43,6 +45,8 @@ function SeriesPage() {
       } catch (err) {
         console.error(err);
         toast.error(`Problem fetching series: ${err}`);
+      } finally {
+        setLoading(false);
       }
     }
     getSeries();
@@ -90,6 +94,25 @@ function SeriesPage() {
       setIsSubbed(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="pageDisplay seriesPage">

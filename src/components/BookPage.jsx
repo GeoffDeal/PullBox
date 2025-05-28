@@ -121,6 +121,7 @@ function BookPage() {
       setPull(false);
     } catch (err) {
       console.error(err);
+      toast.error("Problem removing pull, try again");
     }
   };
   const pullQuantity = async (e) => {

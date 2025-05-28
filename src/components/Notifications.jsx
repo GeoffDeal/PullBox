@@ -11,6 +11,7 @@ function Notifications() {
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const role = user?.publicMetadata?.role;
   const getHeaders = useAuthHeader();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,6 +30,8 @@ function Notifications() {
       } catch (err) {
         console.error(err);
         toast.error("Error Rertrieving Notifications");
+      } finally {
+        setLoading(false);
       }
     };
     getNotifications();
@@ -70,6 +73,25 @@ function Notifications() {
     const remainingMessages = messages.filter((message) => message.id !== id);
     setMessages(remainingMessages);
   };
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="notificationPage pageDisplay">

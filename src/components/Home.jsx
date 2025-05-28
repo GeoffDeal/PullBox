@@ -19,6 +19,7 @@ function Home() {
   const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksBooks, setWeeksBooks] = useState([]);
   const [expectedIncome, setExpectedIncome] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -48,6 +49,8 @@ function Home() {
       } catch (err) {
         console.error(err);
         toast.error(`Error fetching pulls: ${err}`);
+      } finally {
+        setLoading(false);
       }
     }
     if (role === "admin") getWeeksBooks();
@@ -55,6 +58,25 @@ function Home() {
       cancelled = true;
     };
   }, [lastSunday, priceAdjustments, role, getHeaders]);
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="pageDisplay">

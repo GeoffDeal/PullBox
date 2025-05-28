@@ -16,6 +16,7 @@ function SearchDisplay(props) {
   const skipFetch = useRef(false);
   const getHeaders = useAuthHeader();
   const { isLoaded } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -71,6 +72,8 @@ function SearchDisplay(props) {
       } catch (err) {
         console.error(err);
         toast.error(`Problem fetching products: ${err}`);
+      } finally {
+        setLoading(false);
       }
     }
     getFoc();
@@ -104,6 +107,25 @@ function SearchDisplay(props) {
     setSearchParams(newParams);
     setCurrentPage(page);
   };
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="searchDisplay">

@@ -12,6 +12,7 @@ function ComicsDisplay(props) {
   const { priceAdjustments } = useContext(PriceAdjustments);
   const [weeksPulls, setWeeksPulls] = useState([]);
   const getHeaders = useAuthHeader();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -35,6 +36,8 @@ function ComicsDisplay(props) {
       } catch (err) {
         console.error(err);
         toast.error(`Error fetching pulls: ${err}`);
+      } finally {
+        setLoading(false);
       }
     }
     getPulls();
@@ -69,6 +72,25 @@ function ComicsDisplay(props) {
     });
     return total.toFixed(2);
   };
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bookDisplay">
