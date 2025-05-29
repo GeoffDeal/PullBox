@@ -8,6 +8,7 @@ function Account() {
   const { user, isLoaded } = useUser();
   const [account, setAccount] = useState();
   const getHeaders = useAuthHeader();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -21,6 +22,8 @@ function Account() {
         }
       } catch (err) {
         toast.error(`Problem fetching user information: ${err.message}`);
+      } finally {
+        setLoading(false);
       }
     };
     getUser();
@@ -29,7 +32,7 @@ function Account() {
     };
   }, [user.id, getHeaders]);
 
-  if (!isLoaded) {
+  if (!isLoaded || loading) {
     return (
       <div className="lds-spinner">
         <div></div>

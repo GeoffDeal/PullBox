@@ -7,6 +7,7 @@ import { useAuthHeader } from "../utils/authHeaderSetter.js";
 const StoreInfo = () => {
   const [storeInfo, setStoreInfo] = useState();
   const getHeaders = useAuthHeader();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -19,6 +20,8 @@ const StoreInfo = () => {
       } catch (err) {
         console.error(err);
         toast.error(`Problem fetching info: ${err.message}`);
+      } finally {
+        setLoading(false);
       }
     };
     getInfo();
@@ -36,6 +39,25 @@ const StoreInfo = () => {
     "Friday",
     "Saturday",
   ];
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="storeInfoPage pageDisplay">

@@ -9,6 +9,7 @@ function CustomersPage() {
   const { user, isLoaded } = useUser();
   const getHeaders = useAuthHeader();
   const [customers, setCustomers] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -20,6 +21,8 @@ function CustomersPage() {
         if (!cancelled) setCustomers(res.data);
       } catch (err) {
         toast.error(`Problem fetching customers: ${err.message}`);
+      } finally {
+        setLoading(false);
       }
     };
     getCustomers();
@@ -56,6 +59,25 @@ function CustomersPage() {
   const role = user?.publicMetadata?.role;
   if (role !== "admin")
     return <div className="adminWarning">Admin privledges required</div>;
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="pageDisplay">

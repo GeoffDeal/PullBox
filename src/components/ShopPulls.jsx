@@ -25,6 +25,7 @@ const ShopPulls = () => {
     date: lastSunday,
   });
   const [customerAmounts, setCustomerAmounts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   //Sort functions
   const sortPulls = useCallback(
@@ -143,6 +144,8 @@ const ShopPulls = () => {
       } catch (err) {
         toast.error(`Problem fetching pulls: ${err.message}`);
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     getPulls();
@@ -214,6 +217,25 @@ const ShopPulls = () => {
   const role = user?.publicMetadata?.role;
   if (role !== "admin")
     return <div className="adminWarning">Admin privledges required</div>;
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="shopPulls pageDisplay">
