@@ -18,7 +18,6 @@ const Contexts = ({ children }) => {
     const fetchAdjustments = async () => {
       try {
         const headers = await getHeaders();
-        // if (!headers) return;
 
         const res = await api.get("/priceadjustments", { headers });
         if (!cancelled) setPriceAdjustments(res.data);

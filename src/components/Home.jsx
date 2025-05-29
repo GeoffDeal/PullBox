@@ -81,7 +81,7 @@ function Home() {
 
   return (
     <div className="pageDisplay">
-      <h1>Welcome {user.name}</h1>
+      <h1>Welcome</h1>
       {role === "admin" ? (
         <div>
           <h3>Your customers pulls for this week:</h3>
