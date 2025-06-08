@@ -6,9 +6,6 @@ The Pull Box is a webapp designed for the Heroes and Hobbies comic shop to make 
 
 ![Example screenshot of home page](https://github.com/GeoffDeal/PullBox/blob/master/example_files/HomeExample.png)
 
-## [Try it out here!](https://geoffdeal.github.io/PullBox/)
-Note that there are no comics to search for in the live site as the back end is in development.
- 
 Pull Box was built as a project to learn React frontend development as part of the [Get Coding](https://www.getcoding.ca/) program, in addition to providing an app for Heroes and Hobbies. The project was built with React, Less/CSS, and uses ExcelJS to handle Excel files from the distributor.
 
 ## How to Use Pull Box
