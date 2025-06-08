@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import SearchDisplay from "./SearchDisplay";
 import WeekSelect from "./WeekSelect";
+import { publisherOptions } from "../utils/utilityFunctions";
 
 const BrowsePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -55,13 +56,11 @@ const BrowsePage = () => {
         }}
       >
         <option value={"All"}>All</option>
-        <option value={"Marvel"}>Marvel</option>
-        <option value={"Dc"}>DC</option>
-        <option value={"Image"}>Image</option>
-        <option value={"Dark Horse"}> Dark Horse</option>
-        <option value={"Idw"}>IDW</option>
-        <option value={"Boom!"}>BOOM!</option>
-        <option value={"Dynamite"}>Dynamite</option>
+        {publisherOptions.map((publisher, index) => (
+          <option key={index} value={publisher}>
+            {publisher}
+          </option>
+        ))}
       </select>
       {searchParams.get("timeframe") !== "none" && (
         <WeekSelect

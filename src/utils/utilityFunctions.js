@@ -48,3 +48,24 @@ export function handleTitle(name) {
     .replace(/\bHc\b/g, "HC")
     .replace(/\bTp\b/g, "TP");
 }
+
+export const publisherOptions = [
+  "Marvel",
+  "DC",
+  "Image",
+  "Dark Horse",
+  "BOOM!",
+  "IDW",
+  "Dynamite",
+  "DSTLRY",
+  "Mad Cave",
+  "Vault",
+  "Keenspot Entertainment",
+  "Scout",
+  "Panick Entertainment",
+  "Bad Idea",
+  "Cavalcad",
+  "Arcana",
+  "Asylum",
+  "Other Independent",
+];

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import api from "../api/api.js";
 import { useUser } from "@clerk/clerk-react";
 import { useAuthHeader } from "../utils/authHeaderSetter.js";
+import { publisherOptions } from "../utils/utilityFunctions.js";
 
 const AdminPage = () => {
   const { user, isLoaded } = useUser();
@@ -102,17 +103,6 @@ const AdminPage = () => {
     await handleImport(formData);
     setIsUploading(false);
   };
-
-  const publisherOptions = [
-    "Marvel",
-    "DC",
-    "Image",
-    "Dark Horse",
-    "Boom",
-    "IDW",
-    "Dynamite",
-    "Independent",
-  ];
 
   // Store info change
 
