@@ -40,7 +40,7 @@ function App() {
               <Route path="shoppulls" element={<ShopPulls />} />
               <Route path="customerspage" element={<CustomersPage />} />
               <Route path="notifications" element={<Notifications />} />
-              <Route path="bookpage" element={<BookPage />} />
+              <Route path="bookpage/:productId" element={<BookPage />} />
               <Route path="customerdetails" element={<CustomerDetails />} />
               <Route path="seriespage" element={<SeriesPage />} />
 

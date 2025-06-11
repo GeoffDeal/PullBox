@@ -1,6 +1,6 @@
 import { PriceAdjustments } from "../Contexts";
 import { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { handleTitle, afterDate } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import api from "../api/api";
@@ -12,8 +12,8 @@ function BookPage() {
   const [quantity, setQuantity] = useState();
   const { priceAdjustments } = useContext(PriceAdjustments);
   const getHeaders = useAuthHeader();
-  const location = useLocation();
-  const productId = location.state.productId;
+  // const location = useLocation();
+  const { productId } = useParams();
   const [book, setBook] = useState();
   const [pull, setPull] = useState(false);
   const [variantList, setVariantList] = useState();
@@ -237,8 +237,8 @@ function BookPage() {
               {variantList &&
                 variantList.map((book) => (
                   <NavLink
-                    to="/bookpage"
-                    state={{ productId: book.ID }}
+                    to={`/bookpage/${book.ID}`}
+                    // state={{ productId: book.ID }}
                     key={book.ItemCode}
                     className={"bookNav"}
                   >

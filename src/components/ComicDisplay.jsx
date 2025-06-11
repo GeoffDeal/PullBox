@@ -96,7 +96,11 @@ function ComicsDisplay(props) {
     <div className="bookDisplay">
       <div className="imageContainer">
         {weeksPulls.map((book) => (
-          <NavLink to="/bookpage" state={{ productId: book.ID }} key={book.ID}>
+          <NavLink
+            to={`/bookpage/${book.ID}`}
+            // state={{ productId: book.ID }}
+            key={book.ID}
+          >
             <img src={book.ImageURL} alt="Comic Cover" />
           </NavLink>
         ))}

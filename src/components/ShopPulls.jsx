@@ -268,8 +268,8 @@ const ShopPulls = () => {
                   <td className="centeredCell">{book.Publisher}</td>
                   <td>
                     <NavLink
-                      to="/bookpage"
-                      state={{ productId: book.productId }}
+                      to={`/bookpage/${book.productId}`}
+                      // state={{ productId: book.productId }}
                       key={book.productId}
                       className={"bookNav"}
                     >
