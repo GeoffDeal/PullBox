@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { handleTitle } from "../utils/utilityFunctions.js";
 import { toast } from "react-toastify";
 import { confirmToast } from "../utils/toasts.jsx";
@@ -8,8 +8,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useAuthHeader } from "../utils/authHeaderSetter.js";
 
 function SeriesPage() {
-  const location = useLocation();
-  const seriesId = location.state.seriesId;
+  const { seriesId } = useParams();
   const { user } = useUser();
   const getHeaders = useAuthHeader();
   const [currentSeries, setCurrentSeries] = useState();
@@ -144,7 +143,6 @@ function SeriesPage() {
               <NavLink
                 className="bookNav"
                 to={`/bookpage/${book.ID}`}
-                // state={{ productId: book.ID }}
                 key={book.ItemCode}
               >
                 <img src={book.ImageURL} alt="Comic Cover" />

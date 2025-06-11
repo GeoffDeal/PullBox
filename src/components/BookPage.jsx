@@ -182,8 +182,8 @@ function BookPage() {
                 book.ProductType === "Incentive") && (
                 <NavLink
                   className="purpleNav"
-                  to="/seriespage"
-                  state={{ seriesId: book.SeriesID }}
+                  to={`/seriespage/${book.SeriesID}`}
+                  // state={{ seriesId: book.SeriesID }}
                 >
                   View Series
                 </NavLink>
@@ -238,7 +238,6 @@ function BookPage() {
                 variantList.map((book) => (
                   <NavLink
                     to={`/bookpage/${book.ID}`}
-                    // state={{ productId: book.ID }}
                     key={book.ItemCode}
                     className={"bookNav"}
                   >

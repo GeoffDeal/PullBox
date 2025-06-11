@@ -88,8 +88,8 @@ function Pulls() {
             <li key={index}>
               <div className="subItem">
                 <NavLink
-                  to="/seriespage"
-                  state={{ seriesId: series.series_id }}
+                  to={`/seriespage/${series.series_id}`}
+                  // state={{ seriesId: series.series_id }}
                 >
                   {series.name}
                 </NavLink>

@@ -42,7 +42,7 @@ function App() {
               <Route path="notifications" element={<Notifications />} />
               <Route path="bookpage/:productId" element={<BookPage />} />
               <Route path="customerdetails" element={<CustomerDetails />} />
-              <Route path="seriespage" element={<SeriesPage />} />
+              <Route path="seriespage/:seriesId" element={<SeriesPage />} />
 
               <Route path="*" element={<NoPage />} />
             </Route>
