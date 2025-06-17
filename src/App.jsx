@@ -20,6 +20,7 @@ import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import Welcome from "./components/Welcome";
 import RequireAgreement from "./components/RequireAgreement";
 import SignUpPage from "./components/SignUpPage";
+import Recommended from "./components/Recommended";
 
 function App() {
   return (
@@ -51,7 +52,7 @@ function App() {
                 <Route path="bookpage/:productId" element={<BookPage />} />
                 <Route path="customerdetails" element={<CustomerDetails />} />
                 <Route path="seriespage/:seriesId" element={<SeriesPage />} />
-
+                <Route path="recommended" element={<Recommended />} />
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Route>
