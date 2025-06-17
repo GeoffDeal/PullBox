@@ -38,6 +38,10 @@ function IconBarBot() {
             <p className="desktopDisplay">Customers</p>
           </NavLink>
         )}
+        <NavLink className="botLinks" to="/recommended">
+          <span className="material-symbols-outlined">star</span>
+          <p className="desktopDisplay">Keys</p>
+        </NavLink>
         <NavLink className="botLinks" to="/notifications">
           <span className="material-symbols-outlined">notifications</span>
           <p className="desktopDisplay">Notifications</p>
