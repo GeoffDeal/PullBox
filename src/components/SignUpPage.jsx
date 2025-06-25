@@ -1,13 +1,13 @@
-import { SignIn } from "@clerk/clerk-react";
+import { SignUp } from "@clerk/clerk-react";
 import darklogo from "../assets/darklogo.png";
 
-const SignInPage = () => {
+const SignUpPage = () => {
   return (
     <div className="sign-in-wrapper">
       <img src={darklogo} alt="Logo" id="signinlogo" />
-      <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+      <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
     </div>
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
