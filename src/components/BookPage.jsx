@@ -6,13 +6,13 @@ import { toast } from "react-toastify";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
 import { useAuthHeader } from "../utils/authHeaderSetter.js";
+import EnlargeableImage from "./EnlargeableImage.jsx";
 
 function BookPage() {
   const { user } = useUser();
   const [quantity, setQuantity] = useState();
   const { priceAdjustments } = useContext(PriceAdjustments);
   const getHeaders = useAuthHeader();
-  // const location = useLocation();
   const { productId } = useParams();
   const [book, setBook] = useState();
   const [pull, setPull] = useState(false);
@@ -169,7 +169,16 @@ function BookPage() {
         <div>
           <h1>{handleTitle(book.ProductName)}</h1>
           <div className="bookInfo">
-            <img className="bookImage" src={book.ImageURL} alt="Comic cover" />
+            {/* <img
+              className="bookImage"
+              src={book.ImageURL}
+              onClick={() => setModalImage(book.ImageURL)}
+              alt={`Comic cover for ${handleTitle(book.ProductName)}`}
+            /> */}
+            <EnlargeableImage
+              src={book.ImageURL}
+              alt={`Comic cover for ${handleTitle(book.ProductName)}`}
+            />
             <div className="bookTextBlock">
               <p>Publisher: {book.Publisher}</p>
               <p>{book.ProductType}</p>
@@ -183,7 +192,6 @@ function BookPage() {
                 <NavLink
                   className="purpleNav"
                   to={`/seriespage/${book.SeriesID}`}
-                  // state={{ seriesId: book.SeriesID }}
                 >
                   View Series
                 </NavLink>

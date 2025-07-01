@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import WeekSelect from "./WeekSelect";
-import { handleTitle, findSundays } from "../utils/utilityFunctions.js";
+import { findSundays } from "../utils/utilityFunctions.js";
 import ShopSubTable from "./ShopSubTable";
 import ExcelJS from "exceljs";
 import { NavLink } from "react-router-dom";

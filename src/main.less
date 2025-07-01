@@ -509,6 +509,31 @@ button {
     }
   }
 
+  .thumbnail {
+    max-width: 200px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+  }
+
+  .modal-image {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 20px black;
+  }
+
   .pullButton {
     color: @dark-background-grey;
     border-width: 0;
@@ -840,7 +865,6 @@ button {
   #displayWindow {
     position: absolute;
     margin-left: 170px + 16;
-    z-index: 0;
   }
 
   .desktopDisplay {
