@@ -156,59 +156,72 @@ const ShopPulls = () => {
 
   // Create excel sheet and populate pulls
 
-  async function createExcel() {
+  async function generateForms() {
     const pulledPublishers = new Set(sortedPulls.map((book) => book.Publisher));
 
     for (const pub of pulledPublishers) {
-      const pubSorted = sortedPulls.filter((book) => book.Publisher === pub);
+      const pubSortedComics = sortedPulls.filter(
+        (book) => book.Publisher === pub && book.ProductType === "Comic"
+      );
+      const pubSortedIncentives = sortedPulls.filter(
+        (incentive) =>
+          incentive.Publisher === pub && incentive.ProductType === "Incentive"
+      );
 
-      const workbook = new ExcelJS.Workbook();
-      workbook.creator = "Heroes&Hobbies";
-      workbook.created = new Date();
-
-      const sheet = workbook.addWorksheet("Order Form");
-      sheet.columns = [
-        { header: "Sku", key: "sku", width: 60 },
-        { header: "Quantity", key: "quantity", width: 20 },
-      ];
-      pubSorted.forEach((book) => {
-        sheet.addRow([book.Sku, book.totalAmount]);
-      });
-
-      const cells = ["A1", "B1"];
-      cells.forEach((cellName) => {
-        const cell = sheet.getCell(cellName);
-        cell.font = { color: { argb: "FFFFFF" } };
-        cell.fill = {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "4167b8" },
-        };
-      });
-
-      const date = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
-      const fileName = "heroesorderform" + date + pub + ".xlsx";
-      let buffer;
-      try {
-        buffer = await workbook.xlsx.writeBuffer();
-      } catch (error) {
-        console.error(error.message);
-        toast.error(`Problem creating form: ${error.message}`);
-        return;
-      }
-      const blob = new Blob([buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      if (pubSortedComics.length > 0) createForm(pubSortedComics, pub);
+      if (pubSortedIncentives.length > 0) createForm(pubSortedIncentives, pub);
     }
+  }
+
+  async function createForm(bookArray, publisher) {
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = "Heroes&Hobbies";
+    workbook.created = new Date();
+
+    const sheet = workbook.addWorksheet("Order Form");
+    sheet.columns = [
+      { header: "Sku", key: "sku", width: 60 },
+      { header: "Quantity", key: "quantity", width: 20 },
+    ];
+    bookArray.forEach((book) => {
+      sheet.addRow([book.Sku, book.totalAmount]);
+    });
+
+    const cells = ["A1", "B1"];
+    cells.forEach((cellName) => {
+      const cell = sheet.getCell(cellName);
+      cell.font = { color: { argb: "FFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "4167b8" },
+      };
+    });
+
+    const date = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+    const products =
+      bookArray[0].ProductType === "Incentive" ? "Incentives" : "Products";
+    const fileName = "heroesorderform" + date + publisher + products + ".xlsx";
+    let buffer;
+    try {
+      buffer = await workbook.xlsx.writeBuffer();
+    } catch (error) {
+      console.error(error.message);
+      toast.error(`Problem creating form: ${error.message}`);
+      return;
+    }
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   // Auth admin check
@@ -272,7 +285,7 @@ const ShopPulls = () => {
                       key={book.productId}
                       className={"bookNav"}
                     >
-                      {handleTitle(book.ProductName)}
+                      {book.ProductName}
                     </NavLink>
                   </td>
                   <td>{book.Variant} </td>
@@ -289,7 +302,7 @@ const ShopPulls = () => {
         </tbody>
       </table>
       {queryConditions.dateType === "foc" && (
-        <button className="goldButton" onClick={() => createExcel()}>
+        <button className="goldButton" onClick={() => generateForms()}>
           Export Pulls
         </button>
       )}
