@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import api from "./api/api.js";
 import { useAuth } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { useAuthHeader } from "./utils/authHeaderSetter.js";
 
 export const PriceAdjustments = createContext();
@@ -8,10 +9,11 @@ export const PriceAdjustments = createContext();
 const Contexts = ({ children }) => {
   const [priceAdjustments, setPriceAdjustments] = useState();
   const { isLoaded } = useAuth();
+  const { user } = useUser();
   const getHeaders = useAuthHeader();
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || !user) return;
 
     let cancelled = false;
 
@@ -30,7 +32,7 @@ const Contexts = ({ children }) => {
     return () => {
       cancelled = true;
     };
-  }, [isLoaded, getHeaders]);
+  }, [isLoaded, getHeaders, user]);
 
   return (
     <PriceAdjustments.Provider
