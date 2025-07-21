@@ -5,7 +5,7 @@ const SignInPage = () => {
   return (
     <div className="sign-in-wrapper">
       <img src={darklogo} alt="Logo" id="signinlogo" />
-      <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+      <SignIn signUpUrl="/sign-up" />
     </div>
   );
 };
