@@ -63,7 +63,6 @@ function BookPage() {
               comic.ProductType === "Incentive" && comic.ID !== bookData.ID
           );
           setIncentiveList(incentives ? incentives : null);
-          console.log(varRes?.data);
         }
       } catch (err) {
         console.error(err);
