@@ -17,6 +17,7 @@ function BookPage() {
   const [book, setBook] = useState();
   const [pull, setPull] = useState(false);
   const [variantList, setVariantList] = useState();
+  const [incentiveList, setIncentiveList] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,12 +40,12 @@ function BookPage() {
         });
 
         let varRes = null;
-        if (bookData.SeriesID && bookData.Issue && bookData.Variant) {
+        if (bookData.SeriesID && bookData.Issue) {
           varRes = await api.get("/products/getvariants", {
             params: {
               seriesId: bookData.SeriesID,
               issue: bookData.Issue,
-              variant: bookData.Variant,
+              // variant: bookData.Variant,
             },
             headers,
           });
@@ -52,7 +53,17 @@ function BookPage() {
         if (!cancelled) {
           setBook(bookData);
           setPull(pullRes.data[0] || false);
-          setVariantList(varRes?.data || null);
+          const variants = varRes?.data.filter(
+            (comic) =>
+              comic.ProductType !== "Incentive" && comic.ID !== bookData.ID
+          );
+          setVariantList(variants ? variants : null);
+          const incentives = varRes?.data.filter(
+            (comic) =>
+              comic.ProductType === "Incentive" && comic.ID !== bookData.ID
+          );
+          setIncentiveList(incentives ? incentives : null);
+          console.log(varRes?.data);
         }
       } catch (err) {
         console.error(err);
@@ -169,12 +180,6 @@ function BookPage() {
         <div>
           <h1>{handleTitle(book.ProductName)}</h1>
           <div className="bookInfo">
-            {/* <img
-              className="bookImage"
-              src={book.ImageURL}
-              onClick={() => setModalImage(book.ImageURL)}
-              alt={`Comic cover for ${handleTitle(book.ProductName)}`}
-            /> */}
             <EnlargeableImage
               src={book.ImageURL}
               alt={`Comic cover for ${handleTitle(book.ProductName)}`}
@@ -240,10 +245,23 @@ function BookPage() {
             </div>
           </div>
           <div className="variantDisplay">
-            {variantList && <h3>Variant Covers:</h3>}
+            {variantList?.length > 0 && <h3>Variant Covers:</h3>}
             <div className="gridDisplay">
-              {variantList &&
+              {variantList?.length > 0 &&
                 variantList.map((book) => (
+                  <NavLink
+                    to={`/bookpage/${book.ID}`}
+                    key={book.ItemCode}
+                    className={"bookNav"}
+                  >
+                    <img src={book.ImageURL} alt="Comic Cover" />
+                  </NavLink>
+                ))}
+            </div>
+            {incentiveList?.length > 0 && <h3>Incentives:</h3>}
+            <div className="gridDisplay">
+              {incentiveList?.length > 0 &&
+                incentiveList.map((book) => (
                   <NavLink
                     to={`/bookpage/${book.ID}`}
                     key={book.ItemCode}
