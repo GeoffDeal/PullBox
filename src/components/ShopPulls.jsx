@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import WeekSelect from "./WeekSelect";
 import { findSundays } from "../utils/utilityFunctions.js";
-import ShopSubTable from "./ShopSubTable";
 import ExcelJS from "exceljs";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,6 +17,7 @@ const ShopPulls = () => {
   });
   const [pullData, setPullData] = useState();
   const [sortedPulls, setSortedPulls] = useState();
+  const [openAccordion, setOpenAccordion] = useState(null);
 
   const { lastSunday } = findSundays();
   const [queryConditions, setQueryConditions] = useState({
@@ -224,6 +224,11 @@ const ShopPulls = () => {
     URL.revokeObjectURL(url);
   }
 
+  //Accordian
+  const toggleAccordion = (id) => {
+    setOpenAccordion(openAccordion === id ? null : id);
+  };
+
   // Auth admin check
   if (!isLoaded) return <div className="loadingText">Loading...</div>;
 
@@ -275,30 +280,49 @@ const ShopPulls = () => {
         </thead>
         <tbody>
           {sortedPulls &&
-            sortedPulls.map((book, index) => {
-              return (
-                <tr key={index}>
+            sortedPulls.map((book) => (
+              <>
+                <tr key={book.productId}>
                   <td className="centeredCell">{book.Publisher}</td>
                   <td>
                     <NavLink
                       to={`/bookpage/${book.productId}`}
-                      key={book.productId}
-                      className={"bookNav"}
+                      className="bookNav"
                     >
                       {book.ProductName}
                     </NavLink>
                   </td>
-                  <td>{book.Variant} </td>
+                  <td>{book.Variant}</td>
                   <td>
-                    <ShopSubTable
-                      customers={customerAmounts[book.productId]}
-                      foc={book.FOCDueDate}
-                    />
+                    <button
+                      className="accordionToggle"
+                      onClick={() => toggleAccordion(book.productId)}
+                    >
+                      {openAccordion === book.productId ? "Hide" : "Show"}{" "}
+                      Customers
+                    </button>
                   </td>
                   <td className="centeredCell">{book.totalAmount}</td>
                 </tr>
-              );
-            })}
+
+                {openAccordion === book.productId && (
+                  <tr className="accordionRow">
+                    <td colSpan="5">
+                      <ul className="accordionContent">
+                        {customerAmounts[book.productId] &&
+                          customerAmounts[book.productId].map((c, i) => (
+                            <li key={i} className="customerRow">
+                              <span>{c.name}</span>
+                              <span>Box: {c.boxNumber}</span>
+                              <span>Qty: {c.amount}</span>
+                            </li>
+                          ))}
+                      </ul>
+                    </td>
+                  </tr>
+                )}
+              </>
+            ))}
         </tbody>
       </table>
       {queryConditions.dateType === "foc" && (
