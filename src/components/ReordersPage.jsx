@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import CustomerDropdown from "./CustomerDropdown";
+import api from "../api/api";
+import { useAuthHeader } from "../utils/authHeaderSetter";
+import { toast } from "react-toastify";
 
 function ReordersPage() {
   const [customer, setCustomer] = useState("");
@@ -7,7 +10,8 @@ function ReordersPage() {
   const [notes, setNotes] = useState("");
   const [orderDate, setOrderDate] = useState("");
   const [requestDate, setRequestDate] = useState("");
-  const [orderStatus, setOrderStatus] = useState("");
+  const [orderStatus, setOrderStatus] = useState("ordered");
+  const getHeaders = useAuthHeader();
 
   useEffect(() => {
     const now = new Date();
@@ -24,13 +28,40 @@ function ReordersPage() {
   const updateNotes = (e) => {
     setNotes(e.target.value);
   };
+  const reorderSubmit = async (event) => {
+    event.preventDefault();
+    const reorderData = {
+      userId: customer,
+      product,
+      notes,
+      orderDate,
+      requestDate,
+      orderStatus,
+    };
+
+    try {
+      const headers = await getHeaders();
+      await api.post("/reorders/addreorder", reorderData, {
+        headers,
+      });
+      toast.success("Reorder Added");
+      setCustomer("");
+      setProduct("");
+      setNotes("");
+      setRequestDate("");
+      setOrderStatus("ordered");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error adding reorder");
+    }
+  };
 
   return (
     <div className="pageDisplay">
       <h1>Reorders</h1>
       <div className="addOrder">
         <h3>Add New Order</h3>
-        <form id="orderForm">
+        <form id="orderForm" onSubmit={reorderSubmit}>
           <p>Current Date: {orderDate && orderDate}</p>
           <label htmlFor="requestDate">Date of Request:</label>
           <input
