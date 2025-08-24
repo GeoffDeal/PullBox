@@ -5,6 +5,7 @@ import { useAuthHeader } from "../utils/authHeaderSetter";
 import { toast } from "react-toastify";
 
 function ReordersPage() {
+  const [displayForm, setDisplayForm] = useState(false);
   const [customer, setCustomer] = useState("");
   const [product, setProduct] = useState("");
   const [notes, setNotes] = useState("");
@@ -60,49 +61,60 @@ function ReordersPage() {
     <div className="pageDisplay">
       <h1>Reorders</h1>
       <div className="addOrder">
-        <h3>Add New Order</h3>
-        <form id="orderForm" onSubmit={reorderSubmit}>
-          <p>Current Date: {orderDate && orderDate}</p>
-          <label htmlFor="requestDate">Date of Request:</label>
-          <input
-            id="requestDate"
-            type="date"
-            value={requestDate}
-            onChange={(e) => setRequestDate(e.target.value)}
-          />
-          <CustomerDropdown
-            onUpdate={updateCustomer}
-            customerValue={customer}
-          />
-          <label htmlFor={"productOrder"}>Product: </label>
-          <input
-            id="productOrder"
-            type="text"
-            value={product}
-            placeholder="Product title..."
-            onChange={updateProduct}
-          />
-          <label htmlFor="orderNotes">Notes: </label>
-          <input
-            id="orderNotes"
-            type="textarea"
-            value={notes}
-            placeholder="Notes..."
-            onChange={updateNotes}
-          />
-          <label htmlFor="orderStatus">Status: </label>
-          <select
-            name="orderStatus"
-            id="orderStatus"
-            onChange={(e) => setOrderStatus(e.target.value)}
-            value={orderStatus}
-          >
-            <option value="ordered">Ordered</option>
-            <option value="unavailable">Unavailable</option>
-            <option value="complete">Complete</option>
-          </select>
-          <input type="submit" value={"Submit"} id="orderSubmit" />
-        </form>
+        <div className="formHeader">
+          <h3>Add New Order</h3>
+          <button onClick={() => setDisplayForm(!displayForm)}>
+            {displayForm ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
+        {displayForm && (
+          <form id="orderForm" onSubmit={reorderSubmit}>
+            <p>Current Date: {orderDate && orderDate}</p>
+            <label htmlFor="requestDate">Date of Request:</label>
+            <input
+              id="requestDate"
+              type="date"
+              value={requestDate}
+              onChange={(e) => setRequestDate(e.target.value)}
+            />
+            <CustomerDropdown
+              onUpdate={updateCustomer}
+              customerValue={customer}
+            />
+            <label htmlFor={"productOrder"}>Product: </label>
+            <input
+              id="productOrder"
+              type="text"
+              value={product}
+              placeholder="Product title..."
+              onChange={updateProduct}
+            />
+            <label htmlFor="orderNotes">Notes: </label>
+            <input
+              id="orderNotes"
+              type="textarea"
+              value={notes}
+              placeholder="Notes..."
+              onChange={updateNotes}
+            />
+            <label htmlFor="orderStatus">Status: </label>
+            <select
+              name="orderStatus"
+              id="orderStatus"
+              onChange={(e) => setOrderStatus(e.target.value)}
+              value={orderStatus}
+            >
+              <option value="ordered">Ordered</option>
+              <option value="unavailable">Unavailable</option>
+              <option value="complete">Complete</option>
+            </select>
+            <input type="submit" value={"Submit"} id="orderSubmit" />
+          </form>
+        )}
       </div>
     </div>
   );

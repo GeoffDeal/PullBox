@@ -720,8 +720,11 @@ button {
 }
 
 #orderForm {
+  background-color: @dark-background-grey;
   display: flex;
   flex-direction: column;
+  padding: 12px;
+  border-radius: 8px;
   input,
   select {
     margin: 8px;
@@ -729,6 +732,20 @@ button {
   #orderSubmit {
     text-align: center;
     width: 60%;
+  }
+}
+.formHeader {
+  display: flex;
+  width: 180px;
+  justify-content: space-between;
+  button {
+    border: none;
+    color: whitesmoke;
+    background-color: transparent;
+    padding: 0;
+    .material-symbols-outlined {
+      font-size: large;
+    }
   }
 }
 
