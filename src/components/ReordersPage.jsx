@@ -3,9 +3,11 @@ import CustomerDropdown from "./CustomerDropdown";
 import api from "../api/api";
 import { useAuthHeader } from "../utils/authHeaderSetter";
 import { toast } from "react-toastify";
+import ReordersTable from "./ReorderTable";
 
 function ReordersPage() {
   const [displayForm, setDisplayForm] = useState(false);
+  const [displayTable, setDisplayTable] = useState(true);
   const [customer, setCustomer] = useState("");
   const [product, setProduct] = useState("");
   const [notes, setNotes] = useState("");
@@ -115,6 +117,10 @@ function ReordersPage() {
             <input type="submit" value={"Submit"} id="orderSubmit" />
           </form>
         )}
+      </div>
+      <div className="reordersDisplay">
+        <h3>Active Reorders</h3>
+        {displayTable && <ReordersTable />}
       </div>
     </div>
   );
