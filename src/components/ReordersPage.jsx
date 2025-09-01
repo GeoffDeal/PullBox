@@ -34,7 +34,8 @@ function ReordersPage() {
   const reorderSubmit = async (event) => {
     event.preventDefault();
     const reorderData = {
-      userId: customer,
+      userId: customer.id,
+      userName: customer.name,
       product,
       notes,
       orderDate,
@@ -51,7 +52,8 @@ function ReordersPage() {
       setCustomer("");
       setProduct("");
       setNotes("");
-      setRequestDate("");
+      const now = new Date();
+      setRequestDate(now.toISOString().split("T")[0]);
       setOrderStatus("ordered");
     } catch (err) {
       console.error(err);
@@ -83,10 +85,7 @@ function ReordersPage() {
               value={requestDate}
               onChange={(e) => setRequestDate(e.target.value)}
             />
-            <CustomerDropdown
-              onUpdate={updateCustomer}
-              customerValue={customer}
-            />
+            <CustomerDropdown onUpdate={updateCustomer} value={customer} />
             <label htmlFor={"productOrder"}>Product: </label>
             <input
               id="productOrder"
