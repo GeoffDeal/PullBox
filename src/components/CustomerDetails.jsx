@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import api from "../api/api";
 import { useUser } from "@clerk/clerk-react";
 import { useAuthHeader } from "../utils/authHeaderSetter";
+import ReordersTable from "./ReorderTable";
 
 function CustomerDetails() {
   const { user, isLoaded } = useUser();
@@ -13,6 +14,8 @@ function CustomerDetails() {
   const customerId = location.state.customerId;
   const [customer, setCustomer] = useState();
   const [subs, setSubs] = useState();
+  const [displayTable, setDisplayTable] = useState(false);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -95,7 +98,6 @@ function CustomerDetails() {
         </button>
       </div>
       <p>Email: {customer && customer.email}</p>
-      <p>Phone: {customer && customer.phone}</p>
       <p>{customer && `${customer.name}'s Subscriptions:`}</p>
       {subs ? (
         <ul className="bookSubs">
@@ -115,6 +117,24 @@ function CustomerDetails() {
       ) : (
         <p>None yet</p>
       )}
+      <div className="reordersDisplay">
+        <div className="formHeader">
+          <h3>Reorders</h3>
+          <button onClick={() => setDisplayTable(!displayTable)}>
+            {displayTable ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
+        {displayTable && (
+          <ReordersTable
+            endpoint={`/reorders/getcustomerreorders/${customerId}`}
+            names={false}
+          />
+        )}
+      </div>
     </div>
   );
 }
