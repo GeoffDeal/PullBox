@@ -119,7 +119,16 @@ function ReordersPage() {
         )}
       </div>
       <div className="reordersDisplay">
-        <h3>Active Reorders</h3>
+        <div className="formHeader">
+          <h3>Active Reorders</h3>
+          <button onClick={() => setDisplayTable(!displayTable)}>
+            {displayTable ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
         {displayTable && (
           <ReordersTable endpoint={`/reorders/getreorders`} names={true} />
         )}
