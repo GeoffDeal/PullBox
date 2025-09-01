@@ -120,7 +120,9 @@ function ReordersPage() {
       </div>
       <div className="reordersDisplay">
         <h3>Active Reorders</h3>
-        {displayTable && <ReordersTable />}
+        {displayTable && (
+          <ReordersTable endpoint={`/reorders/getreorders`} names={true} />
+        )}
       </div>
     </div>
   );

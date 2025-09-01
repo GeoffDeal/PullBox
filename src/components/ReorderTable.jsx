@@ -3,7 +3,7 @@ import api from "../api/api";
 import { useAuthHeader } from "../utils/authHeaderSetter";
 import { toast } from "react-toastify";
 
-export default function ReordersTable() {
+export default function ReordersTable({ endpoint, names }) {
   const [orders, setOrders] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const getHeaders = useAuthHeader();
@@ -13,7 +13,7 @@ export default function ReordersTable() {
     async function getReorders() {
       try {
         const headers = await getHeaders();
-        const res = await api.get(`/reorders/getreorders`, {
+        const res = await api.get(endpoint, {
           headers,
         });
         if (!cancelled) setOrders(res.data);
@@ -26,7 +26,7 @@ export default function ReordersTable() {
     return () => {
       cancelled = true;
     };
-  }, [getHeaders]);
+  }, [getHeaders, endpoint]);
 
   // Sorting logic
   const sortedOrders = [...orders].sort((a, b) => {
@@ -71,11 +71,13 @@ export default function ReordersTable() {
       <table className="reorderTable">
         <thead>
           <tr className="bg-gray-100">
-            <th className="tableHeader">
-              <button onClick={() => handleSort("userName")}>
-                Customer{renderSortArrow("userName")}
-              </button>
-            </th>
+            {names && (
+              <th className="tableHeader">
+                <button onClick={() => handleSort("userName")}>
+                  Customer{renderSortArrow("userName")}
+                </button>
+              </th>
+            )}
             <th className="tableHeader">
               <button onClick={() => handleSort("product")}>
                 Product{renderSortArrow("product")}
@@ -103,7 +105,7 @@ export default function ReordersTable() {
         <tbody>
           {sortedOrders.map((o) => (
             <tr key={o.id}>
-              <td className="tableCell">{o.userName}</td>
+              {names && <td className="tableCell">{o.userName}</td>}
               <td className="tableCell">{o.product}</td>
               <td className="tableCell">{o.notes}</td>
               <td className="tableCell">{o.orderDate}</td>
