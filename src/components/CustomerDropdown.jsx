@@ -108,7 +108,7 @@ function CustomerDropdown({ onUpdate, value }) {
           {filteredCustomers.map((customer) => (
             <li
               key={customer.id}
-              onClick={() => handleSelect(customer)}
+              onMouseDown={() => handleSelect(customer)}
               style={{ padding: "0.5rem", cursor: "pointer" }}
               onMouseEnter={(e) => (e.target.style.backgroundColor = "#eee")}
               onMouseLeave={(e) => (e.target.style.backgroundColor = "white")}
