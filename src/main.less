@@ -734,6 +734,45 @@ button {
   }
 }
 
+#orderForm {
+  background-color: @dark-background-grey;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 8px;
+  input,
+  select {
+    margin: 8px;
+  }
+  #orderSubmit {
+    text-align: center;
+    width: 60%;
+  }
+}
+.addOrder {
+  width: 300px;
+  max-width: 300px;
+  form {
+    #orderSubmit {
+      display: block;
+      margin: 1rem auto 0 auto;
+    }
+  }
+}
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  button {
+    border: none;
+    color: whitesmoke;
+    background-color: transparent;
+    padding: 0;
+    .material-symbols-outlined {
+      font-size: large;
+    }
+  }
+}
+
 .seriesPage {
   .goldButton {
     color: @dark-background-grey;

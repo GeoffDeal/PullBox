@@ -1,0 +1,160 @@
+import { useEffect, useState } from "react";
+import CustomerDropdown from "./CustomerDropdown";
+import api from "../api/api";
+import { useAuthHeader } from "../utils/authHeaderSetter";
+import { toast } from "react-toastify";
+import ReordersTable from "./ReorderTable";
+
+function ReordersPage() {
+  const [displayForm, setDisplayForm] = useState(false);
+  const [displayTable, setDisplayTable] = useState(true);
+  const [displayCompletes, setDisplayCompletes] = useState(false);
+  const [customer, setCustomer] = useState("");
+  const [product, setProduct] = useState("");
+  const [notes, setNotes] = useState("");
+  const [orderDate, setOrderDate] = useState("");
+  const [requestDate, setRequestDate] = useState("");
+  const [orderStatus, setOrderStatus] = useState("ordered");
+  const getHeaders = useAuthHeader();
+
+  useEffect(() => {
+    const now = new Date();
+    setOrderDate(now.toLocaleString("en-CA").split(",")[0]);
+    setRequestDate(now.toISOString().split("T")[0]);
+  }, []);
+
+  const updateCustomer = (e) => {
+    setCustomer(e.target.value);
+  };
+  const updateProduct = (e) => {
+    setProduct(e.target.value);
+  };
+  const updateNotes = (e) => {
+    setNotes(e.target.value);
+  };
+  const reorderSubmit = async (event) => {
+    event.preventDefault();
+    const reorderData = {
+      userId: customer.id,
+      userName: customer.name,
+      product,
+      notes,
+      orderDate,
+      requestDate,
+      orderStatus,
+    };
+
+    try {
+      const headers = await getHeaders();
+      await api.post("/reorders/addreorder", reorderData, {
+        headers,
+      });
+      toast.success("Reorder Added");
+      setCustomer("");
+      setProduct("");
+      setNotes("");
+      const now = new Date();
+      setRequestDate(now.toISOString().split("T")[0]);
+      setOrderStatus("ordered");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error adding reorder");
+    }
+  };
+
+  return (
+    <div className="pageDisplay">
+      <h1>Product Reorders</h1>
+      <div className="addOrder">
+        <div className="formHeader">
+          <h3>Add New Order</h3>
+          <button onClick={() => setDisplayForm(!displayForm)}>
+            {displayForm ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
+        {displayForm && (
+          <form id="orderForm" onSubmit={reorderSubmit}>
+            <p>Current Date: {orderDate && orderDate}</p>
+            <label htmlFor="requestDate">Date of Request:</label>
+            <input
+              id="requestDate"
+              type="date"
+              value={requestDate}
+              onChange={(e) => setRequestDate(e.target.value)}
+            />
+            <CustomerDropdown onUpdate={updateCustomer} value={customer} />
+            <label htmlFor={"productOrder"}>Product: </label>
+            <input
+              id="productOrder"
+              type="text"
+              value={product}
+              placeholder="Product title..."
+              onChange={updateProduct}
+            />
+            <label htmlFor="orderNotes">Notes: </label>
+            <input
+              id="orderNotes"
+              type="textarea"
+              value={notes}
+              placeholder="Notes..."
+              onChange={updateNotes}
+            />
+            <label htmlFor="orderStatus">Status: </label>
+            <select
+              name="orderStatus"
+              id="orderStatus"
+              onChange={(e) => setOrderStatus(e.target.value)}
+              value={orderStatus}
+            >
+              <option value="ordered">Ordered</option>
+              <option value="unavailable">Unavailable</option>
+              <option value="complete">Complete</option>
+            </select>
+            <input type="submit" value={"Submit"} id="orderSubmit" />
+          </form>
+        )}
+      </div>
+      <div className="reordersDisplay">
+        <div className="formHeader">
+          <h3>Active Reorders</h3>
+          <button onClick={() => setDisplayTable(!displayTable)}>
+            {displayTable ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
+        {displayTable && (
+          <ReordersTable
+            endpoint={`/reorders/getreorders/active`}
+            names={true}
+          />
+        )}
+      </div>
+      <div className="completesDisplay">
+        <div className="formHeader">
+          <h3>Complete Reorders</h3>
+          <button onClick={() => setDisplayCompletes(!displayCompletes)}>
+            {displayCompletes ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
+        {displayCompletes && (
+          <ReordersTable
+            endpoint={`/reorders/getreorders/complete`}
+            names={true}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+export default ReordersPage;

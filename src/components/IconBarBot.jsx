@@ -38,6 +38,12 @@ function IconBarBot() {
             <p className="desktopDisplay">Customers</p>
           </NavLink>
         )}
+        {role === "admin" && (
+          <NavLink className="botLinks" to="/reorders">
+            <span className="material-symbols-outlined">quick_reorder</span>{" "}
+            <p className="desktopDisplay">Reorders</p>
+          </NavLink>
+        )}
         <NavLink className="botLinks" to="/notifications">
           <span className="material-symbols-outlined">notifications</span>
           <p className="desktopDisplay">Notifications</p>
