@@ -8,6 +8,7 @@ import ReordersTable from "./ReorderTable";
 function ReordersPage() {
   const [displayForm, setDisplayForm] = useState(false);
   const [displayTable, setDisplayTable] = useState(true);
+  const [displayCompletes, setDisplayCompletes] = useState(false);
   const [customer, setCustomer] = useState("");
   const [product, setProduct] = useState("");
   const [notes, setNotes] = useState("");
@@ -129,7 +130,28 @@ function ReordersPage() {
           </button>
         </div>
         {displayTable && (
-          <ReordersTable endpoint={`/reorders/getreorders`} names={true} />
+          <ReordersTable
+            endpoint={`/reorders/getreorders/active`}
+            names={true}
+          />
+        )}
+      </div>
+      <div className="completesDisplay">
+        <div className="formHeader">
+          <h3>Complete Reorders</h3>
+          <button onClick={() => setDisplayCompletes(!displayCompletes)}>
+            {displayCompletes ? (
+              <span className="material-symbols-outlined">remove</span>
+            ) : (
+              <span className="material-symbols-outlined">add</span>
+            )}
+          </button>
+        </div>
+        {displayCompletes && (
+          <ReordersTable
+            endpoint={`/reorders/getreorders/complete`}
+            names={true}
+          />
         )}
       </div>
     </div>
