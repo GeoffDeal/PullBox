@@ -61,9 +61,25 @@ export default function ReordersTable({ endpoint, names }) {
 
   //Change reorder status
   const statusChange = async (e, orderId) => {
-    // try {
-    //     api call here
-    // }
+    try {
+      const newStatus = e.target.value;
+      const headers = await getHeaders();
+      await api.patch(
+        `/reorders/changereorderstatus/${orderId}`,
+        { orderStatus: newStatus },
+        {
+          headers,
+        }
+      );
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === orderId ? { ...o, orderStatus: newStatus } : o
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      toast.error(`Problem changing reorder status: ${err.message}`);
+    }
   };
 
   return (
