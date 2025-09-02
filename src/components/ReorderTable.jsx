@@ -4,6 +4,7 @@ import { useAuthHeader } from "../utils/authHeaderSetter";
 import { toast } from "react-toastify";
 
 export default function ReordersTable({ endpoint, names }) {
+  const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const getHeaders = useAuthHeader();
@@ -20,6 +21,8 @@ export default function ReordersTable({ endpoint, names }) {
       } catch (err) {
         console.error(err);
         toast.error(`Problem fetching reorders: ${err.message}`);
+      } finally {
+        setLoading(false);
       }
     }
     getReorders();
@@ -81,6 +84,25 @@ export default function ReordersTable({ endpoint, names }) {
       toast.error(`Problem changing reorder status: ${err.message}`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
 
   return (
     <div className="tableDiv">

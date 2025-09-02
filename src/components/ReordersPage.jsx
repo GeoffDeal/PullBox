@@ -64,7 +64,7 @@ function ReordersPage() {
 
   return (
     <div className="pageDisplay">
-      <h1>Reorders</h1>
+      <h1>Product Reorders</h1>
       <div className="addOrder">
         <div className="formHeader">
           <h3>Add New Order</h3>
