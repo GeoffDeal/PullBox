@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 export default function ReordersTable({ endpoint, names }) {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [expandedRow, setExpandedRow] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const getHeaders = useAuthHeader();
 
@@ -62,6 +63,10 @@ export default function ReordersTable({ endpoint, names }) {
     return sortConfig.direction === "asc" ? " ↑" : " ↓";
   };
 
+  const toggleRow = (id) => {
+    setExpandedRow((prev) => (prev === id ? null : id));
+  };
+
   //Change reorder status
   const statusChange = async (e, orderId) => {
     try {
@@ -106,60 +111,77 @@ export default function ReordersTable({ endpoint, names }) {
 
   return (
     <div className="tableDiv">
-      <table className="reorderTable">
+      <table className="pullsTable">
         <thead>
-          <tr className="bg-gray-100">
+          <tr>
             {names && (
-              <th className="tableHeader">
+              <th>
                 <button onClick={() => handleSort("userName")}>
                   Customer{renderSortArrow("userName")}
                 </button>
               </th>
             )}
-            <th className="tableHeader">
+            <th>
               <button onClick={() => handleSort("product")}>
                 Product{renderSortArrow("product")}
               </button>
             </th>
-            <th className="tableHeader">Notes</th>
-            <th className="tableHeader">
+            <th>Notes</th>
+            <th>
               <button onClick={() => handleSort("orderDate")}>
                 Order Date{renderSortArrow("orderDate")}
               </button>
             </th>
-            <th className="tableHeader">
+            <th>
               <button onClick={() => handleSort("requestDate")}>
                 Request Date{renderSortArrow("requestDate")}
               </button>
             </th>
-            <th className="tableHeader">
+            <th>
               <button onClick={() => handleSort("orderStatus")}>
                 Status{renderSortArrow("orderStatus")}
               </button>
             </th>
-            <th className="tableHeader">Updated At</th>
+            <th>Updated At</th>
           </tr>
         </thead>
         <tbody>
           {sortedOrders.map((o) => (
-            <tr key={o.id}>
-              {names && <td className="tableCell">{o.userName}</td>}
-              <td className="tableCell">{o.product}</td>
-              <td className="tableCell">{o.notes}</td>
-              <td className="tableCell">{o.orderDate}</td>
-              <td className="tableCell">{o.requestDate}</td>
-              <td className="tableCell">
-                <select
-                  onChange={(e) => statusChange(e, o.id)}
-                  value={o.orderStatus}
-                >
-                  <option value={"ordered"}>Ordered</option>
-                  <option value={"unavailable"}>Unavailable</option>
-                  <option value={"complete"}>Complete</option>
-                </select>
-              </td>
-              <td className="tableCell">{o.updatedAt}</td>
-            </tr>
+            <>
+              <tr key={o.id}>
+                {names && <td className="tableCell">{o.userName}</td>}
+                <td className="tableCell">{o.product}</td>
+                <td className="tableCell">
+                  {o.notes ? (
+                    <button onClick={() => toggleRow(o.id)}>
+                      {expandedRow === o.id ? "Hide Notes" : "Show Notes"}
+                    </button>
+                  ) : (
+                    "No notes"
+                  )}
+                </td>
+                <td className="tableCell">{o.orderDate}</td>
+                <td className="tableCell">{o.requestDate}</td>
+                <td className="tableCell">
+                  <select
+                    onChange={(e) => statusChange(e, o.id)}
+                    value={o.orderStatus}
+                  >
+                    <option value={"ordered"}>Ordered</option>
+                    <option value={"unavailable"}>Unavailable</option>
+                    <option value={"complete"}>Complete</option>
+                  </select>
+                </td>
+                <td className="tableCell">{o.updatedAt}</td>
+              </tr>
+              {expandedRow === o.id && (
+                <tr>
+                  <td colSpan={names ? 7 : 6} className="noteRow">
+                    {o.notes || "No notes"}
+                  </td>
+                </tr>
+              )}
+            </>
           ))}
         </tbody>
       </table>
